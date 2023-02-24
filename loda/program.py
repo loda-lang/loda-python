@@ -137,12 +137,15 @@ class Program:
         if pstr:
             self.read(pstr)
 
-    def read(self, pstr):
+    def read(self, pstr) -> None:
         self.ops = []
         for line in pstr.splitlines():
             self.ops.append(Operation(line))
 
-    def __str__(self):
+    def __eq__(self, o: object) -> bool:
+        return self.ops == o.ops
+
+    def __str__(self) -> str:
         r = ''
         ind = ''
         for op in self.ops:
