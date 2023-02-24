@@ -1,6 +1,6 @@
-# LODA Runtime and Miner in Python
+# LODA Runtime in Python
 
-Execute tests using thes commands:
+Execute tests using these commands:
 
 ```bash
 make init
