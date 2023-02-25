@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from nose2.tools import params
 import os
-from parameterized import parameterized
 import sys
 import unittest
 
@@ -15,7 +15,7 @@ from loda.program import Program
 class ProgramTests(unittest.TestCase):
     """Program tests"""
 
-    @parameterized.expand([(5,),(1075,)])
+    @params(5, 1075)
     def test_read(self, id):
         path = 'tests/programs/oeis/' + getOeisProgramPath(id)
         with open(path, 'r') as f:
