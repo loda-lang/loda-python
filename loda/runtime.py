@@ -68,16 +68,7 @@ def pow(a, b):
         if b < 0:
             return 0
         else:
-            r = 1
-            while r != None and b != 0:
-                if mod(b, 2) != 0:
-                    r = mul(r, a)
-                b = div(b, 2)
-                if b != 0:
-                    a = mul(a, a)
-                    if a == None:
-                        r = None
-            return r
+            return a**b
 
 
 def gcd(a, b):
