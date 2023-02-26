@@ -1,1 +1,1 @@
-from .program import Program
+from .lang import Program
