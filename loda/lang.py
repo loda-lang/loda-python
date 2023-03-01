@@ -17,10 +17,10 @@ class Operand:
             self.value = args[1]
         elif len(args) == 1:
             s = args[0].strip()
-            if s.startswith('$$'):
+            if s.startswith("$$"):
                 self.type = Operand.Type.INDIRECT
                 self.value = int(s[2:])
-            elif s.startswith('$'):
+            elif s.startswith("$"):
                 self.type = Operand.Type.DIRECT
                 self.value = int(s[1:])
             else:
@@ -36,9 +36,9 @@ class Operand:
     def __str__(self) -> str:
         r = str(self.value)
         if self.type == Operand.Type.DIRECT:
-            r = '$' + r
+            r = "$" + r
         elif self.type == Operand.Type.INDIRECT:
-            r = '$$' + r
+            r = "$$" + r
         return r
 
 
@@ -77,7 +77,7 @@ class Operation:
             # parse operation
             s = args[0].strip()
             # extract comment
-            i = s.find(';')
+            i = s.find(";")
             if i >= 0:
                 self.comment = s[i+1:].strip()
                 s = s[0:i].strip()
@@ -89,7 +89,7 @@ class Operation:
                 self.type = Operation.Type[t.upper()]
                 s = s[len(t):].strip()
                 # parse arguments
-                a = s.split(',')
+                a = s.split(",")
                 self.target = Operand()
                 self.source = Operand()
                 if len(a) > 0 and s:
@@ -113,19 +113,19 @@ class Operation:
             self.source == o.source and self.comment == o.comment
 
     def __str__(self) -> str:
+        type_str = self.type.name.lower()
         if self.type == Operation.Type.NOP:
-            r = ''
+            r = ""
         elif self.type == Operation.Type.LPB and self.source == Operand(Operand.Type.CONSTANT, 1):
-            r = self.type.name.lower() + ' ' + str(self.target)
+            r = "{} {}".format(type_str, self.target)
         elif self.type == Operation.Type.LPE:
-            r = self.type.name.lower()
+            r = type_str
         else:
-            r = self.type.name.lower() + ' ' + \
-                str(self.target) + ',' + str(self.source)
+            r = "{} {},{}".format(type_str, self.target, self.source)
         if self.comment:
             if r:
-                r += ' '
-            r += '; ' + self.comment
+                r += " "
+            r += "; {}".format(self.comment)
         return r
 
 
@@ -146,12 +146,12 @@ class Program:
         return self.ops == o.ops
 
     def __str__(self) -> str:
-        r = ''
-        ind = ''
+        result = ""
+        indent = 0
         for op in self.ops:
             if op.type == Operation.Type.LPE:
-                ind = ind[0:len(ind)-2]
-            r += ind + str(op) + '\n'
+                indent = max(indent - 1, 0)
+            result += "{}{}\n".format("  " * indent, op)
             if op.type == Operation.Type.LPB:
-                ind += '  '
-        return r
+                indent += 1
+        return result
