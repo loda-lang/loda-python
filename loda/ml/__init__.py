@@ -1,1 +1,1 @@
-from .encoding import encode_program
+from .encoding import encode_program, merge_programs

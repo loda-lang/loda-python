@@ -23,5 +23,14 @@ class ProgramCache:
                 self.__cache[id] = Program(file.read())
         return self.__cache[id]
 
+    def all_ids(self):
+        ids = []
+        for dir in os.listdir(self.__path):
+            for file in os.listdir(os.path.join(self.__path, dir)):
+                if file.startswith('A') and file.endswith('.asm'):
+                    ids.append(int(file[1:7]))
+        ids.sort()
+        return ids
+
     def clear(self) -> None:
         self.__cache.clear()

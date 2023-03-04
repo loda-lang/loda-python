@@ -2,7 +2,7 @@
 
 import os
 import os.path
-from loda.oeis import Sequence
+from loda.oeis import Sequence, ProgramCache
 
 OEIS_TEST_DIR = os.path.join('tests', 'oeis')
 OPERATIONS_TEST_DIR = os.path.join('tests', 'operations')
@@ -17,10 +17,6 @@ def load_ops_params():
 
 
 def load_programs_params():
-    ids = []
-    for dir in os.listdir(PROGRAMS_TEST_DIR):
-        for file in os.listdir(os.path.join(PROGRAMS_TEST_DIR, dir)):
-            if file.startswith('A') and file.endswith('.asm'):
-                ids.append(int(file[1:7]))
-    ids.sort()
+    cache = ProgramCache(PROGRAMS_TEST_DIR)
+    ids = cache.all_ids()
     return [(Sequence(id).id_str(), id,) for id in ids]
