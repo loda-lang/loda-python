@@ -1,2 +1,4 @@
 nose2
 parameterized
+tensorflow; sys_platform != 'darwin'
+tensorflow-macos; sys_platform == 'darwin'
