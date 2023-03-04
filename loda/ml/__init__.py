@@ -1,1 +1,1 @@
-from .encoding import encode_program, merge_programs
+from .encoding import program_to_tokens, tokens_to_program, merge_programs, split_program

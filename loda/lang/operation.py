@@ -71,8 +71,9 @@ class Operation:
             self.comment = None
 
     def __eq__(self, o: object) -> bool:
+        # Note: we ignore comments in equality checks.
         return self.type == o.type and self.target == o.target and \
-            self.source == o.source and self.comment == o.comment
+            self.source == o.source
 
     def __str__(self) -> str:
         type_str = self.type.name.lower()

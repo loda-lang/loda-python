@@ -1,12 +1,11 @@
-from loda.lang import Operation, Program
+from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
 
 from typing import Tuple
 from random import shuffle
-import tensorflow as tf
 
 
-def encode_program(program: Program) -> Tuple[tf.RaggedTensor, list[str]]:
+def program_to_tokens(program: Program) -> Tuple[list[str], list[str]]:
     tokens = []
     vocab = set()
     for op in program.ops:
@@ -19,7 +18,19 @@ def encode_program(program: Program) -> Tuple[tf.RaggedTensor, list[str]]:
         vocab.add(type)
         vocab.add(target)
         vocab.add(source)
-    return (tf.ragged.constant([tokens]), sorted(vocab))
+    return (tokens, sorted(vocab))
+
+
+def tokens_to_program(tokens: list[str]) -> Program:
+    i = 0
+    program = Program()
+    while i+2 < len(tokens):
+        type = Operation.Type[tokens[i].upper()]
+        target = Operand(tokens[i+1])
+        source = Operand(tokens[i+2])
+        program.ops.append(Operation(type, target, source))
+        i += 3
+    return program
 
 
 def merge_programs(program_cache: ProgramCache) -> Program:
@@ -37,3 +48,19 @@ def merge_programs(program_cache: ProgramCache) -> Program:
             if op.type != Operation.Type.NOP:
                 merged.ops.append(op)
     return merged
+
+
+def split_program(program: Program) -> list[Program]:
+    # Split at nops
+    splitted = []
+    next = Program()
+    for op in program.ops:
+        if op.type == Operation.Type.NOP:
+            if len(next.ops) > 0:
+                splitted.append(next)
+                next = Program()
+        else:
+            next.ops.append(op)
+    if len(next.ops) > 0:
+        splitted.append(next)
+    return splitted
