@@ -3,9 +3,8 @@ import os.path
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
 
-# Sample program using the LODA Pathon module
-if __name__ == "__main__":
 
+def basic_loda():
     # Initialize LODA programs cache using *.asm files from tests folder
     program_dir = os.path.join('tests', 'programs', 'oeis')
     program_cache = ProgramCache(program_dir)
@@ -19,3 +18,7 @@ if __name__ == "__main__":
     interpreter = Interpreter(program_cache=program_cache)
     sequence, _ = interpreter.eval_to_seq(program, num_terms=20)
     print(sequence)
+
+
+if __name__ == "__main__":
+    basic_loda()

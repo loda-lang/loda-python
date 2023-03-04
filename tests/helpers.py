@@ -4,6 +4,7 @@ import os
 import os.path
 from loda.oeis import Sequence
 
+OEIS_TEST_DIR = os.path.join('tests', 'oeis')
 OPERATIONS_TEST_DIR = os.path.join('tests', 'operations')
 PROGRAMS_TEST_DIR = os.path.join('tests', 'programs', 'oeis')
 

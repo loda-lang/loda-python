@@ -1,0 +1,9 @@
+# OEIS Sequence Names (http://oeis.org/names.gz)
+# Last Modified: February 19 00:58 EST 2023
+# Use of this content is governed by the
+# OEIS End-User License: http://oeis.org/LICENSE
+A000001 Number of groups of order n.
+A000002 Kolakoski sequence: a(n) is length of n-th run; a(1) = 1; sequence consists just of 1's and 2's.
+A000003 Number of classes of primitive positive definite binary quadratic forms of discriminant D = -4n; or equivalently the class number of the quadratic order of discriminant D = -4n.
+A000004 The zero sequence.
+A000005 d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n.
