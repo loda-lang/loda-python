@@ -2,16 +2,16 @@
 
 from unittest import TestCase
 
-from loda.oeis import SequenceIndex, Sequence
+from loda.oeis import PrefixIndex, Sequence
 from tests.helpers import OEIS_TEST_DIR
 
 NUM_SEQS = 5
 
 
-class SequenceIndexTests(TestCase):
+class PrefixIndexTests(TestCase):
 
     def setUp(self):
-        self.index = SequenceIndex(OEIS_TEST_DIR)
+        self.index = PrefixIndex(OEIS_TEST_DIR)
 
     def test_index_size(self):
         self.assertEqual(NUM_SEQS, self.index.size())

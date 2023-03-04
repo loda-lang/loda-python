@@ -1,46 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import copy
-import functools
 import os.path
 import re
 
-from loda.lang import Program
+from .sequence import Sequence
 
 
-@functools.total_ordering
-class Sequence:
-    def __init__(self, id: int, name="", terms=[]):
-        self.id = id
-        self.name = name
-        self.terms = terms
+class PrefixIndex:
 
-    def __str__(self) -> str:
-        return "{}: {}".format(self.id_str(), self.name)
-
-    def __eq__(self, other) -> bool:
-        return self.id == other.id and self.terms == other.terms
-
-    def __lt__(self, other) -> bool:
-        if self.terms < other.terms:
-            return True
-        if self.terms == other.terms:
-            return self.id < other.id
-        return False
-
-    def id_str(self) -> str:
-        return "A{:06}".format(self.id)
-
-
-class SequenceMatch:
-    def __init__(self, size: int):
-        self.prefix_length = 0
-        self.start_index = 0
-        self.end_index = size  # exclusive
-        self.finished_ids = []
-
-
-class SequenceIndex:
+    class Match:
+        def __init__(self, size: int):
+            self.prefix_length = 0
+            self.start_index = 0
+            self.end_index = size  # exclusive
+            self.finished_ids = []
 
     def __init__(self, path: str):
         self.__path = path
@@ -108,12 +82,12 @@ class SequenceIndex:
             id = self.__index[i].id
             self.__lookup[id] = i
 
-    def global_match(self) -> SequenceMatch:
+    def global_match(self) -> Match:
         if self.__index is None:
             self.__load()
-        return SequenceMatch(len(self.__index))
+        return PrefixIndex.Match(len(self.__index))
 
-    def refine_match(self, match: SequenceMatch, term: int) -> bool:
+    def refine_match(self, match: Match, term: int) -> bool:
         if match.start_index >= match.end_index:
             return False
         arg = match.prefix_length
@@ -131,29 +105,8 @@ class SequenceIndex:
         match.end_index = new_end
         return new_start < new_end
 
-    def get_match_ids(self, match: SequenceMatch) -> list[int]:
+    def get_match_ids(self, match: Match) -> list[int]:
         ids = [self.__index[i].id for i in range(
             match.start_index, match.end_index)]
         ids.extend(match.finished_ids)
         return sorted(ids)
-
-
-class ProgramCache:
-
-    def __init__(self, path: str):
-        self.__path = path
-        self.__cache = {}
-
-    def path(self, id: int) -> str:
-        dir = "{:03}".format(id//1000)
-        asm = "{}.asm".format(Sequence(id).id_str())
-        return os.path.join(self.__path, dir, asm)
-
-    def get(self, id: int):
-        if id not in self.__cache:
-            with open(self.path(id), "r") as file:
-                self.__cache[id] = Program(file.read())
-        return self.__cache[id]
-
-    def clear(self) -> None:
-        self.__cache.clear()
