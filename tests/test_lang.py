@@ -6,15 +6,17 @@ from unittest import TestCase
 
 from loda.lang import Program
 from loda.oeis import ProgramCache
-from tests.helpers import load_programs_params
+from tests.helpers import load_programs_params, PROGRAMS_TEST_DIR
 
 
 class LangTests(TestCase):
 
+    def setUp(self):
+        self.program_cache = ProgramCache(PROGRAMS_TEST_DIR)
+
     @parameterized.expand(load_programs_params())
     def test_read_program(self, _, id):
-        program_cache = ProgramCache(os.path.join('tests', 'programs', 'oeis'))
-        program_path = program_cache.path(id)
+        program_path = self.program_cache.path(id)
         with open(program_path, 'r') as file:
             program_str = file.read()
             program = Program(program_str)
