@@ -23,6 +23,8 @@ jobs:
         run: |
           git clone -b gh-pages "https://loda-bot:${{ secrets.LODA_BOT_TOKEN }}@github.com/loda-lang/loda-python.git" $HOME/gh-pages
           rm -r $HOME/gh-pages/docs
-          mv html $HOME/gh-pages/docs
+          mv html $HOME/gh-pages/docs/loda
           git -C $HOME/gh-pages add docs
-          git -C $HOME/gh-pages status
+          git -C $HOME/gh-pages commit -m "update docs"
+          git -C $HOME/gh-pages push
+          rm -rf $HOME/gh-pages
