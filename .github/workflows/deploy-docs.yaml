@@ -1,0 +1,23 @@
+name: Deploy docs
+on:
+  push:
+    branches: [ main ]
+  # TODO: remove this!
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install pdoc3
+      - name: Generate docs
+        run: pdoc3 --html loda
+      - name: Deploy docs
+        run: |
+          git clone -b gh-pages "https://loda-bot:${{ secrets.LODA_BOT_TOKEN }}@github.com/loda-lang/loda-python.git" $HOME/gh-pages
