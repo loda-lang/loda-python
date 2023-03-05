@@ -9,6 +9,6 @@ rm -r $HOME/gh-pages/docs
 mv html/loda $HOME/gh-pages/docs
 rmdir html
 git -C $HOME/gh-pages add docs
-git -C $HOME/gh-pages commit -m "update docs"
+git -C $HOME/gh-pages commit -m "update docs" || true
 git -C $HOME/gh-pages push
 rm -rf $HOME/gh-pages
