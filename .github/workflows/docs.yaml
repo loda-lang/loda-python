@@ -22,6 +22,8 @@ jobs:
       - name: Deploy
         run: |
           git clone -b gh-pages "https://loda-bot:${{ secrets.LODA_BOT_TOKEN }}@github.com/loda-lang/loda-python.git" $HOME/gh-pages
+          git -C $HOME/gh-pages config user.name "LODA Bot"
+          git -C $HOME/gh-pages config user.email "loda@ckrause.org"
           rm -r $HOME/gh-pages/docs
           mv html/loda $HOME/gh-pages/docs
           rmdir html
