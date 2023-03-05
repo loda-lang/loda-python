@@ -1,13 +1,11 @@
-name: CI
+name: Docs
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -16,9 +14,10 @@ jobs:
         run: |
           pip3 install -r requirements.txt
           pip3 install pdoc3
-      - name: Test
-        run: nose2 tests -v
-      - name: Sample
-        run: python3 sample.py
-      - name: Docs
+      - name: Generate
         run: pdoc3 --html loda
+      - name: Deploy
+        env:
+          LODA_BOT_EMAIL: ${{ secrets.LODA_BOT_EMAIL }}
+          LODA_BOT_TOKEN: ${{ secrets.LODA_BOT_TOKEN }}
+        run: .github/deploy-docs.sh
