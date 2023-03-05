@@ -3,7 +3,7 @@ import os.path
 from loda.lang import Program
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
-from loda.ml import program_to_tokens, tokens_to_program, merge_programs
+from loda.ml import Model
 
 import tensorflow as tf
 
@@ -28,29 +28,18 @@ class SampleLODA:
         sequence, _ = interpreter.eval_to_seq(program, num_terms=20)
         print("Evaluated to sequence: {}\n".format(sequence))
 
-    def programs_to_tensor(self):
+    def ml_model(self):
         program = self.program_cache.get(40)
-        # Convert to tokens and vocabulary
-        tokens, vocab = program_to_tokens(program)
-        print("Program to Tokens: {}\n".format(tokens))
-        print("Vocabulary: {}\n".format(vocab))
-        # Vectorize tokens (convert to IDs)
-        ids_from_tokens = tf.keras.layers.StringLookup(
-            vocabulary=list(vocab), mask_token=None)
-        ids = ids_from_tokens(tokens)
-        print("Tokens to IDs: {}\n".format(ids))
-        # Convert IDs back to tokens
-        tokens_from_ids = tf.keras.layers.StringLookup(
-            vocabulary=ids_from_tokens.get_vocabulary(), invert=True, mask_token=None)
-        tokens = [t.numpy().decode("utf-8") for t in tokens_from_ids(ids)]
-        print("IDs to Tokens: {}\n".format(tokens))
-        # Convert tokens back to programs
-        program = tokens_to_program(tokens)
-        print("Tokens to Program: {}".format(program))
+        model = Model(program)
+        print("Program to Tokens: {}\n".format(model.tokens))
+        print("Vocabulary: {}\n".format(model.vocab))
+        print("Tokens to IDs: {}\n".format(model.ids))
+        programs = model.ids_to_programs(model.ids)
+        print("Tokens to Program: {}".format(programs[0]))
 
 
 if __name__ == "__main__":
     sample = SampleLODA()
     sample.print_program()
     sample.eval_program_to_seq()
-    sample.programs_to_tensor()
+    sample.ml_model()
