@@ -5,14 +5,17 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
 
 jobs:
-  build-linux-x86:
+  build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Install
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
         run: pip install -r requirements.txt
       - name: Test
         run: nose2 tests -v
