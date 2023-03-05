@@ -3,9 +3,6 @@ name: Docs
 on:
   push:
     branches: [ main ]
-  # TODO: remove this!
-  pull_request:
-    branches: [ main ]
 
 jobs:
   deploy:
