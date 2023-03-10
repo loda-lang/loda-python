@@ -5,30 +5,35 @@ import math
 
 
 def add(a, b):
+    """Addition."""
     if a == None or b == None:
         return None
     return a + b
 
 
 def sub(a, b):
+    """Subtraction."""
     if a == None or b == None:
         return None
     return a - b
 
 
 def trn(a, b):
+    """Truncated Subtraction."""
     if a == None or b == None:
         return None
     return max(a - b, 0)
 
 
 def mul(a, b):
+    """Multiplication."""
     if a == None or b == None:
         return None
     return a * b
 
 
 def div(a, b):
+    """Division."""
     if a == None or b == None or b == 0:
         return None
     s = 1 if (a < 0) == (b < 0) else -1
@@ -36,6 +41,7 @@ def div(a, b):
 
 
 def dif(a, b):
+    """Conditional Division."""
     if a == None or b == None:
         return None
     if b == 0:
@@ -45,12 +51,14 @@ def dif(a, b):
 
 
 def mod(a, b):
+    """Modulus (Remainder)."""
     if a == None or b == None or b == 0:
         return None
     return a - mul(b, div(a, b))
 
 
 def pow(a, b):
+    """Power."""
     if a == None or b == None:
         return None
     if a == 0:
@@ -72,12 +80,14 @@ def pow(a, b):
 
 
 def gcd(a, b):
+    """Greatest Common Divisor."""
     if a == None or b == None:
         return None
     return math.gcd(a, b)
 
 
 def bin(n, k):
+    """Binomial Coefficient."""
     if n == None or k == None:
         return None
     # check for negative arguments: https://arxiv.org/pdf/1105.3689.pdf
@@ -108,24 +118,28 @@ def bin(n, k):
 
 
 def cmp(a, b):
+    """Comparison."""
     if a == None or b == None:
         return None
     return 1 if a == b else 0
 
 
 def min(a, b):
+    """Minimum."""
     if a == None or b == None:
         return None
     return a if a < b else b
 
 
 def max(a, b):
+    """Maximum."""
     if a == None or b == None:
         return None
     return a if a > b else b
 
 
-def calc_arith(t: Operation.Type, a, b):
+def exec_arithmetic(t: Operation.Type, a, b):
+    """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
         return b
     elif t == Operation.Type.ADD:

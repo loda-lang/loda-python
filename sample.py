@@ -3,7 +3,8 @@ import os.path
 from loda.lang import Program
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
-from loda.ml import Model
+from loda.ml import KerasModel
+from loda.ml.encoding import *
 
 import tensorflow as tf
 
@@ -28,18 +29,17 @@ class SampleLODA:
         sequence, _ = interpreter.eval_to_seq(program, num_terms=20)
         print("Evaluated to sequence: {}\n".format(sequence))
 
-    def ml_model(self):
-        program = self.program_cache.get(40)
-        model = Model(program)
-        print("Program to Tokens: {}\n".format(model.tokens))
+    def keras_model(self):
+        model = KerasModel(self.program_cache)
+        print("Model Tokens: {}\n".format(model.tokens))
         print("Vocabulary: {}\n".format(model.vocab))
-        print("Tokens to IDs: {}\n".format(model.ids))
-        programs = model.ids_to_programs(model.ids)
-        print("Tokens to Program: {}".format(programs[0]))
+        print("Model IDs: {}\n".format(model.ids))
+        for batch in model.ids_batches.take(3):
+            print(model.ids_to_tokens_str(batch))
 
 
 if __name__ == "__main__":
     sample = SampleLODA()
     sample.print_program()
     sample.eval_program_to_seq()
-    sample.ml_model()
+    sample.keras_model()

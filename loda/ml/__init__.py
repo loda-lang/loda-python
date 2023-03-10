@@ -1,1 +1,3 @@
-from .model import Model
+"""Machine learning integration."""
+
+from .keras_model import KerasModel

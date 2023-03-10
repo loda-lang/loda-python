@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os.path
 from parameterized import parameterized
 from unittest import TestCase
 
@@ -17,7 +16,7 @@ class LangTests(TestCase):
     @parameterized.expand(load_programs_params())
     def test_read_program(self, _, id):
         program_path = self.program_cache.path(id)
-        with open(program_path, 'r') as file:
+        with open(program_path, "r") as file:
             program_str = file.read()
             program = Program(program_str)
             self.assertEqual(program_str, str(program))

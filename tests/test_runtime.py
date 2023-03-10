@@ -7,23 +7,23 @@ from unittest import TestCase
 
 from loda.lang import Operation
 from loda.oeis import ProgramCache
-from loda.runtime import calc_arith, Interpreter
+from loda.runtime import exec_arithmetic, Interpreter
 from tests.helpers import load_ops_params, load_programs_params, OPERATIONS_TEST_DIR, PROGRAMS_TEST_DIR
 
 
 class RuntimeTests(TestCase):
 
     @parameterized.expand(load_ops_params())
-    def test_calc_arith(self, op):
+    def test_exec_arithmetic(self, op):
         t = Operation.Type[op.upper()]
-        path = os.path.join(OPERATIONS_TEST_DIR, op + '.csv')
-        with open(path, 'r') as file:
+        path = os.path.join(OPERATIONS_TEST_DIR, op + ".csv")
+        with open(path, "r") as file:
             file.readline()  # skip header
             for line in file:
                 k = line.strip().split(',')
                 a, b, r = tuple(
-                    map(lambda s: None if s == 'inf' else int(s), k))
-                v = calc_arith(t, a, b)
+                    map(lambda s: None if s == "inf" else int(s), k))
+                v = exec_arithmetic(t, a, b)
                 self.assertEqual(
                     r, v, "expected {}({},{})={}".format(op, a, b, r))
 
@@ -31,7 +31,7 @@ class RuntimeTests(TestCase):
     def test_eval_to_seq(self, _, id):
         program_cache = ProgramCache(PROGRAMS_TEST_DIR)
         program = program_cache.get(id)
-        seq_str = program.ops[1].comment.split(',')
+        seq_str = program.operations[1].comment.split(",")
         seq_expected = list(map(lambda v: int(v.strip()), seq_str))
         num_terms = len(seq_expected)
         self.assertTrue(num_terms >= 10)

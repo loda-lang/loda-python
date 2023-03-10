@@ -5,9 +5,44 @@ from .operand import Operand
 
 
 class Operation:
-    '''LODA operation representation'''
+    """Operation model and (de-)serialization.
+
+    Operations have the following structure: `<type> <target>,<source> ; <comment>`
+    where the operation type is an enum consisting of three-letter operation names, and
+    target and source are `loda.lang.operand.Operand`s. Depending on their type, 
+    operations may have no target/source operands. Note that the _first_ operand
+    is the target, and the _second_ is the source, which is analogous to the 
+    [Intel assembly syntax](https://en.wikipedia.org/wiki/X86_assembly_language).
+    Comments are optional strings separated from the rest of the operation using a colon.
+
+    The target operand can be a direct or indirect memory access, but never a constant.
+    There are no type restrictions for the source operand. In terms of execution semantics,
+    operations may update the content of the target memory cell, but the source is always read only.
+    The precise execution semantics of all operations is defined in the
+    [Language Specification](https://loda-lang.github.io/spec)
+    and implemented in `loda.runtime` package.
+
+    **Example**
+    >>> # Example operands:
+    >>> target = Operand("$1")
+    >>> source = Operand("5")
+    >>>
+    >>> # Constructing operations using explicit values:
+    >>> print(Operation(Operation.Type.MOV, target, source))
+    mov $1,5
+    >>>
+    >>> print(Operation(Operation.Type.ADD, target, source, "some comment"))
+    add $1,5 ; some comment
+    >>>
+    >>> # Constructing operations from their string representations:
+    >>> print(Operation("sub $2,7"))
+    sub $2,7
+    >>> print(Operation("div $3,$5 ; some comment"))
+    div $3,$5 ; some comment
+    """
 
     class Type(Enum):
+        """Operation type. Type names are written as three-letter, lower-case words."""
         NOP = 1
         MOV = 2
         ADD = 3
@@ -28,6 +63,18 @@ class Operation:
         CLR = 18
         SEQ = 19
         DBG = 20
+
+    type: Type
+    """Type of this operation."""
+
+    target: Operand
+    """Target operand."""
+
+    source: Operand
+    """Source operand."""
+
+    comment: str
+    """Optional comment."""
 
     def __init__(self, *args):
         if len(args) == 0:
@@ -69,6 +116,11 @@ class Operation:
             self.target = args[1]
             self.source = args[2]
             self.comment = None
+        elif len(args) == 4:
+            self.type = args[0]
+            self.target = args[1]
+            self.source = args[2]
+            self.comment = args[3]
 
     def __eq__(self, o: object) -> bool:
         # Note: we ignore comments in equality checks.

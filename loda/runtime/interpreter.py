@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from loda.lang import Operand, Operation, Program
-from .ops import calc_arith
+from .operations import exec_arithmetic
 
 
 class Interpreter:
@@ -58,7 +58,8 @@ class Interpreter:
     def __run(self, p: Program, mem: dict) -> int:
 
         # remove nop operations
-        ops = list(filter(lambda op: (op.type != Operation.Type.NOP), p.ops))
+        ops = list(
+            filter(lambda op: (op.type != Operation.Type.NOP), p.operations))
 
         # check for loops with fragments
         if any(op.type == Operation.Type.LPB and op.source != Operand(Operand.Type.CONSTANT, 1) for op in ops):
@@ -125,7 +126,7 @@ class Interpreter:
                 # arithmetic operation
                 target = self.__get(op.target, mem_tmp)
                 source = self.__get(op.source, mem_tmp)
-                self.__set(op.target, calc_arith(
+                self.__set(op.target, exec_arithmetic(
                     op.type, target, source), mem_tmp, op)
 
             pc = pc_next
