@@ -29,14 +29,14 @@
 <pre><code class="python">from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
 
-from typing import Tuple
-from random import shuffle
+import typing
+import random
 
 
-def program_to_tokens(program: Program) -&gt; Tuple[list[str], list[str]]:
+def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]:
     tokens = []
     vocab = set()
-    for op in program.ops:
+    for op in program.operations:
         type = op.type.name.lower()
         target = str(op.target)
         source = str(op.source)
@@ -56,40 +56,38 @@ def tokens_to_program(tokens: list[str]) -&gt; Program:
         type = Operation.Type[tokens[i].upper()]
         target = Operand(tokens[i+1])
         source = Operand(tokens[i+2])
-        program.ops.append(Operation(type, target, source))
+        program.operations.append(Operation(type, target, source))
         i += 3
     return program
 
 
-def merge_programs(program_cache: ProgramCache) -&gt; Program:
-    # Get all program IDs
+def merge_programs(program_cache: ProgramCache, num_nop_seps: int = 1) -&gt; Program:
     ids = program_cache.all_ids()
-    # Shuffle them
-    shuffle(ids)
-    # Merge the programs into one program
+    random.shuffle(ids)
     merged = Program()
     for id in ids:
         program = program_cache.get(id)
-        # We separate programs using nops
-        merged.ops.append(Operation())  # nop
-        for op in program.ops:
+        for _ in range(num_nop_seps):
+            merged.operations.append(Operation())  # nop
+        for op in program.operations:
             if op.type != Operation.Type.NOP:
-                merged.ops.append(op)
+                merged.operations.append(op)
+    for _ in range(num_nop_seps):
+        merged.operations.append(Operation())  # nop
     return merged
 
 
 def split_program(program: Program) -&gt; list[Program]:
-    # Split at nops
     splitted = []
     next = Program()
-    for op in program.ops:
+    for op in program.operations:
         if op.type == Operation.Type.NOP:
-            if len(next.ops) &gt; 0:
+            if len(next.operations) &gt; 0:
                 splitted.append(next)
                 next = Program()
         else:
-            next.ops.append(op)
-    if len(next.ops) &gt; 0:
+            next.operations.append(op)
+    if len(next.operations) &gt; 0:
         splitted.append(next)
     return splitted</code></pre>
 </details>
@@ -102,7 +100,7 @@ def split_program(program: Program) -&gt; list[Program]:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="loda.ml.encoding.merge_programs"><code class="name flex">
-<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
+<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_nop_seps: int = 1) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -110,20 +108,19 @@ def split_program(program: Program) -&gt; list[Program]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def merge_programs(program_cache: ProgramCache) -&gt; Program:
-    # Get all program IDs
+<pre><code class="python">def merge_programs(program_cache: ProgramCache, num_nop_seps: int = 1) -&gt; Program:
     ids = program_cache.all_ids()
-    # Shuffle them
-    shuffle(ids)
-    # Merge the programs into one program
+    random.shuffle(ids)
     merged = Program()
     for id in ids:
         program = program_cache.get(id)
-        # We separate programs using nops
-        merged.ops.append(Operation())  # nop
-        for op in program.ops:
+        for _ in range(num_nop_seps):
+            merged.operations.append(Operation())  # nop
+        for op in program.operations:
             if op.type != Operation.Type.NOP:
-                merged.ops.append(op)
+                merged.operations.append(op)
+    for _ in range(num_nop_seps):
+        merged.operations.append(Operation())  # nop
     return merged</code></pre>
 </details>
 </dd>
@@ -136,10 +133,10 @@ def split_program(program: Program) -&gt; list[Program]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def program_to_tokens(program: Program) -&gt; Tuple[list[str], list[str]]:
+<pre><code class="python">def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]:
     tokens = []
     vocab = set()
-    for op in program.ops:
+    for op in program.operations:
         type = op.type.name.lower()
         target = str(op.target)
         source = str(op.source)
@@ -162,17 +159,16 @@ def split_program(program: Program) -&gt; list[Program]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def split_program(program: Program) -&gt; list[Program]:
-    # Split at nops
     splitted = []
     next = Program()
-    for op in program.ops:
+    for op in program.operations:
         if op.type == Operation.Type.NOP:
-            if len(next.ops) &gt; 0:
+            if len(next.operations) &gt; 0:
                 splitted.append(next)
                 next = Program()
         else:
-            next.ops.append(op)
-    if len(next.ops) &gt; 0:
+            next.operations.append(op)
+    if len(next.operations) &gt; 0:
         splitted.append(next)
     return splitted</code></pre>
 </details>
@@ -193,7 +189,7 @@ def split_program(program: Program) -&gt; list[Program]:
         type = Operation.Type[tokens[i].upper()]
         target = Operand(tokens[i+1])
         source = Operand(tokens[i+2])
-        program.ops.append(Operation(type, target, source))
+        program.operations.append(Operation(type, target, source))
         i += 3
     return program</code></pre>
 </details>

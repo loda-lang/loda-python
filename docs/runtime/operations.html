@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>loda.runtime.ops API documentation</title>
+<title>loda.runtime.operations API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.runtime.ops</code></h1>
+<h1 class="title">Module <code>loda.runtime.operations</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -33,30 +33,35 @@ import math
 
 
 def add(a, b):
+    &#34;&#34;&#34;Addition.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a + b
 
 
 def sub(a, b):
+    &#34;&#34;&#34;Subtraction.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a - b
 
 
 def trn(a, b):
+    &#34;&#34;&#34;Truncated Subtraction.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return max(a - b, 0)
 
 
 def mul(a, b):
+    &#34;&#34;&#34;Multiplication.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a * b
 
 
 def div(a, b):
+    &#34;&#34;&#34;Division.&#34;&#34;&#34;
     if a == None or b == None or b == 0:
         return None
     s = 1 if (a &lt; 0) == (b &lt; 0) else -1
@@ -64,6 +69,7 @@ def div(a, b):
 
 
 def dif(a, b):
+    &#34;&#34;&#34;Conditional Division.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     if b == 0:
@@ -73,12 +79,14 @@ def dif(a, b):
 
 
 def mod(a, b):
+    &#34;&#34;&#34;Modulus (Remainder).&#34;&#34;&#34;
     if a == None or b == None or b == 0:
         return None
     return a - mul(b, div(a, b))
 
 
 def pow(a, b):
+    &#34;&#34;&#34;Power.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     if a == 0:
@@ -100,12 +108,14 @@ def pow(a, b):
 
 
 def gcd(a, b):
+    &#34;&#34;&#34;Greatest Common Divisor.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return math.gcd(a, b)
 
 
 def bin(n, k):
+    &#34;&#34;&#34;Binomial Coefficient.&#34;&#34;&#34;
     if n == None or k == None:
         return None
     # check for negative arguments: https://arxiv.org/pdf/1105.3689.pdf
@@ -136,24 +146,28 @@ def bin(n, k):
 
 
 def cmp(a, b):
+    &#34;&#34;&#34;Comparison.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return 1 if a == b else 0
 
 
 def min(a, b):
+    &#34;&#34;&#34;Minimum.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a if a &lt; b else b
 
 
 def max(a, b):
+    &#34;&#34;&#34;Maximum.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a if a &gt; b else b
 
 
-def calc_arith(t: Operation.Type, a, b):
+def exec_arithmetic(t: Operation.Type, a, b):
+    &#34;&#34;&#34;Execute an arithmetic operation.&#34;&#34;&#34;
     if t == Operation.Type.MOV:
         return b
     elif t == Operation.Type.ADD:
@@ -193,31 +207,33 @@ def calc_arith(t: Operation.Type, a, b):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.runtime.ops.add"><code class="name flex">
+<dt id="loda.runtime.operations.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Addition.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add(a, b):
+    &#34;&#34;&#34;Addition.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a + b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.bin"><code class="name flex">
+<dt id="loda.runtime.operations.bin"><code class="name flex">
 <span>def <span class="ident">bin</span></span>(<span>n, k)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Binomial Coefficient.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def bin(n, k):
+    &#34;&#34;&#34;Binomial Coefficient.&#34;&#34;&#34;
     if n == None or k == None:
         return None
     # check for negative arguments: https://arxiv.org/pdf/1105.3689.pdf
@@ -247,16 +263,69 @@ def calc_arith(t: Operation.Type, a, b):
     return mul(sign, r)</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.calc_arith"><code class="name flex">
-<span>def <span class="ident">calc_arith</span></span>(<span>t: <a title="loda.lang.operation.Operation.Type" href="../lang/operation.html#loda.lang.operation.Operation.Type">Operation.Type</a>, a, b)</span>
+<dt id="loda.runtime.operations.cmp"><code class="name flex">
+<span>def <span class="ident">cmp</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Comparison.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def calc_arith(t: Operation.Type, a, b):
+<pre><code class="python">def cmp(a, b):
+    &#34;&#34;&#34;Comparison.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    return 1 if a == b else 0</code></pre>
+</details>
+</dd>
+<dt id="loda.runtime.operations.dif"><code class="name flex">
+<span>def <span class="ident">dif</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Conditional Division.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dif(a, b):
+    &#34;&#34;&#34;Conditional Division.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    if b == 0:
+        return a
+    d = div(a, b)
+    return d if a == mul(b, d) else a</code></pre>
+</details>
+</dd>
+<dt id="loda.runtime.operations.div"><code class="name flex">
+<span>def <span class="ident">div</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Division.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def div(a, b):
+    &#34;&#34;&#34;Division.&#34;&#34;&#34;
+    if a == None or b == None or b == 0:
+        return None
+    s = 1 if (a &lt; 0) == (b &lt; 0) else -1
+    return s * (abs(a) // abs(b))</code></pre>
+</details>
+</dd>
+<dt id="loda.runtime.operations.exec_arithmetic"><code class="name flex">
+<span>def <span class="ident">exec_arithmetic</span></span>(<span>t: <a title="loda.lang.operation.Operation.Type" href="../lang/operation.html#loda.lang.operation.Operation.Type">Operation.Type</a>, a, b)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Execute an arithmetic operation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exec_arithmetic(t: Operation.Type, a, b):
+    &#34;&#34;&#34;Execute an arithmetic operation.&#34;&#34;&#34;
     if t == Operation.Type.MOV:
         return b
     elif t == Operation.Type.ADD:
@@ -289,140 +358,97 @@ def calc_arith(t: Operation.Type, a, b):
         raise ValueError(&#34;operation type not arithmetic: {}&#34;.format(t))</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.cmp"><code class="name flex">
-<span>def <span class="ident">cmp</span></span>(<span>a, b)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cmp(a, b):
-    if a == None or b == None:
-        return None
-    return 1 if a == b else 0</code></pre>
-</details>
-</dd>
-<dt id="loda.runtime.ops.dif"><code class="name flex">
-<span>def <span class="ident">dif</span></span>(<span>a, b)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dif(a, b):
-    if a == None or b == None:
-        return None
-    if b == 0:
-        return a
-    d = div(a, b)
-    return d if a == mul(b, d) else a</code></pre>
-</details>
-</dd>
-<dt id="loda.runtime.ops.div"><code class="name flex">
-<span>def <span class="ident">div</span></span>(<span>a, b)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def div(a, b):
-    if a == None or b == None or b == 0:
-        return None
-    s = 1 if (a &lt; 0) == (b &lt; 0) else -1
-    return s * (abs(a) // abs(b))</code></pre>
-</details>
-</dd>
-<dt id="loda.runtime.ops.gcd"><code class="name flex">
+<dt id="loda.runtime.operations.gcd"><code class="name flex">
 <span>def <span class="ident">gcd</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Greatest Common Divisor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def gcd(a, b):
+    &#34;&#34;&#34;Greatest Common Divisor.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return math.gcd(a, b)</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.max"><code class="name flex">
+<dt id="loda.runtime.operations.max"><code class="name flex">
 <span>def <span class="ident">max</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Maximum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def max(a, b):
+    &#34;&#34;&#34;Maximum.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a if a &gt; b else b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.min"><code class="name flex">
+<dt id="loda.runtime.operations.min"><code class="name flex">
 <span>def <span class="ident">min</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Minimum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def min(a, b):
+    &#34;&#34;&#34;Minimum.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a if a &lt; b else b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.mod"><code class="name flex">
+<dt id="loda.runtime.operations.mod"><code class="name flex">
 <span>def <span class="ident">mod</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Modulus (Remainder).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mod(a, b):
+    &#34;&#34;&#34;Modulus (Remainder).&#34;&#34;&#34;
     if a == None or b == None or b == 0:
         return None
     return a - mul(b, div(a, b))</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.mul"><code class="name flex">
+<dt id="loda.runtime.operations.mul"><code class="name flex">
 <span>def <span class="ident">mul</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Multiplication.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mul(a, b):
+    &#34;&#34;&#34;Multiplication.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a * b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.pow"><code class="name flex">
+<dt id="loda.runtime.operations.pow"><code class="name flex">
 <span>def <span class="ident">pow</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Power.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pow(a, b):
+    &#34;&#34;&#34;Power.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     if a == 0:
@@ -443,31 +469,33 @@ def calc_arith(t: Operation.Type, a, b):
             return a**b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.sub"><code class="name flex">
+<dt id="loda.runtime.operations.sub"><code class="name flex">
 <span>def <span class="ident">sub</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Subtraction.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def sub(a, b):
+    &#34;&#34;&#34;Subtraction.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return a - b</code></pre>
 </details>
 </dd>
-<dt id="loda.runtime.ops.trn"><code class="name flex">
+<dt id="loda.runtime.operations.trn"><code class="name flex">
 <span>def <span class="ident">trn</span></span>(<span>a, b)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Truncated Subtraction.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def trn(a, b):
+    &#34;&#34;&#34;Truncated Subtraction.&#34;&#34;&#34;
     if a == None or b == None:
         return None
     return max(a - b, 0)</code></pre>
@@ -491,20 +519,20 @@ def calc_arith(t: Operation.Type, a, b):
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="loda.runtime.ops.add" href="#loda.runtime.ops.add">add</a></code></li>
-<li><code><a title="loda.runtime.ops.bin" href="#loda.runtime.ops.bin">bin</a></code></li>
-<li><code><a title="loda.runtime.ops.calc_arith" href="#loda.runtime.ops.calc_arith">calc_arith</a></code></li>
-<li><code><a title="loda.runtime.ops.cmp" href="#loda.runtime.ops.cmp">cmp</a></code></li>
-<li><code><a title="loda.runtime.ops.dif" href="#loda.runtime.ops.dif">dif</a></code></li>
-<li><code><a title="loda.runtime.ops.div" href="#loda.runtime.ops.div">div</a></code></li>
-<li><code><a title="loda.runtime.ops.gcd" href="#loda.runtime.ops.gcd">gcd</a></code></li>
-<li><code><a title="loda.runtime.ops.max" href="#loda.runtime.ops.max">max</a></code></li>
-<li><code><a title="loda.runtime.ops.min" href="#loda.runtime.ops.min">min</a></code></li>
-<li><code><a title="loda.runtime.ops.mod" href="#loda.runtime.ops.mod">mod</a></code></li>
-<li><code><a title="loda.runtime.ops.mul" href="#loda.runtime.ops.mul">mul</a></code></li>
-<li><code><a title="loda.runtime.ops.pow" href="#loda.runtime.ops.pow">pow</a></code></li>
-<li><code><a title="loda.runtime.ops.sub" href="#loda.runtime.ops.sub">sub</a></code></li>
-<li><code><a title="loda.runtime.ops.trn" href="#loda.runtime.ops.trn">trn</a></code></li>
+<li><code><a title="loda.runtime.operations.add" href="#loda.runtime.operations.add">add</a></code></li>
+<li><code><a title="loda.runtime.operations.bin" href="#loda.runtime.operations.bin">bin</a></code></li>
+<li><code><a title="loda.runtime.operations.cmp" href="#loda.runtime.operations.cmp">cmp</a></code></li>
+<li><code><a title="loda.runtime.operations.dif" href="#loda.runtime.operations.dif">dif</a></code></li>
+<li><code><a title="loda.runtime.operations.div" href="#loda.runtime.operations.div">div</a></code></li>
+<li><code><a title="loda.runtime.operations.exec_arithmetic" href="#loda.runtime.operations.exec_arithmetic">exec_arithmetic</a></code></li>
+<li><code><a title="loda.runtime.operations.gcd" href="#loda.runtime.operations.gcd">gcd</a></code></li>
+<li><code><a title="loda.runtime.operations.max" href="#loda.runtime.operations.max">max</a></code></li>
+<li><code><a title="loda.runtime.operations.min" href="#loda.runtime.operations.min">min</a></code></li>
+<li><code><a title="loda.runtime.operations.mod" href="#loda.runtime.operations.mod">mod</a></code></li>
+<li><code><a title="loda.runtime.operations.mul" href="#loda.runtime.operations.mul">mul</a></code></li>
+<li><code><a title="loda.runtime.operations.pow" href="#loda.runtime.operations.pow">pow</a></code></li>
+<li><code><a title="loda.runtime.operations.sub" href="#loda.runtime.operations.sub">sub</a></code></li>
+<li><code><a title="loda.runtime.operations.trn" href="#loda.runtime.operations.trn">trn</a></code></li>
 </ul>
 </li>
 </ul>

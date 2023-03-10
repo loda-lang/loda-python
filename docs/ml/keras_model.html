@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>loda.ml.model API documentation</title>
+<title>loda.ml.keras_model API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.model</code></h1>
+<h1 class="title">Module <code>loda.ml.keras_model</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,20 +28,27 @@
 </summary>
 <pre><code class="python">from loda.lang import Program
 from loda.oeis import ProgramCache
-from .encoding import *
+from .encoding import merge_programs, program_to_tokens, split_program, tokens_to_program
 
 import tensorflow as tf
 
+# TODO: inherit from tf.keras.Model
 
-class Model:
-    def __init__(self, program_or_program_cache):
+
+class KerasModel:
+
+    num_ops_per_batch: int
+
+    def __init__(self, program_or_program_cache, num_ops_per_batch: int = 3):
         if isinstance(program_or_program_cache, Program):
             program = program_or_program_cache
         elif isinstance(program_or_program_cache, ProgramCache):
             # Merge all programs into one program
-            program = merge_programs(program_or_program_cache)
+            program = merge_programs(
+                program_or_program_cache, num_ops_per_batch)
         else:
             raise ValueError(&#34;invalid argument&#34;)
+        self.num_ops_per_batch = num_ops_per_batch
 
         # Convert to tokens and vocabulary
         # TODO: do we really need to store them as memebers?
@@ -56,10 +63,16 @@ class Model:
         # Convert the tokens to IDs
         # TODO: do we really need to store them as memebers?
         self.ids = self.tokens_to_ids(self.tokens)
+        self.ids_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
+        # one operation is encoded using three tokens
+        self.ids_batches = self.ids_dataset.batch(
+            3 * self.num_ops_per_batch, drop_remainder=True)
+
+    def ids_to_tokens_str(self, ids) -&gt; list[str]:
+        return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
 
     def ids_to_programs(self, ids) -&gt; list[Program]:
-        tokens = [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
-        return split_program(tokens_to_program(tokens))</code></pre>
+        return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))</code></pre>
 </details>
 </section>
 <section>
@@ -71,9 +84,9 @@ class Model:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="loda.ml.model.Model"><code class="flex name class">
-<span>class <span class="ident">Model</span></span>
-<span>(</span><span>program_or_program_cache)</span>
+<dt id="loda.ml.keras_model.KerasModel"><code class="flex name class">
+<span>class <span class="ident">KerasModel</span></span>
+<span>(</span><span>program_or_program_cache, num_ops_per_batch: int = 3)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -81,15 +94,20 @@ class Model:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Model:
-    def __init__(self, program_or_program_cache):
+<pre><code class="python">class KerasModel:
+
+    num_ops_per_batch: int
+
+    def __init__(self, program_or_program_cache, num_ops_per_batch: int = 3):
         if isinstance(program_or_program_cache, Program):
             program = program_or_program_cache
         elif isinstance(program_or_program_cache, ProgramCache):
             # Merge all programs into one program
-            program = merge_programs(program_or_program_cache)
+            program = merge_programs(
+                program_or_program_cache, num_ops_per_batch)
         else:
             raise ValueError(&#34;invalid argument&#34;)
+        self.num_ops_per_batch = num_ops_per_batch
 
         # Convert to tokens and vocabulary
         # TODO: do we really need to store them as memebers?
@@ -104,14 +122,27 @@ class Model:
         # Convert the tokens to IDs
         # TODO: do we really need to store them as memebers?
         self.ids = self.tokens_to_ids(self.tokens)
+        self.ids_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
+        # one operation is encoded using three tokens
+        self.ids_batches = self.ids_dataset.batch(
+            3 * self.num_ops_per_batch, drop_remainder=True)
+
+    def ids_to_tokens_str(self, ids) -&gt; list[str]:
+        return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
 
     def ids_to_programs(self, ids) -&gt; list[Program]:
-        tokens = [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
-        return split_program(tokens_to_program(tokens))</code></pre>
+        return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="loda.ml.keras_model.KerasModel.num_ops_per_batch"><code class="name">var <span class="ident">num_ops_per_batch</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.model.Model.ids_to_programs"><code class="name flex">
+<dt id="loda.ml.keras_model.KerasModel.ids_to_programs"><code class="name flex">
 <span>def <span class="ident">ids_to_programs</span></span>(<span>self, ids) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
 </code></dt>
 <dd>
@@ -121,8 +152,20 @@ class Model:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def ids_to_programs(self, ids) -&gt; list[Program]:
-    tokens = [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
-    return split_program(tokens_to_program(tokens))</code></pre>
+    return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.keras_model.KerasModel.ids_to_tokens_str"><code class="name flex">
+<span>def <span class="ident">ids_to_tokens_str</span></span>(<span>self, ids) ‑> list[str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ids_to_tokens_str(self, ids) -&gt; list[str]:
+    return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]</code></pre>
 </details>
 </dd>
 </dl>
@@ -144,9 +187,11 @@ class Model:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="loda.ml.model.Model" href="#loda.ml.model.Model">Model</a></code></h4>
+<h4><code><a title="loda.ml.keras_model.KerasModel" href="#loda.ml.keras_model.KerasModel">KerasModel</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.model.Model.ids_to_programs" href="#loda.ml.model.Model.ids_to_programs">ids_to_programs</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.ids_to_programs" href="#loda.ml.keras_model.KerasModel.ids_to_programs">ids_to_programs</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.ids_to_tokens_str" href="#loda.ml.keras_model.KerasModel.ids_to_tokens_str">ids_to_tokens_str</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.num_ops_per_batch" href="#loda.ml.keras_model.KerasModel.num_ops_per_batch">num_ops_per_batch</a></code></li>
 </ul>
 </li>
 </ul>
