@@ -42,6 +42,12 @@ class SampleLODA:
             print(example_batch_predictions.shape,
                   "# (batch_size, sequence_length, vocab_size)")
         model.summary()
+        sampled_indices = tf.random.categorical(
+            example_batch_predictions[0], num_samples=1)
+        sampled_indices = tf.squeeze(sampled_indices, axis=-1).numpy()
+        print("Input: {}".format(
+            model.ids_to_tokens_str(input_example_batch[0])))
+        print("Predictions: {}".format(model.ids_to_tokens_str(sampled_indices)))
 
 
 if __name__ == "__main__":
