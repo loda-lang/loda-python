@@ -34,8 +34,9 @@ class SampleLODA:
         print("Model Tokens: {}\n".format(model.tokens))
         print("Vocabulary: {}\n".format(model.vocab))
         print("Model IDs: {}\n".format(model.ids))
-        for batch in model.ids_batches.take(3):
-            print(model.ids_to_tokens_str(batch))
+        for input, label in model.dataset.take(5):
+            print("Input:", model.ids_to_tokens_str(input))
+            print("Label:", model.ids_to_tokens_str(label), "\n")
 
 
 if __name__ == "__main__":
