@@ -34,10 +34,14 @@ class SampleLODA:
         print("Model Tokens: {}\n".format(model.tokens))
         print("Vocabulary: {}\n".format(model.vocab))
         print("Model IDs: {}\n".format(model.ids))
-        for input, label in model.split_dataset.take(5):
+        for input, label in model.split_dataset.take(3):
             print("Input:", model.ids_to_tokens_str(input))
             print("Label:", model.ids_to_tokens_str(label), "\n")
-        print(model.prefetch_dataset)
+        for input_example_batch, _ in model.prefetch_dataset.take(1):
+            example_batch_predictions = model(input_example_batch)
+            print(example_batch_predictions.shape,
+                  "# (batch_size, sequence_length, vocab_size)")
+        model.summary()
 
 
 if __name__ == "__main__":
