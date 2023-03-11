@@ -33,26 +33,23 @@ from .encoding import merge_programs, program_to_tokens, split_program, tokens_t
 import tensorflow as tf
 
 
-# TODO: inherit from tf.keras.Model
-class KerasModel:
+class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    tokens: list[str]
+    vocab: list[str]
 
-    def __init__(self, program_or_program_cache, num_ops_per_sample: int = 3,
-                 batch_size: int = 64, buffer_size: int = 10000):
-        if isinstance(program_or_program_cache, Program):
-            program = program_or_program_cache
-        elif isinstance(program_or_program_cache, ProgramCache):
-            # Merge all programs into one program
-            program = merge_programs(
-                program_or_program_cache, num_ops_per_sample)
-        else:
-            raise ValueError(&#34;invalid argument&#34;)
+    def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
+                 batch_size: int = 16, buffer_size: int = 10000,
+                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+        super().__init__(self)
+
+        # Merge all programs into one program
+        merged_programs = merge_programs(program_cache, num_ops_per_sample)
         self.num_ops_per_sample = num_ops_per_sample
 
         # Convert to tokens and vocabulary
-        # TODO: do we really need to store them as memebers?
-        self.tokens, self.vocab = program_to_tokens(program)
+        self.tokens, self.vocab = program_to_tokens(merged_programs)
 
         # Initialize TF lookup layers
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -61,19 +58,25 @@ class KerasModel:
             vocabulary=self.tokens_to_ids.get_vocabulary(), invert=True, mask_token=None)
 
         # Convert the tokens to IDs
-        # TODO: do we really need to store them as members?
         self.ids = self.tokens_to_ids(self.tokens)
-        self.slice_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
 
+        # === Initialize datasets ===
+        self.slice_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
         # One operation is encoded using three tokens
         # plus one token because we split into input/output
         self.batch_dataset = self.slice_dataset.batch(
             3 * self.num_ops_per_sample + 1, drop_remainder=True)
-
         self.split_dataset = self.batch_dataset.map(self.__split_input_label)
-
         self.prefetch_dataset = (self.split_dataset.shuffle(buffer_size).batch(
             batch_size, drop_remainder=True).prefetch(tf.data.experimental.AUTOTUNE))
+
+        # === Initialize layers ===
+        vocab_size = len(self.tokens_to_ids.get_vocabulary())
+        self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)
+        self.gru = tf.keras.layers.GRU(num_rnn_units,
+                                       return_sequences=True,
+                                       return_state=True)
+        self.dense = tf.keras.layers.Dense(vocab_size)
 
     def ids_to_tokens_str(self, ids) -&gt; list[str]:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
@@ -84,7 +87,20 @@ class KerasModel:
     def __split_input_label(self, sample: list):
         input = sample[:-1]
         label = sample[1:]
-        return input, label</code></pre>
+        return input, label
+
+    def call(self, inputs, states=None, return_state=False, training=False):
+        values = inputs
+        values = self.embedding(values, training=training)
+        if states is None:
+            states = self.gru.get_initial_state(values)
+        values, states = self.gru(
+            values, initial_state=states, training=training)
+        values = self.dense(values, training=training)
+        if return_state:
+            return values, states
+        else:
+            return values</code></pre>
 </details>
 </section>
 <section>
@@ -98,33 +114,120 @@ class KerasModel:
 <dl>
 <dt id="loda.ml.keras_model.KerasModel"><code class="flex name class">
 <span>class <span class="ident">KerasModel</span></span>
-<span>(</span><span>program_or_program_cache, num_ops_per_sample: int = 3, batch_size: int = 64, buffer_size: int = 10000)</span>
+<span>(</span><span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_ops_per_sample: int = 3, batch_size: int = 16, buffer_size: int = 10000, embedding_dim: int = 256, num_rnn_units: int = 1024)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p><code>Model</code> groups layers into an object with training and inference features.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>inputs</code></strong></dt>
+<dd>The input(s) of the model: a <code>keras.Input</code> object or a
+combination of <code>keras.Input</code> objects in a dict, list or tuple.</dd>
+<dt><strong><code>outputs</code></strong></dt>
+<dd>The output(s) of the model: a tensor that originated from
+<code>keras.Input</code> objects or a combination of such tensors in a dict,
+list or tuple. See Functional API example below.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>String, the name of the model.</dd>
+</dl>
+<p>There are two ways to instantiate a <code>Model</code>:</p>
+<p>1 - With the "Functional API", where you start from <code>Input</code>,
+you chain layer calls to specify the model's forward pass,
+and finally you create your model from inputs and outputs:</p>
+<pre><code class="language-python">import tensorflow as tf
+
+inputs = tf.keras.Input(shape=(3,))
+x = tf.keras.layers.Dense(4, activation=tf.nn.relu)(inputs)
+outputs = tf.keras.layers.Dense(5, activation=tf.nn.softmax)(x)
+model = tf.keras.Model(inputs=inputs, outputs=outputs)
+</code></pre>
+<p>Note: Only dicts, lists, and tuples of input tensors are supported. Nested
+inputs are not supported (e.g. lists of list or dicts of dict).</p>
+<p>A new Functional API model can also be created by using the
+intermediate tensors. This enables you to quickly extract sub-components
+of the model.</p>
+<p>Example:</p>
+<pre><code class="language-python">inputs = keras.Input(shape=(None, None, 3))
+processed = keras.layers.RandomCrop(width=32, height=32)(inputs)
+conv = keras.layers.Conv2D(filters=2, kernel_size=3)(processed)
+pooling = keras.layers.GlobalAveragePooling2D()(conv)
+feature = keras.layers.Dense(10)(pooling)
+
+full_model = keras.Model(inputs, feature)
+backbone = keras.Model(processed, conv)
+activations = keras.Model(conv, feature)
+</code></pre>
+<p>Note that the <code>backbone</code> and <code>activations</code> models are not
+created with <code>keras.Input</code> objects, but with the tensors that are originated
+from <code>keras.Input</code> objects. Under the hood, the layers and weights will
+be shared across these models, so that user can train the <code>full_model</code>, and
+use <code>backbone</code> or <code>activations</code> to do feature extraction.
+The inputs and outputs of the model can be nested structures of tensors as
+well, and the created models are standard Functional API models that support
+all the existing APIs.</p>
+<p>2 - By subclassing the <code>Model</code> class: in that case, you should define your
+layers in <code>__init__()</code> and you should implement the model's forward pass
+in <code>call()</code>.</p>
+<pre><code class="language-python">import tensorflow as tf
+
+class MyModel(tf.keras.Model):
+
+  def __init__(self):
+    super().__init__()
+    self.dense1 = tf.keras.layers.Dense(4, activation=tf.nn.relu)
+    self.dense2 = tf.keras.layers.Dense(5, activation=tf.nn.softmax)
+
+  def call(self, inputs):
+    x = self.dense1(inputs)
+    return self.dense2(x)
+
+model = MyModel()
+</code></pre>
+<p>If you subclass <code>Model</code>, you can optionally have
+a <code>training</code> argument (boolean) in <code>call()</code>, which you can use to specify
+a different behavior in training and inference:</p>
+<pre><code class="language-python">import tensorflow as tf
+
+class MyModel(tf.keras.Model):
+
+  def __init__(self):
+    super().__init__()
+    self.dense1 = tf.keras.layers.Dense(4, activation=tf.nn.relu)
+    self.dense2 = tf.keras.layers.Dense(5, activation=tf.nn.softmax)
+    self.dropout = tf.keras.layers.Dropout(0.5)
+
+  def call(self, inputs, training=False):
+    x = self.dense1(inputs)
+    if training:
+      x = self.dropout(x, training=training)
+    return self.dense2(x)
+
+model = MyModel()
+</code></pre>
+<p>Once the model is created, you can config the model with losses and metrics
+with <code>model.compile()</code>, train the model with <code>model.fit()</code>, or use the model
+to do prediction with <code>model.predict()</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class KerasModel:
+<pre><code class="python">class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    tokens: list[str]
+    vocab: list[str]
 
-    def __init__(self, program_or_program_cache, num_ops_per_sample: int = 3,
-                 batch_size: int = 64, buffer_size: int = 10000):
-        if isinstance(program_or_program_cache, Program):
-            program = program_or_program_cache
-        elif isinstance(program_or_program_cache, ProgramCache):
-            # Merge all programs into one program
-            program = merge_programs(
-                program_or_program_cache, num_ops_per_sample)
-        else:
-            raise ValueError(&#34;invalid argument&#34;)
+    def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
+                 batch_size: int = 16, buffer_size: int = 10000,
+                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+        super().__init__(self)
+
+        # Merge all programs into one program
+        merged_programs = merge_programs(program_cache, num_ops_per_sample)
         self.num_ops_per_sample = num_ops_per_sample
 
         # Convert to tokens and vocabulary
-        # TODO: do we really need to store them as memebers?
-        self.tokens, self.vocab = program_to_tokens(program)
+        self.tokens, self.vocab = program_to_tokens(merged_programs)
 
         # Initialize TF lookup layers
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -133,19 +236,25 @@ class KerasModel:
             vocabulary=self.tokens_to_ids.get_vocabulary(), invert=True, mask_token=None)
 
         # Convert the tokens to IDs
-        # TODO: do we really need to store them as members?
         self.ids = self.tokens_to_ids(self.tokens)
-        self.slice_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
 
+        # === Initialize datasets ===
+        self.slice_dataset = tf.data.Dataset.from_tensor_slices(self.ids)
         # One operation is encoded using three tokens
         # plus one token because we split into input/output
         self.batch_dataset = self.slice_dataset.batch(
             3 * self.num_ops_per_sample + 1, drop_remainder=True)
-
         self.split_dataset = self.batch_dataset.map(self.__split_input_label)
-
         self.prefetch_dataset = (self.split_dataset.shuffle(buffer_size).batch(
             batch_size, drop_remainder=True).prefetch(tf.data.experimental.AUTOTUNE))
+
+        # === Initialize layers ===
+        vocab_size = len(self.tokens_to_ids.get_vocabulary())
+        self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)
+        self.gru = tf.keras.layers.GRU(num_rnn_units,
+                                       return_sequences=True,
+                                       return_state=True)
+        self.dense = tf.keras.layers.Dense(vocab_size)
 
     def ids_to_tokens_str(self, ids) -&gt; list[str]:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
@@ -156,17 +265,93 @@ class KerasModel:
     def __split_input_label(self, sample: list):
         input = sample[:-1]
         label = sample[1:]
-        return input, label</code></pre>
+        return input, label
+
+    def call(self, inputs, states=None, return_state=False, training=False):
+        values = inputs
+        values = self.embedding(values, training=training)
+        if states is None:
+            states = self.gru.get_initial_state(values)
+        values, states = self.gru(
+            values, initial_state=states, training=training)
+        values = self.dense(values, training=training)
+        if return_state:
+            return values, states
+        else:
+            return values</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>keras.engine.training.Model</li>
+<li>keras.engine.base_layer.Layer</li>
+<li>tensorflow.python.module.module.Module</li>
+<li>tensorflow.python.trackable.autotrackable.AutoTrackable</li>
+<li>tensorflow.python.trackable.base.Trackable</li>
+<li>keras.utils.version_utils.LayerVersionSelector</li>
+<li>keras.utils.version_utils.ModelVersionSelector</li>
+</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="loda.ml.keras_model.KerasModel.num_ops_per_sample"><code class="name">var <span class="ident">num_ops_per_sample</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="loda.ml.keras_model.KerasModel.tokens"><code class="name">var <span class="ident">tokens</span> : list[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.keras_model.KerasModel.vocab"><code class="name">var <span class="ident">vocab</span> : list[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="loda.ml.keras_model.KerasModel.call"><code class="name flex">
+<span>def <span class="ident">call</span></span>(<span>self, inputs, states=None, return_state=False, training=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calls the model on new inputs and returns the outputs as tensors.</p>
+<p>In this case <code>call()</code> just reapplies
+all ops in the graph to the new inputs
+(e.g. build a new computational graph from the provided inputs).</p>
+<p>Note: This method should not be called directly. It is only meant to be
+overridden when subclassing <code>tf.keras.Model</code>.
+To call a model on an input, always use the <code>__call__()</code> method,
+i.e. <code>model(inputs)</code>, which relies on the underlying <code>call()</code> method.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>inputs</code></strong></dt>
+<dd>Input tensor, or dict/list/tuple of input tensors.</dd>
+<dt><strong><code>training</code></strong></dt>
+<dd>Boolean or boolean scalar tensor, indicating whether to
+run the <code>Network</code> in training mode or inference mode.</dd>
+<dt><strong><code>mask</code></strong></dt>
+<dd>A mask or list of masks. A mask can be either a boolean tensor
+or None (no mask). For more details, check the guide
+<a href="https://www.tensorflow.org/guide/keras/masking_and_padding">here</a>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A tensor if there is a single output, or
+a list of tensors if there are more than one outputs.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def call(self, inputs, states=None, return_state=False, training=False):
+    values = inputs
+    values = self.embedding(values, training=training)
+    if states is None:
+        states = self.gru.get_initial_state(values)
+    values, states = self.gru(
+        values, initial_state=states, training=training)
+    values = self.dense(values, training=training)
+    if return_state:
+        return values, states
+    else:
+        return values</code></pre>
+</details>
+</dd>
 <dt id="loda.ml.keras_model.KerasModel.ids_to_programs"><code class="name flex">
 <span>def <span class="ident">ids_to_programs</span></span>(<span>self, ids) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
 </code></dt>
@@ -213,10 +398,13 @@ class KerasModel:
 <ul>
 <li>
 <h4><code><a title="loda.ml.keras_model.KerasModel" href="#loda.ml.keras_model.KerasModel">KerasModel</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="loda.ml.keras_model.KerasModel.call" href="#loda.ml.keras_model.KerasModel.call">call</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.ids_to_programs" href="#loda.ml.keras_model.KerasModel.ids_to_programs">ids_to_programs</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.ids_to_tokens_str" href="#loda.ml.keras_model.KerasModel.ids_to_tokens_str">ids_to_tokens_str</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.num_ops_per_sample" href="#loda.ml.keras_model.KerasModel.num_ops_per_sample">num_ops_per_sample</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.tokens" href="#loda.ml.keras_model.KerasModel.tokens">tokens</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.vocab" href="#loda.ml.keras_model.KerasModel.vocab">vocab</a></code></li>
 </ul>
 </li>
 </ul>
