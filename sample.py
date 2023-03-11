@@ -37,7 +37,7 @@ class SampleLODA:
         for input, label in model.split_dataset.take(3):
             print("Input:", model.ids_to_tokens_str(input))
             print("Label:", model.ids_to_tokens_str(label), "\n")
-        for input_example_batch, _ in model.prefetch_dataset.take(1):
+        for input_example_batch, target_example_batch in model.prefetch_dataset.take(1):
             example_batch_predictions = model(input_example_batch)
             print(example_batch_predictions.shape,
                   "# (batch_size, sequence_length, vocab_size)")
@@ -48,6 +48,16 @@ class SampleLODA:
         print("Input: {}".format(
             model.ids_to_tokens_str(input_example_batch[0])))
         print("Predictions: {}".format(model.ids_to_tokens_str(sampled_indices)))
+        loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
+        example_batch_mean_loss = loss(
+            target_example_batch, example_batch_predictions)
+        print("Prediction shape: ", example_batch_predictions.shape,
+              " # (batch_size, sequence_length, vocab_size)")
+        print("Mean loss:        ", example_batch_mean_loss)
+        print("Exp Mean loss:    ", tf.exp(example_batch_mean_loss).numpy())
+        print("Vocabulary Size:  ", model.vocab_size)
+        model.compile(optimizer='adam', loss=loss)
+        model.fit_with_checkpoints(10, "training_checkpoints")
 
 
 if __name__ == "__main__":

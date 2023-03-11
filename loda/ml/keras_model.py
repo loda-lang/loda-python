@@ -3,6 +3,7 @@ from loda.oeis import ProgramCache
 from .encoding import merge_programs, program_to_tokens, split_program, tokens_to_program
 
 import tensorflow as tf
+import os.path
 
 
 class KerasModel(tf.keras.Model):
@@ -43,12 +44,13 @@ class KerasModel(tf.keras.Model):
             batch_size, drop_remainder=True).prefetch(tf.data.experimental.AUTOTUNE))
 
         # === Initialize layers ===
-        vocab_size = len(self.tokens_to_ids.get_vocabulary())
-        self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)
+        self.vocab_size = len(self.tokens_to_ids.get_vocabulary())
+        self.embedding = tf.keras.layers.Embedding(
+            self.vocab_size, embedding_dim)
         self.gru = tf.keras.layers.GRU(num_rnn_units,
                                        return_sequences=True,
                                        return_state=True)
-        self.dense = tf.keras.layers.Dense(vocab_size)
+        self.dense = tf.keras.layers.Dense(self.vocab_size)
 
     def ids_to_tokens_str(self, ids) -> list[str]:
         return [t.numpy().decode("utf-8") for t in self.ids_to_tokens(ids)]
@@ -73,3 +75,9 @@ class KerasModel(tf.keras.Model):
             return values, states
         else:
             return values
+
+    def fit_with_checkpoints(self, epochs: int, checkpoint_dir: str):
+        checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
+        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+            filepath=checkpoint_prefix, save_weights_only=True)
+        return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
