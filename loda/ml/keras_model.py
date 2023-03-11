@@ -8,18 +8,19 @@ import tensorflow as tf
 # TODO: inherit from tf.keras.Model
 class KerasModel:
 
-    num_ops_per_batch: int
+    num_ops_per_sample: int
 
-    def __init__(self, program_or_program_cache, num_ops_per_batch: int = 3):
+    def __init__(self, program_or_program_cache, num_ops_per_sample: int = 3,
+                 batch_size: int = 64, buffer_size: int = 10000):
         if isinstance(program_or_program_cache, Program):
             program = program_or_program_cache
         elif isinstance(program_or_program_cache, ProgramCache):
             # Merge all programs into one program
             program = merge_programs(
-                program_or_program_cache, num_ops_per_batch)
+                program_or_program_cache, num_ops_per_sample)
         else:
             raise ValueError("invalid argument")
-        self.num_ops_per_batch = num_ops_per_batch
+        self.num_ops_per_sample = num_ops_per_sample
 
         # Convert to tokens and vocabulary
         # TODO: do we really need to store them as memebers?
@@ -39,9 +40,12 @@ class KerasModel:
         # One operation is encoded using three tokens
         # plus one token because we split into input/output
         self.batch_dataset = self.slice_dataset.batch(
-            3 * self.num_ops_per_batch + 1, drop_remainder=True)
+            3 * self.num_ops_per_sample + 1, drop_remainder=True)
 
-        self.dataset = self.batch_dataset.map(self.__split_input_label)
+        self.split_dataset = self.batch_dataset.map(self.__split_input_label)
+
+        self.prefetch_dataset = (self.split_dataset.shuffle(buffer_size).batch(
+            batch_size, drop_remainder=True).prefetch(tf.data.experimental.AUTOTUNE))
 
     def ids_to_tokens_str(self, ids) -> list[str]:
         return [t.numpy().decode("utf-8") for t in self.ids_to_tokens(ids)]

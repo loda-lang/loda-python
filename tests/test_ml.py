@@ -20,7 +20,7 @@ class KerasModelTests(TestCase):
 
         # Check the number of operations of merged program.
         merged = encoding.merge_programs(
-            self.program_cache, self.keras_model.num_ops_per_batch)
+            self.program_cache, self.keras_model.num_ops_per_sample)
         num_operations = len(merged.operations)
         self.assertGreater(num_operations, 0)
 

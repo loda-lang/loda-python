@@ -34,9 +34,10 @@ class SampleLODA:
         print("Model Tokens: {}\n".format(model.tokens))
         print("Vocabulary: {}\n".format(model.vocab))
         print("Model IDs: {}\n".format(model.ids))
-        for input, label in model.dataset.take(5):
+        for input, label in model.split_dataset.take(5):
             print("Input:", model.ids_to_tokens_str(input))
             print("Label:", model.ids_to_tokens_str(label), "\n")
+        print(model.prefetch_dataset)
 
 
 if __name__ == "__main__":
