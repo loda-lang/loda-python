@@ -37,12 +37,14 @@ import os.path
 class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    temperature: float
     tokens: list[str]
     vocab: list[str]
 
     def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
                  batch_size: int = 16, buffer_size: int = 10000,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int = 256, num_rnn_units: int = 1024,
+                 temperature: float = 1.0):
         super().__init__(self)
 
         # Merge all programs into one program
@@ -80,11 +82,27 @@ class KerasModel(tf.keras.Model):
                                        return_state=True)
         self.dense = tf.keras.layers.Dense(self.vocab_size)
 
+        # === Initialize token generation ===
+        # Create a mask to prevent &#34;[UNK]&#34; from being generated.
+        self.temperature = temperature
+        skip_ids = self.tokens_to_ids([&#39;[UNK]&#39;])[:, None]
+        sparse_mask = tf.SparseTensor(
+            # Put a -inf at each bad index.
+            values=[-float(&#39;inf&#39;)]*len(skip_ids),
+            indices=skip_ids,
+            # Match the shape to the vocabulary
+            dense_shape=[self.vocab_size])
+        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+
     def ids_to_tokens_str(self, ids) -&gt; list[str]:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
 
     def ids_to_programs(self, ids) -&gt; list[Program]:
         return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))
+
+    def program_to_input_ids(self, program: Program):
+        tokens, _ = program_to_tokens(program)
+        return tf.constant([self.tokens_to_ids(tokens).numpy()])
 
     def __split_input_label(self, sample: list):
         input = sample[:-1]
@@ -108,7 +126,30 @@ class KerasModel(tf.keras.Model):
         checkpoint_prefix = os.path.join(checkpoint_dir, &#34;ckpt_{epoch}&#34;)
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_prefix, save_weights_only=True)
-        return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])</code></pre>
+        return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
+
+    def generate_id(self, inputs, states=None):
+
+        # Run the model.
+        # predicted_logits.shape is [batch, char, next_char_logits]
+        predicted_logits, states = self.call(inputs=inputs, states=states,
+                                             return_state=True)
+        # Only use the last prediction.
+        predicted_logits = predicted_logits[:, -1, :]
+        predicted_logits = predicted_logits/self.temperature
+        # Apply the prediction mask: prevent &#34;[UNK]&#34; from being generated.
+        predicted_logits = predicted_logits + self.prediction_mask
+
+        # Sample the output logits to generate token IDs.
+        predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+
+        # Return the characters and model state.
+        return predicted_ids, states
+
+    def generate_token(self, inputs, states=None):
+        next_id, states = self.generate_id(inputs, states=states)
+        next_token = self.ids_to_tokens_str(tf.squeeze(next_id, axis=-1))[0]
+        return next_id, next_token, states</code></pre>
 </details>
 </section>
 <section>
@@ -122,7 +163,7 @@ class KerasModel(tf.keras.Model):
 <dl>
 <dt id="loda.ml.keras_model.KerasModel"><code class="flex name class">
 <span>class <span class="ident">KerasModel</span></span>
-<span>(</span><span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_ops_per_sample: int = 3, batch_size: int = 16, buffer_size: int = 10000, embedding_dim: int = 256, num_rnn_units: int = 1024)</span>
+<span>(</span><span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_ops_per_sample: int = 3, batch_size: int = 16, buffer_size: int = 10000, embedding_dim: int = 256, num_rnn_units: int = 1024, temperature: float = 1.0)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><code>Model</code> groups layers into an object with training and inference features.</p>
@@ -222,12 +263,14 @@ to do prediction with <code>model.predict()</code>.</p></div>
 <pre><code class="python">class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    temperature: float
     tokens: list[str]
     vocab: list[str]
 
     def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
                  batch_size: int = 16, buffer_size: int = 10000,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int = 256, num_rnn_units: int = 1024,
+                 temperature: float = 1.0):
         super().__init__(self)
 
         # Merge all programs into one program
@@ -265,11 +308,27 @@ to do prediction with <code>model.predict()</code>.</p></div>
                                        return_state=True)
         self.dense = tf.keras.layers.Dense(self.vocab_size)
 
+        # === Initialize token generation ===
+        # Create a mask to prevent &#34;[UNK]&#34; from being generated.
+        self.temperature = temperature
+        skip_ids = self.tokens_to_ids([&#39;[UNK]&#39;])[:, None]
+        sparse_mask = tf.SparseTensor(
+            # Put a -inf at each bad index.
+            values=[-float(&#39;inf&#39;)]*len(skip_ids),
+            indices=skip_ids,
+            # Match the shape to the vocabulary
+            dense_shape=[self.vocab_size])
+        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+
     def ids_to_tokens_str(self, ids) -&gt; list[str]:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]
 
     def ids_to_programs(self, ids) -&gt; list[Program]:
         return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))
+
+    def program_to_input_ids(self, program: Program):
+        tokens, _ = program_to_tokens(program)
+        return tf.constant([self.tokens_to_ids(tokens).numpy()])
 
     def __split_input_label(self, sample: list):
         input = sample[:-1]
@@ -293,7 +352,30 @@ to do prediction with <code>model.predict()</code>.</p></div>
         checkpoint_prefix = os.path.join(checkpoint_dir, &#34;ckpt_{epoch}&#34;)
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_prefix, save_weights_only=True)
-        return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])</code></pre>
+        return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
+
+    def generate_id(self, inputs, states=None):
+
+        # Run the model.
+        # predicted_logits.shape is [batch, char, next_char_logits]
+        predicted_logits, states = self.call(inputs=inputs, states=states,
+                                             return_state=True)
+        # Only use the last prediction.
+        predicted_logits = predicted_logits[:, -1, :]
+        predicted_logits = predicted_logits/self.temperature
+        # Apply the prediction mask: prevent &#34;[UNK]&#34; from being generated.
+        predicted_logits = predicted_logits + self.prediction_mask
+
+        # Sample the output logits to generate token IDs.
+        predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+
+        # Return the characters and model state.
+        return predicted_ids, states
+
+    def generate_token(self, inputs, states=None):
+        next_id, states = self.generate_id(inputs, states=states)
+        next_token = self.ids_to_tokens_str(tf.squeeze(next_id, axis=-1))[0]
+        return next_id, next_token, states</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -308,6 +390,10 @@ to do prediction with <code>model.predict()</code>.</p></div>
 <h3>Class variables</h3>
 <dl>
 <dt id="loda.ml.keras_model.KerasModel.num_ops_per_sample"><code class="name">var <span class="ident">num_ops_per_sample</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.keras_model.KerasModel.temperature"><code class="name">var <span class="ident">temperature</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -383,6 +469,49 @@ a list of tensors if there are more than one outputs.</p></div>
     return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])</code></pre>
 </details>
 </dd>
+<dt id="loda.ml.keras_model.KerasModel.generate_id"><code class="name flex">
+<span>def <span class="ident">generate_id</span></span>(<span>self, inputs, states=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_id(self, inputs, states=None):
+
+    # Run the model.
+    # predicted_logits.shape is [batch, char, next_char_logits]
+    predicted_logits, states = self.call(inputs=inputs, states=states,
+                                         return_state=True)
+    # Only use the last prediction.
+    predicted_logits = predicted_logits[:, -1, :]
+    predicted_logits = predicted_logits/self.temperature
+    # Apply the prediction mask: prevent &#34;[UNK]&#34; from being generated.
+    predicted_logits = predicted_logits + self.prediction_mask
+
+    # Sample the output logits to generate token IDs.
+    predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+
+    # Return the characters and model state.
+    return predicted_ids, states</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.keras_model.KerasModel.generate_token"><code class="name flex">
+<span>def <span class="ident">generate_token</span></span>(<span>self, inputs, states=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_token(self, inputs, states=None):
+    next_id, states = self.generate_id(inputs, states=states)
+    next_token = self.ids_to_tokens_str(tf.squeeze(next_id, axis=-1))[0]
+    return next_id, next_token, states</code></pre>
+</details>
+</dd>
 <dt id="loda.ml.keras_model.KerasModel.ids_to_programs"><code class="name flex">
 <span>def <span class="ident">ids_to_programs</span></span>(<span>self, ids) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
 </code></dt>
@@ -409,6 +538,20 @@ a list of tensors if there are more than one outputs.</p></div>
     return [t.numpy().decode(&#34;utf-8&#34;) for t in self.ids_to_tokens(ids)]</code></pre>
 </details>
 </dd>
+<dt id="loda.ml.keras_model.KerasModel.program_to_input_ids"><code class="name flex">
+<span>def <span class="ident">program_to_input_ids</span></span>(<span>self, program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def program_to_input_ids(self, program: Program):
+    tokens, _ = program_to_tokens(program)
+    return tf.constant([self.tokens_to_ids(tokens).numpy()])</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -432,9 +575,13 @@ a list of tensors if there are more than one outputs.</p></div>
 <ul class="">
 <li><code><a title="loda.ml.keras_model.KerasModel.call" href="#loda.ml.keras_model.KerasModel.call">call</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.fit_with_checkpoints" href="#loda.ml.keras_model.KerasModel.fit_with_checkpoints">fit_with_checkpoints</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.generate_id" href="#loda.ml.keras_model.KerasModel.generate_id">generate_id</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.generate_token" href="#loda.ml.keras_model.KerasModel.generate_token">generate_token</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.ids_to_programs" href="#loda.ml.keras_model.KerasModel.ids_to_programs">ids_to_programs</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.ids_to_tokens_str" href="#loda.ml.keras_model.KerasModel.ids_to_tokens_str">ids_to_tokens_str</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.num_ops_per_sample" href="#loda.ml.keras_model.KerasModel.num_ops_per_sample">num_ops_per_sample</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.program_to_input_ids" href="#loda.ml.keras_model.KerasModel.program_to_input_ids">program_to_input_ids</a></code></li>
+<li><code><a title="loda.ml.keras_model.KerasModel.temperature" href="#loda.ml.keras_model.KerasModel.temperature">temperature</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.tokens" href="#loda.ml.keras_model.KerasModel.tokens">tokens</a></code></li>
 <li><code><a title="loda.ml.keras_model.KerasModel.vocab" href="#loda.ml.keras_model.KerasModel.vocab">vocab</a></code></li>
 </ul>
