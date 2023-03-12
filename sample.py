@@ -3,7 +3,7 @@ import os.path
 from loda.lang import Program
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
-from loda.ml import KerasModel, OneStep
+from loda.ml import KerasModel
 from loda.ml.encoding import *
 
 import tensorflow as tf
@@ -61,7 +61,6 @@ class SampleLODA:
         model.fit_with_checkpoints(10, "training_checkpoints")
 
         # Generate tokens
-        one_step = OneStep(model,  model.tokens_to_ids)
         states = None
         initial_prog = Program()
         for _ in range(model.num_ops_per_sample):
@@ -70,7 +69,7 @@ class SampleLODA:
         next_token = tf.constant([model.tokens_to_ids(inital_tokens).numpy()])
         print("Generated tokens:")
         for _ in range(100):
-            next_token, states = one_step.generate_one_step(
+            next_token, states = model.generate_one_step(
                 next_token, states=states)
             squeezed = tf.squeeze(next_token, axis=-1)
             tk = model.ids_to_tokens_str(squeezed)[0]

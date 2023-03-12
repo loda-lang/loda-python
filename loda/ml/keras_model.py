@@ -9,12 +9,14 @@ import os.path
 class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    temperature: float
     tokens: list[str]
     vocab: list[str]
 
     def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
                  batch_size: int = 16, buffer_size: int = 10000,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int = 256, num_rnn_units: int = 1024,
+                 temperature: float = 1.0):
         super().__init__(self)
 
         # Merge all programs into one program
@@ -52,6 +54,18 @@ class KerasModel(tf.keras.Model):
                                        return_state=True)
         self.dense = tf.keras.layers.Dense(self.vocab_size)
 
+        # === Initialize token generation ===
+        # Create a mask to prevent "[UNK]" from being generated.
+        self.temperature = temperature
+        skip_ids = self.tokens_to_ids(['[UNK]'])[:, None]
+        sparse_mask = tf.SparseTensor(
+            # Put a -inf at each bad index.
+            values=[-float('inf')]*len(skip_ids),
+            indices=skip_ids,
+            # Match the shape to the vocabulary
+            dense_shape=[self.vocab_size])
+        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+
     def ids_to_tokens_str(self, ids) -> list[str]:
         return [t.numpy().decode("utf-8") for t in self.ids_to_tokens(ids)]
 
@@ -82,30 +96,12 @@ class KerasModel(tf.keras.Model):
             filepath=checkpoint_prefix, save_weights_only=True)
         return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
 
-
-class OneStep(tf.keras.Model):
-    def __init__(self, model, tokens_to_ids, temperature=1.0):
-        super().__init__()
-        self.temperature = temperature
-        self.model = model
-
-        # Create a mask to prevent "[UNK]" from being generated.
-        skip_ids = tokens_to_ids(['[UNK]'])[:, None]
-        sparse_mask = tf.SparseTensor(
-            # Put a -inf at each bad index.
-            values=[-float('inf')]*len(skip_ids),
-            indices=skip_ids,
-            # Match the shape to the vocabulary
-            dense_shape=[len(tokens_to_ids.get_vocabulary())])
-        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
-
-    @tf.function
     def generate_one_step(self, inputs, states=None):
 
         # Run the model.
         # predicted_logits.shape is [batch, char, next_char_logits]
-        predicted_logits, states = self.model(inputs=inputs, states=states,
-                                              return_state=True)
+        predicted_logits, states = self.call(inputs=inputs, states=states,
+                                             return_state=True)
         # Only use the last prediction.
         predicted_logits = predicted_logits[:, -1, :]
         predicted_logits = predicted_logits/self.temperature
