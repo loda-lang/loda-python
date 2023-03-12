@@ -3,7 +3,7 @@ import os.path
 from loda.lang import Program
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
-from loda.ml import KerasModel
+from loda.ml import KerasModel, OneStep
 from loda.ml.encoding import *
 
 import tensorflow as tf
@@ -56,8 +56,29 @@ class SampleLODA:
         print("Mean loss:        ", example_batch_mean_loss)
         print("Exp Mean loss:    ", tf.exp(example_batch_mean_loss).numpy())
         print("Vocabulary Size:  ", model.vocab_size)
+        # Train the model
         model.compile(optimizer='adam', loss=loss)
         model.fit_with_checkpoints(10, "training_checkpoints")
+
+        # Generate tokens
+        one_step = OneStep(model,  model.tokens_to_ids)
+        states = None
+        initial = Program()
+        for _ in range(model.num_ops_per_sample):
+            initial.operations.append(Operation())  # nop
+        next_token, _ = program_to_tokens(initial)
+        next_token = model.tokens_to_ids(next_token)
+
+        # TODO: do proper conversion of inital tokens
+        next_token = tf.constant([[29,  8,  8, 29,  8,  8, 29,  8,  8]])
+
+        print("Generated tokens:")
+        for _ in range(100):
+            next_token, states = one_step.generate_one_step(
+                next_token, states=states)
+            squeezed = tf.squeeze(next_token, axis=-1)
+            tk = model.ids_to_tokens_str(squeezed)[0]
+            print(tk)
 
 
 if __name__ == "__main__":

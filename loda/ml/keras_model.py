@@ -81,3 +81,39 @@ class KerasModel(tf.keras.Model):
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_prefix, save_weights_only=True)
         return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
+
+
+class OneStep(tf.keras.Model):
+    def __init__(self, model, tokens_to_ids, temperature=1.0):
+        super().__init__()
+        self.temperature = temperature
+        self.model = model
+
+        # Create a mask to prevent "[UNK]" from being generated.
+        skip_ids = tokens_to_ids(['[UNK]'])[:, None]
+        sparse_mask = tf.SparseTensor(
+            # Put a -inf at each bad index.
+            values=[-float('inf')]*len(skip_ids),
+            indices=skip_ids,
+            # Match the shape to the vocabulary
+            dense_shape=[len(tokens_to_ids.get_vocabulary())])
+        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+
+    @tf.function
+    def generate_one_step(self, inputs, states=None):
+
+        # Run the model.
+        # predicted_logits.shape is [batch, char, next_char_logits]
+        predicted_logits, states = self.model(inputs=inputs, states=states,
+                                              return_state=True)
+        # Only use the last prediction.
+        predicted_logits = predicted_logits[:, -1, :]
+        predicted_logits = predicted_logits/self.temperature
+        # Apply the prediction mask: prevent "[UNK]" from being generated.
+        predicted_logits = predicted_logits + self.prediction_mask
+
+        # Sample the output logits to generate token IDs.
+        predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+
+        # Return the characters and model state.
+        return predicted_ids, states
