@@ -62,18 +62,15 @@ class SampleLODA:
 
         # Generate tokens
         states = None
-        initial_prog = Program()
+        initial = Program()
         for _ in range(model.num_ops_per_sample):
-            initial_prog.operations.append(Operation())  # nop
-        inital_tokens, _ = program_to_tokens(initial_prog)
-        next_token = tf.constant([model.tokens_to_ids(inital_tokens).numpy()])
+            initial.operations.append(Operation())  # nop
+        next_id = model.program_to_input_ids(initial)
         print("Generated tokens:")
         for _ in range(100):
-            next_token, states = model.generate_one_step(
-                next_token, states=states)
-            squeezed = tf.squeeze(next_token, axis=-1)
-            tk = model.ids_to_tokens_str(squeezed)[0]
-            print(tk)
+            next_id, next_token, states = model.generate_token(
+                next_id, states=states)
+            print(next_token)
 
 
 if __name__ == "__main__":

@@ -72,6 +72,10 @@ class KerasModel(tf.keras.Model):
     def ids_to_programs(self, ids) -> list[Program]:
         return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))
 
+    def program_to_input_ids(self, program: Program):
+        tokens, _ = program_to_tokens(program)
+        return tf.constant([self.tokens_to_ids(tokens).numpy()])
+
     def __split_input_label(self, sample: list):
         input = sample[:-1]
         label = sample[1:]
@@ -96,7 +100,7 @@ class KerasModel(tf.keras.Model):
             filepath=checkpoint_prefix, save_weights_only=True)
         return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
 
-    def generate_one_step(self, inputs, states=None):
+    def generate_id(self, inputs, states=None):
 
         # Run the model.
         # predicted_logits.shape is [batch, char, next_char_logits]
@@ -113,3 +117,8 @@ class KerasModel(tf.keras.Model):
 
         # Return the characters and model state.
         return predicted_ids, states
+
+    def generate_token(self, inputs, states=None):
+        next_id, states = self.generate_id(inputs, states=states)
+        next_token = self.ids_to_tokens_str(tf.squeeze(next_id, axis=-1))[0]
+        return next_id, next_token, states
