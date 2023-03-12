@@ -9,12 +9,14 @@ import os.path
 class KerasModel(tf.keras.Model):
 
     num_ops_per_sample: int
+    temperature: float
     tokens: list[str]
     vocab: list[str]
 
     def __init__(self, program_cache: ProgramCache, num_ops_per_sample: int = 3,
                  batch_size: int = 16, buffer_size: int = 10000,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int = 256, num_rnn_units: int = 1024,
+                 temperature: float = 1.0):
         super().__init__(self)
 
         # Merge all programs into one program
@@ -52,11 +54,27 @@ class KerasModel(tf.keras.Model):
                                        return_state=True)
         self.dense = tf.keras.layers.Dense(self.vocab_size)
 
+        # === Initialize token generation ===
+        # Create a mask to prevent "[UNK]" from being generated.
+        self.temperature = temperature
+        skip_ids = self.tokens_to_ids(['[UNK]'])[:, None]
+        sparse_mask = tf.SparseTensor(
+            # Put a -inf at each bad index.
+            values=[-float('inf')]*len(skip_ids),
+            indices=skip_ids,
+            # Match the shape to the vocabulary
+            dense_shape=[self.vocab_size])
+        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+
     def ids_to_tokens_str(self, ids) -> list[str]:
         return [t.numpy().decode("utf-8") for t in self.ids_to_tokens(ids)]
 
     def ids_to_programs(self, ids) -> list[Program]:
         return split_program(tokens_to_program(self.ids_to_tokens_str(ids)))
+
+    def program_to_input_ids(self, program: Program):
+        tokens, _ = program_to_tokens(program)
+        return tf.constant([self.tokens_to_ids(tokens).numpy()])
 
     def __split_input_label(self, sample: list):
         input = sample[:-1]
@@ -81,3 +99,26 @@ class KerasModel(tf.keras.Model):
         checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_prefix, save_weights_only=True)
         return self.fit(self.prefetch_dataset, epochs=epochs, callbacks=[checkpoint_callback])
+
+    def generate_id(self, inputs, states=None):
+
+        # Run the model.
+        # predicted_logits.shape is [batch, char, next_char_logits]
+        predicted_logits, states = self.call(inputs=inputs, states=states,
+                                             return_state=True)
+        # Only use the last prediction.
+        predicted_logits = predicted_logits[:, -1, :]
+        predicted_logits = predicted_logits/self.temperature
+        # Apply the prediction mask: prevent "[UNK]" from being generated.
+        predicted_logits = predicted_logits + self.prediction_mask
+
+        # Sample the output logits to generate token IDs.
+        predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+
+        # Return the characters and model state.
+        return predicted_ids, states
+
+    def generate_token(self, inputs, states=None):
+        next_id, states = self.generate_id(inputs, states=states)
+        next_token = self.ids_to_tokens_str(tf.squeeze(next_id, axis=-1))[0]
+        return next_id, next_token, states

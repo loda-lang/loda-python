@@ -56,8 +56,21 @@ class SampleLODA:
         print("Mean loss:        ", example_batch_mean_loss)
         print("Exp Mean loss:    ", tf.exp(example_batch_mean_loss).numpy())
         print("Vocabulary Size:  ", model.vocab_size)
+        # Train the model
         model.compile(optimizer='adam', loss=loss)
         model.fit_with_checkpoints(10, "training_checkpoints")
+
+        # Generate tokens
+        states = None
+        initial = Program()
+        for _ in range(model.num_ops_per_sample):
+            initial.operations.append(Operation())  # nop
+        next_id = model.program_to_input_ids(initial)
+        print("Generated tokens:")
+        for _ in range(100):
+            next_id, next_token, states = model.generate_token(
+                next_id, states=states)
+            print(next_token)
 
 
 if __name__ == "__main__":
