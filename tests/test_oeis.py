@@ -2,10 +2,11 @@
 
 from unittest import TestCase
 
-from loda.oeis import PrefixIndex, Sequence
-from tests.helpers import OEIS_TEST_DIR
+from loda.oeis import PrefixIndex, ProgramCache, Sequence
+from tests.helpers import OEIS_TEST_DIR, PROGRAMS_TEST_DIR
 
 NUM_SEQS = 5
+NUM_PROGRAMS = 15
 
 
 class PrefixIndexTests(TestCase):
@@ -70,3 +71,13 @@ class PrefixIndexTests(TestCase):
         for (term, expected_ids, more) in refinements:
             self.assertEqual(more, self.index.refine_match(m, term))
             self.assertEqual(expected_ids, self.index.get_match_ids(m))
+
+
+class ProgramCacheTests(TestCase):
+
+    def setUp(self):
+        self.program_cache = ProgramCache(PROGRAMS_TEST_DIR)
+
+    def test_all_ids(self):
+        num_programs = len(self.program_cache.all_ids())
+        self.assertEqual(NUM_PROGRAMS, num_programs)
