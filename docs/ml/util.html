@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>loda.ml.encoding API documentation</title>
+<title>loda.ml.util API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.encoding</code></h1>
+<h1 class="title">Module <code>loda.ml.util</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -49,32 +49,73 @@ def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]
     return (tokens, sorted(vocab))
 
 
+def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
+    try:
+        type = Operation.Type[type_tok.upper()]
+        target = Operand(target_tok)
+        source = Operand(source_tok)
+        return Operation(type, target, source)
+    except Exception:
+        return Operation()  # nop
+
+
 def tokens_to_program(tokens: list[str]) -&gt; Program:
     i = 0
     program = Program()
     while i+2 &lt; len(tokens):
-        type = Operation.Type[tokens[i].upper()]
-        target = Operand(tokens[i+1])
-        source = Operand(tokens[i+2])
-        program.operations.append(Operation(type, target, source))
+        operation = tokens_to_operation(tokens[i], tokens[i+1], tokens[i+2])
+        program.operations.append(operation)
         i += 3
     return program
 
 
-def merge_programs(program_cache: ProgramCache, num_nop_seps: int = 1) -&gt; Program:
+def append_nops(program: Program, num_nops: int):
+    for _ in range(num_nops):
+        program.operations.append(Operation())  # nop
+
+
+def merge_programs(program_cache: ProgramCache, num_programs: int = -1, num_ops_per_sample: int = 1) -&gt; Program:
+
+    # Get IDs of all existing programs. Shuffle them and reduce
+    # the number of program IDs if requested.
     ids = program_cache.all_ids()
     random.shuffle(ids)
+    if num_programs &gt;= 0 and len(ids) &gt; num_programs:
+        ids = ids[0:num_programs]
+
+    # Merge all programs into one program. Invidual programs are
+    # separated by (multiple) nops. The number nops equals the
+    # number of operations per sample.
     merged = Program()
+    num_loaded = 0
     for id in ids:
         program = program_cache.get(id)
-        for _ in range(num_nop_seps):
-            merged.operations.append(Operation())  # nop
+        append_nops(merged, num_ops_per_sample)
         for op in program.operations:
             if op.type != Operation.Type.NOP:
                 merged.operations.append(op)
-    for _ in range(num_nop_seps):
-        merged.operations.append(Operation())  # nop
-    return merged
+        num_loaded += 1
+        if num_loaded % 1000 == 0:
+            program_cache.clear()
+            # TODO: use logger
+            print(num_loaded)
+    program_cache.clear()
+
+    # Calculate the sample size (includes input and label).
+    # One operation is encoded using three tokens plus one
+    # token because we split into input and label.
+    sample_size = (3 * num_ops_per_sample) + 1
+
+    # Extend the training dataset with nops such that samples are
+    # get shifted by one when repeating the data set. We later want
+    # to repeat the dataset such that we cover all possible start
+    # positions. This code works because the sample size is 1 mod 3.
+    shift = (3 * len(merged.operations)) % sample_size
+    while shift != 1 and shift != (sample_size-1):
+        append_nops(merged, 1)
+        shift = (3 * len(merged.operations)) % sample_size
+    num_samples = 3 * len(merged.operations)
+    return merged, num_samples, sample_size
 
 
 def split_program(program: Program) -&gt; list[Program]:
@@ -89,7 +130,12 @@ def split_program(program: Program) -&gt; list[Program]:
             next.operations.append(op)
     if len(next.operations) &gt; 0:
         splitted.append(next)
-    return splitted</code></pre>
+    return splitted
+
+
+def split_sample(sample: list):
+    # Split sample into (input,label) pair
+    return sample[:-1], sample[1:]</code></pre>
 </details>
 </section>
 <section>
@@ -99,8 +145,8 @@ def split_program(program: Program) -&gt; list[Program]:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.ml.encoding.merge_programs"><code class="name flex">
-<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_nop_seps: int = 1) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
+<dt id="loda.ml.util.append_nops"><code class="name flex">
+<span>def <span class="ident">append_nops</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>, num_nops: int)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -108,23 +154,65 @@ def split_program(program: Program) -&gt; list[Program]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def merge_programs(program_cache: ProgramCache, num_nop_seps: int = 1) -&gt; Program:
+<pre><code class="python">def append_nops(program: Program, num_nops: int):
+    for _ in range(num_nops):
+        program.operations.append(Operation())  # nop</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.util.merge_programs"><code class="name flex">
+<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int = -1, num_ops_per_sample: int = 1) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def merge_programs(program_cache: ProgramCache, num_programs: int = -1, num_ops_per_sample: int = 1) -&gt; Program:
+
+    # Get IDs of all existing programs. Shuffle them and reduce
+    # the number of program IDs if requested.
     ids = program_cache.all_ids()
     random.shuffle(ids)
+    if num_programs &gt;= 0 and len(ids) &gt; num_programs:
+        ids = ids[0:num_programs]
+
+    # Merge all programs into one program. Invidual programs are
+    # separated by (multiple) nops. The number nops equals the
+    # number of operations per sample.
     merged = Program()
+    num_loaded = 0
     for id in ids:
         program = program_cache.get(id)
-        for _ in range(num_nop_seps):
-            merged.operations.append(Operation())  # nop
+        append_nops(merged, num_ops_per_sample)
         for op in program.operations:
             if op.type != Operation.Type.NOP:
                 merged.operations.append(op)
-    for _ in range(num_nop_seps):
-        merged.operations.append(Operation())  # nop
-    return merged</code></pre>
+        num_loaded += 1
+        if num_loaded % 1000 == 0:
+            program_cache.clear()
+            # TODO: use logger
+            print(num_loaded)
+    program_cache.clear()
+
+    # Calculate the sample size (includes input and label).
+    # One operation is encoded using three tokens plus one
+    # token because we split into input and label.
+    sample_size = (3 * num_ops_per_sample) + 1
+
+    # Extend the training dataset with nops such that samples are
+    # get shifted by one when repeating the data set. We later want
+    # to repeat the dataset such that we cover all possible start
+    # positions. This code works because the sample size is 1 mod 3.
+    shift = (3 * len(merged.operations)) % sample_size
+    while shift != 1 and shift != (sample_size-1):
+        append_nops(merged, 1)
+        shift = (3 * len(merged.operations)) % sample_size
+    num_samples = 3 * len(merged.operations)
+    return merged, num_samples, sample_size</code></pre>
 </details>
 </dd>
-<dt id="loda.ml.encoding.program_to_tokens"><code class="name flex">
+<dt id="loda.ml.util.program_to_tokens"><code class="name flex">
 <span>def <span class="ident">program_to_tokens</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>) ‑> Tuple[list[str], list[str]]</span>
 </code></dt>
 <dd>
@@ -149,7 +237,7 @@ def split_program(program: Program) -&gt; list[Program]:
     return (tokens, sorted(vocab))</code></pre>
 </details>
 </dd>
-<dt id="loda.ml.encoding.split_program"><code class="name flex">
+<dt id="loda.ml.util.split_program"><code class="name flex">
 <span>def <span class="ident">split_program</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
 </code></dt>
 <dd>
@@ -173,7 +261,40 @@ def split_program(program: Program) -&gt; list[Program]:
     return splitted</code></pre>
 </details>
 </dd>
-<dt id="loda.ml.encoding.tokens_to_program"><code class="name flex">
+<dt id="loda.ml.util.split_sample"><code class="name flex">
+<span>def <span class="ident">split_sample</span></span>(<span>sample: list)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def split_sample(sample: list):
+    # Split sample into (input,label) pair
+    return sample[:-1], sample[1:]</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.util.tokens_to_operation"><code class="name flex">
+<span>def <span class="ident">tokens_to_operation</span></span>(<span>type_tok: str, target_tok: str, source_tok: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
+    try:
+        type = Operation.Type[type_tok.upper()]
+        target = Operand(target_tok)
+        source = Operand(source_tok)
+        return Operation(type, target, source)
+    except Exception:
+        return Operation()  # nop</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.util.tokens_to_program"><code class="name flex">
 <span>def <span class="ident">tokens_to_program</span></span>(<span>tokens: list[str]) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
 </code></dt>
 <dd>
@@ -186,10 +307,8 @@ def split_program(program: Program) -&gt; list[Program]:
     i = 0
     program = Program()
     while i+2 &lt; len(tokens):
-        type = Operation.Type[tokens[i].upper()]
-        target = Operand(tokens[i+1])
-        source = Operand(tokens[i+2])
-        program.operations.append(Operation(type, target, source))
+        operation = tokens_to_operation(tokens[i], tokens[i+1], tokens[i+2])
+        program.operations.append(operation)
         i += 3
     return program</code></pre>
 </details>
@@ -211,11 +330,14 @@ def split_program(program: Program) -&gt; list[Program]:
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="loda.ml.encoding.merge_programs" href="#loda.ml.encoding.merge_programs">merge_programs</a></code></li>
-<li><code><a title="loda.ml.encoding.program_to_tokens" href="#loda.ml.encoding.program_to_tokens">program_to_tokens</a></code></li>
-<li><code><a title="loda.ml.encoding.split_program" href="#loda.ml.encoding.split_program">split_program</a></code></li>
-<li><code><a title="loda.ml.encoding.tokens_to_program" href="#loda.ml.encoding.tokens_to_program">tokens_to_program</a></code></li>
+<ul class="two-column">
+<li><code><a title="loda.ml.util.append_nops" href="#loda.ml.util.append_nops">append_nops</a></code></li>
+<li><code><a title="loda.ml.util.merge_programs" href="#loda.ml.util.merge_programs">merge_programs</a></code></li>
+<li><code><a title="loda.ml.util.program_to_tokens" href="#loda.ml.util.program_to_tokens">program_to_tokens</a></code></li>
+<li><code><a title="loda.ml.util.split_program" href="#loda.ml.util.split_program">split_program</a></code></li>
+<li><code><a title="loda.ml.util.split_sample" href="#loda.ml.util.split_sample">split_sample</a></code></li>
+<li><code><a title="loda.ml.util.tokens_to_operation" href="#loda.ml.util.tokens_to_operation">tokens_to_operation</a></code></li>
+<li><code><a title="loda.ml.util.tokens_to_program" href="#loda.ml.util.tokens_to_program">tokens_to_program</a></code></li>
 </ul>
 </li>
 </ul>
