@@ -1,10 +1,8 @@
 import os.path
 
-from loda.lang import Program
 from loda.oeis import ProgramCache
 from loda.runtime import Interpreter
-from loda.ml import KerasModel
-from loda.ml.encoding import *
+from loda.ml import keras, util
 
 import tensorflow as tf
 
@@ -13,8 +11,9 @@ class SampleLODA:
 
     def __init__(self):
         # Initialize LODA programs cache using *.asm files from tests folder
-        program_dir = os.path.join('tests', 'programs', 'oeis')
-        self.program_cache = ProgramCache(program_dir)
+        programs_dir = os.path.join('tests', 'programs', 'oeis')
+        # programs_dir = os.path.expanduser("~/loda/programs/oeis")
+        self.program_cache = ProgramCache(programs_dir)
 
     def print_program(self):
         # Load the LODA program for the prime numbers (A000040.asm)
@@ -29,52 +28,53 @@ class SampleLODA:
         sequence, _ = interpreter.eval_to_seq(program, num_terms=20)
         print("Evaluated to sequence: {}\n".format(sequence))
 
-    def keras_model(self):
-        model = KerasModel(self.program_cache)
-        print("Model Tokens: {}\n".format(model.tokens))
-        print("Vocabulary: {}\n".format(model.vocab))
-        print("Model IDs: {}\n".format(model.ids))
-        for input, label in model.split_dataset.take(3):
-            print("Input:", model.ids_to_tokens_str(input))
-            print("Label:", model.ids_to_tokens_str(label), "\n")
-        for input_example_batch, target_example_batch in model.prefetch_dataset.take(1):
-            example_batch_predictions = model(input_example_batch)
-            print(example_batch_predictions.shape,
-                  "# (batch_size, sequence_length, vocab_size)")
-        model.summary()
-        sampled_indices = tf.random.categorical(
-            example_batch_predictions[0], num_samples=1)
-        sampled_indices = tf.squeeze(sampled_indices, axis=-1).numpy()
-        print("Input: {}".format(
-            model.ids_to_tokens_str(input_example_batch[0])))
-        print("Predictions: {}".format(model.ids_to_tokens_str(sampled_indices)))
-        loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
-        example_batch_mean_loss = loss(
-            target_example_batch, example_batch_predictions)
-        print("Prediction shape: ", example_batch_predictions.shape,
-              " # (batch_size, sequence_length, vocab_size)")
-        print("Mean loss:        ", example_batch_mean_loss)
-        print("Exp Mean loss:    ", tf.exp(example_batch_mean_loss).numpy())
-        print("Vocabulary Size:  ", model.vocab_size)
-        # Train the model
-        model.compile(optimizer='adam', loss=loss)
-        model.fit_with_checkpoints(10, "training_checkpoints")
+    def keras(self):
 
-        # Generate tokens
-        states = None
-        initial = Program()
-        for _ in range(model.num_ops_per_sample):
-            initial.operations.append(Operation())  # nop
-        next_id = model.program_to_input_ids(initial)
-        print("Generated tokens:")
-        for _ in range(100):
-            next_id, next_token, states = model.generate_token(
-                next_id, states=states)
-            print(next_token)
+        # Configuration for training.
+        num_programs = -1  # all programs
+        num_ops_per_sample = 5
+
+        # Load programs and convert to tokens and vocabulary.
+        merged_programs, num_samples, sample_size = util.merge_programs(
+            self.program_cache, num_programs=num_programs, num_ops_per_sample=num_ops_per_sample)
+        tokens, vocabulary = util.program_to_tokens(merged_programs)
+
+        # Create Keras model and convert tokens to IDs.
+        model = keras.Model(vocabulary)
+        print("Number of Samples:", num_samples)
+        print("Sample Size:", sample_size)
+        print("Vocabulary Size:  ", model.get_vocab_size())
+        ids = model.tokens_to_ids(tokens)
+
+        # Create Keras dataset and run the training.
+        dataset = keras.create_dataset(ids, sample_size=sample_size)
+        loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
+        model.compile(optimizer="adam", loss=loss)
+        model.fit(dataset, epochs=10)
+
+        # Use the trained model to generate programs.
+        generator = keras.Generator(model)
+        num_lanes = 2
+        print("Generated programs from trained model:")
+        for p in generator.generate_programs(4, num_ops_per_sample=num_ops_per_sample, num_lanes=num_lanes):
+            print(p)
+
+        # Save the model to disk.
+        model_file = "sample_model"
+        model.save(model_file)
+
+        # Load the model back from disk.
+        loaded = keras.load_model(model_file)
+        generator2 = keras.Generator(loaded)
+
+        # Use the trained model to generate programs.
+        print("Generated programs from loaded model:")
+        for p in generator2.generate_programs(4, num_ops_per_sample=num_ops_per_sample, num_lanes=num_lanes):
+            print(p)
 
 
 if __name__ == "__main__":
     sample = SampleLODA()
     sample.print_program()
     sample.eval_program_to_seq()
-    sample.keras_model()
+    sample.keras()

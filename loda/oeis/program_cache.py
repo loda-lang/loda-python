@@ -26,7 +26,10 @@ class ProgramCache:
     def all_ids(self):
         ids = []
         for dir in os.listdir(self.__path):
-            for file in os.listdir(os.path.join(self.__path, dir)):
+            child = os.path.join(self.__path, dir)
+            if not os.path.isdir(child):
+                continue
+            for file in os.listdir(child):
                 if file.startswith('A') and file.endswith('.asm'):
                     ids.append(int(file[1:7]))
         ids.sort()

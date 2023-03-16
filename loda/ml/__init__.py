@@ -1,3 +1,1 @@
-"""Machine learning integration."""
-
-from .keras_model import KerasModel
+"""Machine learning integration for LODA using Tensorflow/Keras."""
