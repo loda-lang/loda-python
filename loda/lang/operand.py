@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
+"""Operand model and serialization."""
+
 from enum import Enum
 
 
 class Operand:
-    """Operand model and (de-)serialization.
-
+    """
     Operands consist of two members: `type` (enum) and `value` (int).
     The operand's type can be either `CONSTANT`, `DIRECT` memory access,
     or `INDIRECT` memory access. Constants are plain integers. Direct

@@ -1,10 +1,17 @@
-# LODA Python Module
+# LODA Python
 
-This Python module contains an implementation of the [LODA Language](https://loda-lang.org/). You can use it to read, write and evaluate LODA programs to integer sequences, and to use machine learning to find new programs.
+This Python package contains an implementation of the [LODA Language](https://loda-lang.org/):
+an assembly language and computational model for finding integer sequence programs.
+
+This Python package allows you to read and write LODA programs, to evaluate
+them to integer sequences, to search for matches in the
+[OEIS](https://www.oeis.org/) database,
+and to use machine learning tools from [Tensorflow](https://www.tensorflow.org/)
+to find new integer sequence programs.
 
 ## Getting Started
 
-Install the dependencies for the LODA Python module:
+You need Python 3.7 or higher. To install the dependencies for LODA, run these commands:
 
 ```bash
 python3 -m venv env
@@ -18,4 +25,4 @@ To execute the tests, run the following command:
 nose2 tests -v
 ```
 
-Check out [sample.py](sample.py) and the [documentation](https://loda-lang.org/loda-python/) to find out how to use the LODA Python module.
+Check out [sample.py](sample.py) and the [documentation](https://loda-lang.org/loda-python/) to find out how to use the LODA Python package.

@@ -1,11 +1,10 @@
 from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
 
-import typing
 import random
 
 
-def program_to_tokens(program: Program) -> typing.Tuple[list[str], list[str]]:
+def program_to_tokens(program: Program):
     tokens = []
     vocab = set()
     for op in program.operations:
@@ -18,7 +17,7 @@ def program_to_tokens(program: Program) -> typing.Tuple[list[str], list[str]]:
         vocab.add(type)
         vocab.add(target)
         vocab.add(source)
-    return (tokens, sorted(vocab))
+    return tokens, sorted(vocab)
 
 
 def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
@@ -31,7 +30,7 @@ def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
         return Operation()  # nop
 
 
-def tokens_to_program(tokens: list[str]) -> Program:
+def tokens_to_program(tokens: list) -> Program:
     i = 0
     program = Program()
     while i+2 < len(tokens):
@@ -90,7 +89,7 @@ def merge_programs(program_cache: ProgramCache, num_programs: int = -1, num_ops_
     return merged, num_samples, sample_size
 
 
-def split_program(program: Program) -> list[Program]:
+def split_program(program: Program) -> list:
     splitted = []
     next = Program()
     for op in program.operations:

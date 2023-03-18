@@ -1,40 +1,79 @@
 # -*- coding: utf-8 -*-
 
+"""Evaluate programs."""
+
 from loda.lang import Operand, Operation, Program
+from loda.oeis import ProgramCache
 from .operations import exec_arithmetic
 
 
 class Interpreter:
 
-    def __init__(self, program_cache=None, max_cycles=-1, max_memory=-1, max_terms_cache_size=10000, max_loop_stack_size=100):
-        self.max_cycles = max_cycles
-        self.max_memory = max_memory
+    def __init__(self,
+                 program_cache: ProgramCache = None,
+                 max_steps: int = -1,
+                 max_memory: int = -1,
+                 max_loop_stack_size: int = 100,
+                 max_terms_cache_size: int = 10000):
+        """
+        The interpreter class is used to run LODA programs. Running programs operate on memory dictionaries
+        mapping indices to integer values. The most common use case it to evaluate programs to integer sequences.
+
+        Args:
+            program_cache: Program cache (optional). When referencing programs using OEIS sequence IDs,
+                the program cache must be supplied.
+            max_steps: Maximum number of executions steps (-1 for no limit).
+            max_loop_stack_size: Maximum stack size used for loops (-1 for no limit).
+            max_terms_cache_size: Maximum cache size for sequence terms (-1 for no limit).
+
+        ## Example
+        >>> # Evaluate a program to an integer sequence:
+        >>> fibonacci = Program(...)
+        >>> interpreter.eval_to_seq(fibonacci, num_terms=10)
+        ([0, 1, 1, 2, 3, 5, 8, 13, 21, 34], 305)
+
+        """
         self.__program_cache = program_cache
-        self.__terms_cache = {}
-        self.__max_terms_cache_size = max_terms_cache_size
+        self.__max_steps = max_steps
+        self.__max_memory = max_memory
         self.__max_loop_stack_size = max_loop_stack_size
+        self.__max_terms_cache_size = max_terms_cache_size
+        self.__terms_cache = {}
         self.__running_programs = set()
 
-    def clear_cache(self) -> None:
+    def clear_cache(self):
+        """Clear the program and the terms cache. This is useful to free accumulated memory."""
         if self.__program_cache:
             self.__program_cache.clear()
         self.__terms_cache.clear()
 
-    def eval_to_seq(self, p: Program, num_terms: int, use_cycles=False):
+    def eval_to_seq(self, program: Program, num_terms: int, use_steps=False):
+        """
+        Evaluate a program to an integer sequence.
+
+        Args:
+            program: The program to be evaluated.
+            num_terms: The number of sequence terms to be computed.
+            use_steps: Flag indicating whether to return the number of steps as sequence.
+        Return:
+            This function returns a pair. The first entry is the computed integer sequence
+            as a list of ints. The second entry is the number of used computation steps.
+        """
         seq = []
         mem = {}
-        total_cycles = 0
+        total_steps = 0
         for i in range(num_terms):
             mem.clear()
             mem[0] = i
-            cycles = self.run(p, mem)
-            seq.append(cycles if use_cycles else mem[0])
-            total_cycles += cycles
-        return seq, total_cycles
+            steps = self.run(program, mem)
+            seq.append(steps if use_steps else mem[0])
+            total_steps += steps
+        return seq, total_steps
 
-    def run(self, id_or_program, mem):
+    def run(self, id_or_program, memory: dict):
+        """Run a program."""
         if isinstance(id_or_program, Program):
-            return self.__run(id_or_program, mem)
+            return self.__run(id_or_program, memory)
         elif isinstance(id_or_program, int):
             id = id_or_program
             if id in self.__running_programs:
@@ -45,12 +84,12 @@ class Interpreter:
             if program is None:
                 self.__raise("program not found: {}".format(id))
             self.__running_programs.add(id)
-            cycles = 0
+            steps = 0
             try:
-                cycles = self.__run(program, mem)
+                steps = self.__run(program, memory)
             finally:
                 self.__running_programs.remove(id)
-            return cycles
+            return steps
         else:
             self.__raise(
                 "expected ID or program: {}".format(id_or_program))
@@ -74,7 +113,7 @@ class Interpreter:
         counter_stack = []
         mem_stack = []
 
-        cycles = 0
+        steps = 0
         num_ops = len(ops)
         mem_tmp = mem.copy()
         mem_seq = {}
@@ -111,16 +150,16 @@ class Interpreter:
                 seq_id = self.__get(op.source, mem_tmp)
                 key = (seq_id, argument)
                 if key in self.__terms_cache:
-                    seq_result, seq_cycles = self.__terms_cache[key]
+                    seq_result, seq_steps = self.__terms_cache[key]
                 else:
                     mem_seq.clear()
                     mem_seq[0] = argument
-                    seq_cycles = self.run(seq_id, mem_seq)
+                    seq_steps = self.run(seq_id, mem_seq)
                     seq_result = mem_seq.get(0, 0)
                     if self.__max_terms_cache_size < 0 or len(self.__terms_cache) <= self.__max_terms_cache_size:
-                        self.__terms_cache[key] = (seq_result, seq_cycles)
+                        self.__terms_cache[key] = (seq_result, seq_steps)
                 self.__set(op.target, seq_result, mem_tmp, op)
-                cycles += seq_cycles
+                steps += seq_steps
 
             else:
                 # arithmetic operation
@@ -132,13 +171,13 @@ class Interpreter:
             pc = pc_next
 
             # count execution steps
-            cycles += 1
+            steps += 1
 
             # check resource constraints
-            if cycles > self.max_cycles and self.max_cycles >= 0:
-                self.__raise("exceeded maximum number of cycles ({}); last operation: {}".format(
-                    self.max_cycles, op))
-            if len(mem_tmp) > self.max_memory and self.max_memory >= 0:
+            if steps > self.__max_steps and self.__max_steps >= 0:
+                self.__raise("exceeded maximum number of steps ({}); last operation: {}".format(
+                    self.__max_steps, op))
+            if len(mem_tmp) > self.__max_memory and self.__max_memory >= 0:
                 self.__raise(
                     "exceeded maximum memory: {}; last operation: {} ".format(len(mem_tmp), op))
 
@@ -146,10 +185,10 @@ class Interpreter:
         if len(loop_stack) + len(counter_stack) + len(mem_stack) > 0:
             self.__raise("execution error")
 
-        # update main memory and return cycles
+        # update main memory and return steps
         mem.clear()
         mem.update(mem_tmp)
-        return cycles
+        return steps
 
     def __get(self, op: Operand, mem, get_address=False):
         if op.type == Operand.Type.CONSTANT:
@@ -167,7 +206,7 @@ class Interpreter:
             self.__raise("cannot set value of a constant")
         elif op.type == Operand.Type.INDIRECT:
             index = mem.get(index, 0)
-        if index > self.max_memory and self.max_memory >= 0:
+        if index > self.__max_memory and self.__max_memory >= 0:
             self.__raise(
                 "maximum memory exceeded: {}; last operation: {}".format(index, last))
         if v == None:

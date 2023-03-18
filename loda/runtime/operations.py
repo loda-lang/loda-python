@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Evaluate operations."""
+
 from loda.lang import Operation
 import math
 

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""Program model and serialization."""
+
 from .operation import Operation
 
 
 class Program:
-    """Program model and (de-)serialization.
+    """
+    Programs are essentially a list of `Operation`s.
 
     >>> # Constructing programs from operations:
     >>> p1 = Program()
@@ -21,7 +24,7 @@ class Program:
     div $0,$2
     """
 
-    operations: list[Operation]
+    operations: list
     """Operations of this program."""
 
     def __init__(self, program_str=None):

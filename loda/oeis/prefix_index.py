@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Prefix index for searching integer sequences."""
+
 import copy
 import os.path
 import re
@@ -105,7 +107,7 @@ class PrefixIndex:
         match.end_index = new_end
         return new_start < new_end
 
-    def get_match_ids(self, match: Match) -> list[int]:
+    def get_match_ids(self, match: Match) -> list:
         ids = [self.__index[i].id for i in range(
             match.start_index, match.end_index)]
         ids.extend(match.finished_ids)

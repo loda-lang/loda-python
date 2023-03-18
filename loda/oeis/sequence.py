@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Integer sequence model."""
+
 import functools
 
 

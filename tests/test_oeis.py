@@ -6,7 +6,7 @@ from loda.oeis import PrefixIndex, ProgramCache, Sequence
 from tests.helpers import OEIS_TEST_DIR, PROGRAMS_TEST_DIR
 
 NUM_SEQS = 5
-NUM_PROGRAMS = 15
+NUM_PROGRAMS = 16
 
 
 class PrefixIndexTests(TestCase):

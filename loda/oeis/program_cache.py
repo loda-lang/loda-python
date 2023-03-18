@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Program cache for integer sequence programs."""
+
 import os.path
 
 from loda.lang import Program

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""Operation model and serialization."""
+
 from enum import Enum
 from .operand import Operand
 
 
 class Operation:
-    """Operation model and (de-)serialization.
-
+    """
     Operations have the following structure: `<type> <target>,<source> ; <comment>`
     where the operation type is an enum consisting of three-letter operation names, and
     target and source are `loda.lang.operand.Operand`s. Depending on their type, 

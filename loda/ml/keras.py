@@ -9,7 +9,7 @@ import os.path
 
 class Model(tf.keras.Model):
 
-    def __init__(self, vocabulary: list[str],
+    def __init__(self, vocabulary: list,
                  embedding_dim: int = 256, num_rnn_units: int = 1024):
 
         super().__init__(self)
@@ -75,10 +75,10 @@ class Generator:
             dense_shape=[model.get_vocab_size()])
         self.prediction_mask = tf.sparse.to_dense(sparse_mask)
 
-    def ids_to_tokens_str(self, ids) -> list[str]:
+    def ids_to_tokens_str(self, ids) -> list:
         return [t.numpy().decode("utf-8") for t in self.model.ids_to_tokens(ids)]
 
-    def ids_to_programs(self, ids) -> list[Program]:
+    def ids_to_programs(self, ids) -> list:
         return util.split_program(util.tokens_to_program(self.ids_to_tokens_str(ids)))
 
     def program_to_input_ids(self, program: Program, num_lanes: int = 1):

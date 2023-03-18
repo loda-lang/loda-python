@@ -1,6 +1,7 @@
 """
-Search integer sequences from the
-[On-Line Encyclopedia of Integer Sequences®](https://www.oeis.org/) (OEIS®).
+[OEIS](https://www.oeis.org/) integration.
+
+This module contains and integration with the [On-Line Encyclopedia of Integer Sequences®](https://www.oeis.org/).
 """
 
 from .prefix_index import PrefixIndex

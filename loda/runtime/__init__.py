@@ -1,4 +1,8 @@
-"""Runtime of the LODA language. Includes an interpreter for evaluating programs."""
+"""
+Evaluate programs to integer sequences.
+
+.. include:: ./documentation.md
+"""
 
 from .interpreter import Interpreter
 from .operations import *
