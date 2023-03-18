@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>loda.lang.operand API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Operand model and serialization." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,18 +22,20 @@
 <h1 class="title">Module <code>loda.lang.operand</code></h1>
 </header>
 <section id="section-intro">
+<p>Operand model and serialization.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># -*- coding: utf-8 -*-
 
+&#34;&#34;&#34;Operand model and serialization.&#34;&#34;&#34;
+
 from enum import Enum
 
 
 class Operand:
-    &#34;&#34;&#34;Operand model and (de-)serialization.
-
+    &#34;&#34;&#34;
     Operands consist of two members: `type` (enum) and `value` (int).
     The operand&#39;s type can be either `CONSTANT`, `DIRECT` memory access,
     or `INDIRECT` memory access. Constants are plain integers. Direct
@@ -121,8 +123,7 @@ class Operand:
 <span>(</span><span>*args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Operand model and (de-)serialization.</p>
-<p>Operands consist of two members: <code>type</code> (enum) and <code>value</code> (int).
+<div class="desc"><p>Operands consist of two members: <code>type</code> (enum) and <code>value</code> (int).
 The operand's type can be either <code>CONSTANT</code>, <code>DIRECT</code> memory access,
 or <code>INDIRECT</code> memory access. Constants are plain integers. Direct
 memory access is indicated using a single dollar sign, for example
@@ -150,8 +151,7 @@ $$5
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Operand:
-    &#34;&#34;&#34;Operand model and (de-)serialization.
-
+    &#34;&#34;&#34;
     Operands consist of two members: `type` (enum) and `value` (int).
     The operand&#39;s type can be either `CONSTANT`, `DIRECT` memory access,
     or `INDIRECT` memory access. Constants are plain integers. Direct

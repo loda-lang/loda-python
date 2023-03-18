@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>loda.lang.operation API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Operation model and serialization." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,19 +22,21 @@
 <h1 class="title">Module <code>loda.lang.operation</code></h1>
 </header>
 <section id="section-intro">
+<p>Operation model and serialization.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># -*- coding: utf-8 -*-
 
+&#34;&#34;&#34;Operation model and serialization.&#34;&#34;&#34;
+
 from enum import Enum
 from .operand import Operand
 
 
 class Operation:
-    &#34;&#34;&#34;Operation model and (de-)serialization.
-
+    &#34;&#34;&#34;
     Operations have the following structure: `&lt;type&gt; &lt;target&gt;,&lt;source&gt; ; &lt;comment&gt;`
     where the operation type is an enum consisting of three-letter operation names, and
     target and source are `loda.lang.operand.Operand`s. Depending on their type, 
@@ -186,8 +188,7 @@ class Operation:
 <span>(</span><span>*args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Operation model and (de-)serialization.</p>
-<p>Operations have the following structure: <code>&lt;type&gt; &lt;target&gt;,&lt;source&gt; ; &lt;comment&gt;</code>
+<div class="desc"><p>Operations have the following structure: <code>&lt;type&gt; &lt;target&gt;,&lt;source&gt; ; &lt;comment&gt;</code>
 where the operation type is an enum consisting of three-letter operation names, and
 target and source are <code><a title="loda.lang.operand.Operand" href="operand.html#loda.lang.operand.Operand">Operand</a></code>s. Depending on their type,
 operations may have no target/source operands. Note that the <em>first</em> operand
@@ -223,8 +224,7 @@ div $3,$5 ; some comment
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Operation:
-    &#34;&#34;&#34;Operation model and (de-)serialization.
-
+    &#34;&#34;&#34;
     Operations have the following structure: `&lt;type&gt; &lt;target&gt;,&lt;source&gt; ; &lt;comment&gt;`
     where the operation type is an enum consisting of three-letter operation names, and
     target and source are `loda.lang.operand.Operand`s. Depending on their type, 

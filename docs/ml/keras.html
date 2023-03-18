@@ -37,7 +37,7 @@ import os.path
 
 class Model(tf.keras.Model):
 
-    def __init__(self, vocabulary: list[str],
+    def __init__(self, vocabulary: list,
                  embedding_dim: int = 256, num_rnn_units: int = 1024):
 
         super().__init__(self)
@@ -103,10 +103,10 @@ class Generator:
             dense_shape=[model.get_vocab_size()])
         self.prediction_mask = tf.sparse.to_dense(sparse_mask)
 
-    def ids_to_tokens_str(self, ids) -&gt; list[str]:
+    def ids_to_tokens_str(self, ids) -&gt; list:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.model.ids_to_tokens(ids)]
 
-    def ids_to_programs(self, ids) -&gt; list[Program]:
+    def ids_to_programs(self, ids) -&gt; list:
         return util.split_program(util.tokens_to_program(self.ids_to_tokens_str(ids)))
 
     def program_to_input_ids(self, program: Program, num_lanes: int = 1):
@@ -274,10 +274,10 @@ def create_dataset(ids: list, sample_size: int,
             dense_shape=[model.get_vocab_size()])
         self.prediction_mask = tf.sparse.to_dense(sparse_mask)
 
-    def ids_to_tokens_str(self, ids) -&gt; list[str]:
+    def ids_to_tokens_str(self, ids) -&gt; list:
         return [t.numpy().decode(&#34;utf-8&#34;) for t in self.model.ids_to_tokens(ids)]
 
-    def ids_to_programs(self, ids) -&gt; list[Program]:
+    def ids_to_programs(self, ids) -&gt; list:
         return util.split_program(util.tokens_to_program(self.ids_to_tokens_str(ids)))
 
     def program_to_input_ids(self, program: Program, num_lanes: int = 1):
@@ -445,7 +445,7 @@ def create_dataset(ids: list, sample_size: int,
 </details>
 </dd>
 <dt id="loda.ml.keras.Generator.ids_to_programs"><code class="name flex">
-<span>def <span class="ident">ids_to_programs</span></span>(<span>self, ids) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
+<span>def <span class="ident">ids_to_programs</span></span>(<span>self, ids) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -453,12 +453,12 @@ def create_dataset(ids: list, sample_size: int,
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ids_to_programs(self, ids) -&gt; list[Program]:
+<pre><code class="python">def ids_to_programs(self, ids) -&gt; list:
     return util.split_program(util.tokens_to_program(self.ids_to_tokens_str(ids)))</code></pre>
 </details>
 </dd>
 <dt id="loda.ml.keras.Generator.ids_to_tokens_str"><code class="name flex">
-<span>def <span class="ident">ids_to_tokens_str</span></span>(<span>self, ids) ‑> list[str]</span>
+<span>def <span class="ident">ids_to_tokens_str</span></span>(<span>self, ids) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -466,7 +466,7 @@ def create_dataset(ids: list, sample_size: int,
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def ids_to_tokens_str(self, ids) -&gt; list[str]:
+<pre><code class="python">def ids_to_tokens_str(self, ids) -&gt; list:
     return [t.numpy().decode(&#34;utf-8&#34;) for t in self.model.ids_to_tokens(ids)]</code></pre>
 </details>
 </dd>
@@ -489,7 +489,7 @@ def create_dataset(ids: list, sample_size: int,
 </dd>
 <dt id="loda.ml.keras.Model"><code class="flex name class">
 <span>class <span class="ident">Model</span></span>
-<span>(</span><span>vocabulary: list[str], embedding_dim: int = 256, num_rnn_units: int = 1024)</span>
+<span>(</span><span>vocabulary: list, embedding_dim: int = 256, num_rnn_units: int = 1024)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><code><a title="loda.ml.keras.Model" href="#loda.ml.keras.Model">Model</a></code> groups layers into an object with training and inference features.</p>
@@ -588,7 +588,7 @@ to do prediction with <code>model.predict()</code>.</p></div>
 </summary>
 <pre><code class="python">class Model(tf.keras.Model):
 
-    def __init__(self, vocabulary: list[str],
+    def __init__(self, vocabulary: list,
                  embedding_dim: int = 256, num_rnn_units: int = 1024):
 
         super().__init__(self)

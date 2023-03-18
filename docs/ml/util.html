@@ -29,11 +29,10 @@
 <pre><code class="python">from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
 
-import typing
 import random
 
 
-def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]:
+def program_to_tokens(program: Program):
     tokens = []
     vocab = set()
     for op in program.operations:
@@ -46,7 +45,7 @@ def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]
         vocab.add(type)
         vocab.add(target)
         vocab.add(source)
-    return (tokens, sorted(vocab))
+    return tokens, sorted(vocab)
 
 
 def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
@@ -59,7 +58,7 @@ def tokens_to_operation(type_tok: str, target_tok: str, source_tok: str):
         return Operation()  # nop
 
 
-def tokens_to_program(tokens: list[str]) -&gt; Program:
+def tokens_to_program(tokens: list) -&gt; Program:
     i = 0
     program = Program()
     while i+2 &lt; len(tokens):
@@ -118,7 +117,7 @@ def merge_programs(program_cache: ProgramCache, num_programs: int = -1, num_ops_
     return merged, num_samples, sample_size
 
 
-def split_program(program: Program) -&gt; list[Program]:
+def split_program(program: Program) -&gt; list:
     splitted = []
     next = Program()
     for op in program.operations:
@@ -213,7 +212,7 @@ def split_sample(sample: list):
 </details>
 </dd>
 <dt id="loda.ml.util.program_to_tokens"><code class="name flex">
-<span>def <span class="ident">program_to_tokens</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>) ‑> Tuple[list[str], list[str]]</span>
+<span>def <span class="ident">program_to_tokens</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -221,7 +220,7 @@ def split_sample(sample: list):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def program_to_tokens(program: Program) -&gt; typing.Tuple[list[str], list[str]]:
+<pre><code class="python">def program_to_tokens(program: Program):
     tokens = []
     vocab = set()
     for op in program.operations:
@@ -234,11 +233,11 @@ def split_sample(sample: list):
         vocab.add(type)
         vocab.add(target)
         vocab.add(source)
-    return (tokens, sorted(vocab))</code></pre>
+    return tokens, sorted(vocab)</code></pre>
 </details>
 </dd>
 <dt id="loda.ml.util.split_program"><code class="name flex">
-<span>def <span class="ident">split_program</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>) ‑> list[<a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>]</span>
+<span>def <span class="ident">split_program</span></span>(<span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -246,7 +245,7 @@ def split_sample(sample: list):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split_program(program: Program) -&gt; list[Program]:
+<pre><code class="python">def split_program(program: Program) -&gt; list:
     splitted = []
     next = Program()
     for op in program.operations:
@@ -295,7 +294,7 @@ def split_sample(sample: list):
 </details>
 </dd>
 <dt id="loda.ml.util.tokens_to_program"><code class="name flex">
-<span>def <span class="ident">tokens_to_program</span></span>(<span>tokens: list[str]) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
+<span>def <span class="ident">tokens_to_program</span></span>(<span>tokens: list) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -303,7 +302,7 @@ def split_sample(sample: list):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def tokens_to_program(tokens: list[str]) -&gt; Program:
+<pre><code class="python">def tokens_to_program(tokens: list) -&gt; Program:
     i = 0
     program = Program()
     while i+2 &lt; len(tokens):
