@@ -50,7 +50,7 @@ class SampleLODA:
         dataset = keras.create_dataset(ids, sample_size=sample_size)
         loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
         model.compile(optimizer="adam", loss=loss)
-        model.fit(dataset, epochs=10)
+        model.fit(dataset, epochs=5)
 
         # Use the trained model to generate programs.
         generator = keras.Generator(model)
