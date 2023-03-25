@@ -75,15 +75,21 @@ import tensorflow as tf
 class Model(tf.keras.Model):
     &#34;&#34;&#34;Keras model for program generation using RNN.&#34;&#34;&#34;
 
-    def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int, num_rnn_units: int):
+    def __init__(self, vocabulary: list,
+                 embedding_dim: int, num_rnn_units: int,
+                 num_samples: int, sample_size: int,
+                 num_ops_per_sample: int, num_nops_separator: int,
+                 program_ids: list):
 
         super().__init__(self)
         self.vocabulary = vocabulary
-        self.num_ops_per_sample = num_ops_per_sample
-        self.num_nops_separator = num_nops_separator
         self.embedding_dim = embedding_dim
         self.num_rnn_units = num_rnn_units
+        self.num_samples = num_samples
+        self.sample_size = sample_size
+        self.num_ops_per_sample = num_ops_per_sample
+        self.num_nops_separator = num_nops_separator
+        self.program_ids = program_ids
 
         # Initialize token &lt;-&gt; ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -117,10 +123,22 @@ class Model(tf.keras.Model):
 
     def get_config(self):
         return {&#34;vocabulary&#34;: self.vocabulary,
+                &#34;embedding_dim&#34;: self.embedding_dim,
+                &#34;num_rnn_units&#34;: self.num_rnn_units,
+                &#34;num_samples&#34;: self.num_samples,
+                &#34;sample_size&#34;: self.sample_size,
                 &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
                 &#34;num_nops_separator&#34;: self.num_nops_separator,
-                &#34;embedding_dim&#34;: self.embedding_dim,
-                &#34;num_rnn_units&#34;: self.num_rnn_units}
+                &#34;program_ids&#34;: self.program_ids}
+
+    def summary(self, line_length=None, positions=None, print_fn=None,
+                expand_nested=False, show_trainable=False, layer_range=None):
+        super().summary(line_length, positions, print_fn,
+                        expand_nested, show_trainable, layer_range)
+        print(&#34;Vocabulary size:&#34;, self.get_vocab_size())
+        print(&#34;Sample size:&#34;, self.sample_size)
+        print(&#34;Trained samples:&#34;, self.num_samples)
+        print(&#34;Trained programs:&#34;, len(self.program_ids))
 
     @classmethod
     def from_config(cls, config):
@@ -331,20 +349,26 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
     Return:
         This function returns the trained Keras model.
     &#34;&#34;&#34;
+    # Get random program IDs.
+    program_ids = util.get_random_program_ids(program_cache, num_programs)
+
     # Load programs and convert to tokens and vocabulary.
-    merged_programs, _, sample_size = util.merge_programs(
-        program_cache,
-        num_programs=num_programs,
+    merged_programs, num_samples, sample_size = util.merge_programs(
+        program_cache, program_ids,
         num_ops_per_sample=num_ops_per_sample,
         num_nops_separator=num_nops_separator)
     tokens, vocabulary = util.program_to_tokens(merged_programs)
 
     # Create Keras model and dataset, run the training, and save the model.
+    program_ids = sorted(program_ids)
     model = Model(vocabulary,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units,
+                  num_samples=num_samples,
+                  sample_size=sample_size,
                   num_ops_per_sample=num_ops_per_sample,
                   num_nops_separator=num_nops_separator,
-                  embedding_dim=embedding_dim,
-                  num_rnn_units=num_rnn_units)
+                  program_ids=program_ids)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -444,20 +468,26 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
     Return:
         This function returns the trained Keras model.
     &#34;&#34;&#34;
+    # Get random program IDs.
+    program_ids = util.get_random_program_ids(program_cache, num_programs)
+
     # Load programs and convert to tokens and vocabulary.
-    merged_programs, _, sample_size = util.merge_programs(
-        program_cache,
-        num_programs=num_programs,
+    merged_programs, num_samples, sample_size = util.merge_programs(
+        program_cache, program_ids,
         num_ops_per_sample=num_ops_per_sample,
         num_nops_separator=num_nops_separator)
     tokens, vocabulary = util.program_to_tokens(merged_programs)
 
     # Create Keras model and dataset, run the training, and save the model.
+    program_ids = sorted(program_ids)
     model = Model(vocabulary,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units,
+                  num_samples=num_samples,
+                  sample_size=sample_size,
                   num_ops_per_sample=num_ops_per_sample,
                   num_nops_separator=num_nops_separator,
-                  embedding_dim=embedding_dim,
-                  num_rnn_units=num_rnn_units)
+                  program_ids=program_ids)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -677,7 +707,7 @@ the number of generated programs, the generation speed, and error statistics.</p
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model"><code class="flex name class">
 <span>class <span class="ident">Model</span></span>
-<span>(</span><span>vocabulary: list, num_ops_per_sample: int, num_nops_separator: int, embedding_dim: int, num_rnn_units: int)</span>
+<span>(</span><span>vocabulary: list, embedding_dim: int, num_rnn_units: int, num_samples: int, sample_size: int, num_ops_per_sample: int, num_nops_separator: int, program_ids: list)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Keras model for program generation using RNN.</p></div>
@@ -688,15 +718,21 @@ the number of generated programs, the generation speed, and error statistics.</p
 <pre><code class="python">class Model(tf.keras.Model):
     &#34;&#34;&#34;Keras model for program generation using RNN.&#34;&#34;&#34;
 
-    def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int, num_rnn_units: int):
+    def __init__(self, vocabulary: list,
+                 embedding_dim: int, num_rnn_units: int,
+                 num_samples: int, sample_size: int,
+                 num_ops_per_sample: int, num_nops_separator: int,
+                 program_ids: list):
 
         super().__init__(self)
         self.vocabulary = vocabulary
-        self.num_ops_per_sample = num_ops_per_sample
-        self.num_nops_separator = num_nops_separator
         self.embedding_dim = embedding_dim
         self.num_rnn_units = num_rnn_units
+        self.num_samples = num_samples
+        self.sample_size = sample_size
+        self.num_ops_per_sample = num_ops_per_sample
+        self.num_nops_separator = num_nops_separator
+        self.program_ids = program_ids
 
         # Initialize token &lt;-&gt; ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -730,10 +766,22 @@ the number of generated programs, the generation speed, and error statistics.</p
 
     def get_config(self):
         return {&#34;vocabulary&#34;: self.vocabulary,
+                &#34;embedding_dim&#34;: self.embedding_dim,
+                &#34;num_rnn_units&#34;: self.num_rnn_units,
+                &#34;num_samples&#34;: self.num_samples,
+                &#34;sample_size&#34;: self.sample_size,
                 &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
                 &#34;num_nops_separator&#34;: self.num_nops_separator,
-                &#34;embedding_dim&#34;: self.embedding_dim,
-                &#34;num_rnn_units&#34;: self.num_rnn_units}
+                &#34;program_ids&#34;: self.program_ids}
+
+    def summary(self, line_length=None, positions=None, print_fn=None,
+                expand_nested=False, show_trainable=False, layer_range=None):
+        super().summary(line_length, positions, print_fn,
+                        expand_nested, show_trainable, layer_range)
+        print(&#34;Vocabulary size:&#34;, self.get_vocab_size())
+        print(&#34;Sample size:&#34;, self.sample_size)
+        print(&#34;Trained samples:&#34;, self.num_samples)
+        print(&#34;Trained programs:&#34;, len(self.program_ids))
 
     @classmethod
     def from_config(cls, config):
@@ -851,10 +899,13 @@ Raises <code>NotImplementedError</code> when in cases where a custom
 </summary>
 <pre><code class="python">def get_config(self):
     return {&#34;vocabulary&#34;: self.vocabulary,
+            &#34;embedding_dim&#34;: self.embedding_dim,
+            &#34;num_rnn_units&#34;: self.num_rnn_units,
+            &#34;num_samples&#34;: self.num_samples,
+            &#34;sample_size&#34;: self.sample_size,
             &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
             &#34;num_nops_separator&#34;: self.num_nops_separator,
-            &#34;embedding_dim&#34;: self.embedding_dim,
-            &#34;num_rnn_units&#34;: self.num_rnn_units}</code></pre>
+            &#34;program_ids&#34;: self.program_ids}</code></pre>
 </details>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model.get_vocab_size"><code class="name flex">
@@ -868,6 +919,62 @@ Raises <code>NotImplementedError</code> when in cases where a custom
 </summary>
 <pre><code class="python">def get_vocab_size(self):
     return len(self.tokens_to_ids.get_vocabulary())</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.keras.program_generation_rnn.Model.summary"><code class="name flex">
+<span>def <span class="ident">summary</span></span>(<span>self, line_length=None, positions=None, print_fn=None, expand_nested=False, show_trainable=False, layer_range=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prints a string summary of the network.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>line_length</code></strong></dt>
+<dd>Total length of printed lines
+(e.g. set this to adapt the display to different
+terminal window sizes).</dd>
+<dt><strong><code>positions</code></strong></dt>
+<dd>Relative or absolute positions of log elements
+in each line. If not provided,
+defaults to <code>[.33, .55, .67, 1.]</code>.</dd>
+<dt><strong><code>print_fn</code></strong></dt>
+<dd>Print function to use. By default, prints to <code>stdout</code>.
+If <code>stdout</code> doesn't work in your environment, change to <code>print</code>.
+It will be called on each line of the summary.
+You can set it to a custom function
+in order to capture the string summary.</dd>
+<dt><strong><code>expand_nested</code></strong></dt>
+<dd>Whether to expand the nested models.
+If not provided, defaults to <code>False</code>.</dd>
+<dt><strong><code>show_trainable</code></strong></dt>
+<dd>Whether to show if a layer is trainable.
+If not provided, defaults to <code>False</code>.</dd>
+<dt><strong><code>layer_range</code></strong></dt>
+<dd>a list or tuple of 2 strings,
+which is the starting layer name and ending layer name
+(both inclusive) indicating the range of layers to be printed
+in summary. It also accepts regex patterns instead of exact
+name. In such case, start predicate will be the first element
+it matches to <code>layer_range[0]</code> and the end predicate will be
+the last element it matches to <code>layer_range[1]</code>.
+By default <code>None</code> which considers all layers of model.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>if <code>summary()</code> is called before the model is built.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def summary(self, line_length=None, positions=None, print_fn=None,
+            expand_nested=False, show_trainable=False, layer_range=None):
+    super().summary(line_length, positions, print_fn,
+                    expand_nested, show_trainable, layer_range)
+    print(&#34;Vocabulary size:&#34;, self.get_vocab_size())
+    print(&#34;Sample size:&#34;, self.sample_size)
+    print(&#34;Trained samples:&#34;, self.num_samples)
+    print(&#34;Trained programs:&#34;, len(self.program_ids))</code></pre>
 </details>
 </dd>
 </dl>
@@ -909,6 +1016,7 @@ Raises <code>NotImplementedError</code> when in cases where a custom
 <li><code><a title="loda.ml.keras.program_generation_rnn.Model.from_config" href="#loda.ml.keras.program_generation_rnn.Model.from_config">from_config</a></code></li>
 <li><code><a title="loda.ml.keras.program_generation_rnn.Model.get_config" href="#loda.ml.keras.program_generation_rnn.Model.get_config">get_config</a></code></li>
 <li><code><a title="loda.ml.keras.program_generation_rnn.Model.get_vocab_size" href="#loda.ml.keras.program_generation_rnn.Model.get_vocab_size">get_vocab_size</a></code></li>
+<li><code><a title="loda.ml.keras.program_generation_rnn.Model.summary" href="#loda.ml.keras.program_generation_rnn.Model.summary">summary</a></code></li>
 </ul>
 </li>
 </ul>

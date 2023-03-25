@@ -93,22 +93,25 @@ def append_nops(program: Program, num_nops: int):
         program.operations.append(Operation())  # nop
 
 
-def merge_programs(program_cache: ProgramCache, num_programs: int,
-                   num_ops_per_sample: int, num_nops_separator: int) -&gt; Program:
-
+def get_random_program_ids(program_cache: ProgramCache, num_programs: int = -1):
     # Get IDs of all existing programs. Shuffle them and reduce
     # the number of program IDs if requested.
     ids = program_cache.all_ids()
     random.shuffle(ids)
     if num_programs &gt;= 0 and len(ids) &gt; num_programs:
         ids = ids[0:num_programs]
+    return ids
+
+
+def merge_programs(program_cache: ProgramCache, program_ids: list,
+                   num_ops_per_sample: int, num_nops_separator: int):
 
     # Merge all programs into one program. Invidual programs are
     # separated by (multiple) nops. The number nops equals the
     # number of operations per sample.
     merged = Program()
     num_loaded = 0
-    for id in ids:
+    for id in program_ids:
         program = program_cache.get(id)
         append_nops(merged, num_nops_separator)
         for op in program.operations:
@@ -164,8 +167,8 @@ def split_sample(sample: list):
         program.operations.append(Operation())  # nop</code></pre>
 </details>
 </dd>
-<dt id="loda.ml.util.merge_programs"><code class="name flex">
-<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int, num_ops_per_sample: int, num_nops_separator: int) ‑> <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a></span>
+<dt id="loda.ml.util.get_random_program_ids"><code class="name flex">
+<span>def <span class="ident">get_random_program_ids</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int = -1)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -173,22 +176,34 @@ def split_sample(sample: list):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def merge_programs(program_cache: ProgramCache, num_programs: int,
-                   num_ops_per_sample: int, num_nops_separator: int) -&gt; Program:
-
+<pre><code class="python">def get_random_program_ids(program_cache: ProgramCache, num_programs: int = -1):
     # Get IDs of all existing programs. Shuffle them and reduce
     # the number of program IDs if requested.
     ids = program_cache.all_ids()
     random.shuffle(ids)
     if num_programs &gt;= 0 and len(ids) &gt; num_programs:
         ids = ids[0:num_programs]
+    return ids</code></pre>
+</details>
+</dd>
+<dt id="loda.ml.util.merge_programs"><code class="name flex">
+<span>def <span class="ident">merge_programs</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, program_ids: list, num_ops_per_sample: int, num_nops_separator: int)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def merge_programs(program_cache: ProgramCache, program_ids: list,
+                   num_ops_per_sample: int, num_nops_separator: int):
 
     # Merge all programs into one program. Invidual programs are
     # separated by (multiple) nops. The number nops equals the
     # number of operations per sample.
     merged = Program()
     num_loaded = 0
-    for id in ids:
+    for id in program_ids:
         program = program_cache.get(id)
         append_nops(merged, num_nops_separator)
         for op in program.operations:
@@ -355,8 +370,9 @@ def split_sample(sample: list):
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="loda.ml.util.append_nops" href="#loda.ml.util.append_nops">append_nops</a></code></li>
+<li><code><a title="loda.ml.util.get_random_program_ids" href="#loda.ml.util.get_random_program_ids">get_random_program_ids</a></code></li>
 <li><code><a title="loda.ml.util.merge_programs" href="#loda.ml.util.merge_programs">merge_programs</a></code></li>
 <li><code><a title="loda.ml.util.program_to_tokens" href="#loda.ml.util.program_to_tokens">program_to_tokens</a></code></li>
 <li><code><a title="loda.ml.util.split_sample" href="#loda.ml.util.split_sample">split_sample</a></code></li>
