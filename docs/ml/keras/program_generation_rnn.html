@@ -76,12 +76,14 @@ class Model(tf.keras.Model):
     &#34;&#34;&#34;Keras model for program generation using RNN.&#34;&#34;&#34;
 
     def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int, num_rnn_units: int):
 
         super().__init__(self)
         self.vocabulary = vocabulary
         self.num_ops_per_sample = num_ops_per_sample
         self.num_nops_separator = num_nops_separator
+        self.embedding_dim = embedding_dim
+        self.num_rnn_units = num_rnn_units
 
         # Initialize token &lt;-&gt; ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -116,7 +118,9 @@ class Model(tf.keras.Model):
     def get_config(self):
         return {&#34;vocabulary&#34;: self.vocabulary,
                 &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
-                &#34;num_nops_separator&#34;: self.num_nops_separator}
+                &#34;num_nops_separator&#34;: self.num_nops_separator,
+                &#34;embedding_dim&#34;: self.embedding_dim,
+                &#34;num_rnn_units&#34;: self.num_rnn_units}
 
     @classmethod
     def from_config(cls, config):
@@ -306,7 +310,9 @@ def load_model(model_path: str) -&gt; Model:
 
 
 def train_model(program_cache: ProgramCache, num_programs: int = -1,
-                num_ops_per_sample: int = 32, num_nops_separator: int = 24, epochs: int = 3):
+                num_ops_per_sample: int = 32, num_nops_separator: int = 24,
+                embedding_dim: int = 256, num_rnn_units: int = 1024,
+                epochs: int = 3):
     &#34;&#34;&#34;
     Train a Keras RNN model for program generation.
 
@@ -318,6 +324,8 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
             to learn the structure of closed program loops and avoid generation of broken loops.
         num_nops_separator: Number of `nop` operations used as separator between trained programs.
             We recommend to set this to 75% of `num_ops_per_sample`, but at least 1.
+        embedding_dim: Embedding dimensions.
+        num_rnn_units: Number of RNN units.
         epochs: Number of epochs for training. 
 
     Return:
@@ -334,7 +342,9 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
     # Create Keras model and dataset, run the training, and save the model.
     model = Model(vocabulary,
                   num_ops_per_sample=num_ops_per_sample,
-                  num_nops_separator=num_nops_separator)
+                  num_nops_separator=num_nops_separator,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -382,7 +392,7 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
 </details>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.train_model"><code class="name flex">
-<span>def <span class="ident">train_model</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int = -1, num_ops_per_sample: int = 32, num_nops_separator: int = 24, epochs: int = 3)</span>
+<span>def <span class="ident">train_model</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int = -1, num_ops_per_sample: int = 32, num_nops_separator: int = 24, embedding_dim: int = 256, num_rnn_units: int = 1024, epochs: int = 3)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Train a Keras RNN model for program generation.</p>
@@ -399,6 +409,10 @@ to learn the structure of closed program loops and avoid generation of broken lo
 <dt><strong><code>num_nops_separator</code></strong></dt>
 <dd>Number of <code>nop</code> operations used as separator between trained programs.
 We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least 1.</dd>
+<dt><strong><code>embedding_dim</code></strong></dt>
+<dd>Embedding dimensions.</dd>
+<dt><strong><code>num_rnn_units</code></strong></dt>
+<dd>Number of RNN units.</dd>
 <dt><strong><code>epochs</code></strong></dt>
 <dd>Number of epochs for training. </dd>
 </dl>
@@ -409,7 +423,9 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def train_model(program_cache: ProgramCache, num_programs: int = -1,
-                num_ops_per_sample: int = 32, num_nops_separator: int = 24, epochs: int = 3):
+                num_ops_per_sample: int = 32, num_nops_separator: int = 24,
+                embedding_dim: int = 256, num_rnn_units: int = 1024,
+                epochs: int = 3):
     &#34;&#34;&#34;
     Train a Keras RNN model for program generation.
 
@@ -421,6 +437,8 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
             to learn the structure of closed program loops and avoid generation of broken loops.
         num_nops_separator: Number of `nop` operations used as separator between trained programs.
             We recommend to set this to 75% of `num_ops_per_sample`, but at least 1.
+        embedding_dim: Embedding dimensions.
+        num_rnn_units: Number of RNN units.
         epochs: Number of epochs for training. 
 
     Return:
@@ -437,7 +455,9 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
     # Create Keras model and dataset, run the training, and save the model.
     model = Model(vocabulary,
                   num_ops_per_sample=num_ops_per_sample,
-                  num_nops_separator=num_nops_separator)
+                  num_nops_separator=num_nops_separator,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -657,7 +677,7 @@ the number of generated programs, the generation speed, and error statistics.</p
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model"><code class="flex name class">
 <span>class <span class="ident">Model</span></span>
-<span>(</span><span>vocabulary: list, num_ops_per_sample: int, num_nops_separator: int, embedding_dim: int = 256, num_rnn_units: int = 1024)</span>
+<span>(</span><span>vocabulary: list, num_ops_per_sample: int, num_nops_separator: int, embedding_dim: int, num_rnn_units: int)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Keras model for program generation using RNN.</p></div>
@@ -669,12 +689,14 @@ the number of generated programs, the generation speed, and error statistics.</p
     &#34;&#34;&#34;Keras model for program generation using RNN.&#34;&#34;&#34;
 
     def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int, num_rnn_units: int):
 
         super().__init__(self)
         self.vocabulary = vocabulary
         self.num_ops_per_sample = num_ops_per_sample
         self.num_nops_separator = num_nops_separator
+        self.embedding_dim = embedding_dim
+        self.num_rnn_units = num_rnn_units
 
         # Initialize token &lt;-&gt; ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -709,7 +731,9 @@ the number of generated programs, the generation speed, and error statistics.</p
     def get_config(self):
         return {&#34;vocabulary&#34;: self.vocabulary,
                 &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
-                &#34;num_nops_separator&#34;: self.num_nops_separator}
+                &#34;num_nops_separator&#34;: self.num_nops_separator,
+                &#34;embedding_dim&#34;: self.embedding_dim,
+                &#34;num_rnn_units&#34;: self.num_rnn_units}
 
     @classmethod
     def from_config(cls, config):
@@ -828,7 +852,9 @@ Raises <code>NotImplementedError</code> when in cases where a custom
 <pre><code class="python">def get_config(self):
     return {&#34;vocabulary&#34;: self.vocabulary,
             &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
-            &#34;num_nops_separator&#34;: self.num_nops_separator}</code></pre>
+            &#34;num_nops_separator&#34;: self.num_nops_separator,
+            &#34;embedding_dim&#34;: self.embedding_dim,
+            &#34;num_rnn_units&#34;: self.num_rnn_units}</code></pre>
 </details>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model.get_vocab_size"><code class="name flex">
