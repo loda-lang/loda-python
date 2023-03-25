@@ -2,7 +2,7 @@
 
 """Program model and serialization."""
 
-from .operation import Operation
+from .operation import Operation, Operand
 
 
 class Program:
@@ -51,3 +51,17 @@ class Program:
             if op.type == Operation.Type.LPB:
                 indent += 1
         return result
+
+    def validate(self):
+        loop_depth = 0
+        for op in self.operations:
+            if op.type != Operation.Type.NOP and op.type != Operation.Type.LPE and op.target.type == Operand.Type.CONSTANT:
+                raise ValueError("target cannot be a constant")
+            if op.type == Operation.Type.LPB:
+                loop_depth += 1
+            elif op.type == Operation.Type.LPE:
+                if loop_depth == 0:
+                    raise ValueError("unexpected lpe")
+                loop_depth -= 1
+        if loop_depth != 0:
+            raise ValueError("missing lpe")

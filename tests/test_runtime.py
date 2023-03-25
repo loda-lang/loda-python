@@ -7,11 +7,14 @@ from unittest import TestCase
 
 from loda.lang import Operation
 from loda.oeis import ProgramCache
-from loda.runtime import exec_arithmetic, Interpreter
+from loda.runtime import exec_arithmetic, Evaluator, Interpreter
 from tests.helpers import load_ops_params, load_programs_params, OPERATIONS_TEST_DIR, PROGRAMS_TEST_DIR
 
 
 class RuntimeTests(TestCase):
+
+    def setUp(self):
+        self.program_cache = ProgramCache(PROGRAMS_TEST_DIR)
 
     @parameterized.expand(load_ops_params())
     def test_exec_arithmetic(self, op):
@@ -28,13 +31,15 @@ class RuntimeTests(TestCase):
                     r, v, "expected {}({},{})={}".format(op, a, b, r))
 
     @parameterized.expand(load_programs_params())
-    def test_eval_to_seq(self, _, id):
-        program_cache = ProgramCache(PROGRAMS_TEST_DIR)
-        program = program_cache.get(id)
+    def test_evaluator(self, _, id):
+        program = self.program_cache.get(id)
         seq_str = program.operations[1].comment.split(",")
         seq_expected = list(map(lambda v: int(v.strip()), seq_str))
         num_terms = len(seq_expected)
         self.assertTrue(num_terms >= 10)
-        interpreter = Interpreter(program_cache=program_cache)
-        seq, _ = interpreter.eval_to_seq(program, num_terms)
+        interpreter = Interpreter(self.program_cache)
+        evaluator = Evaluator(program, interpreter)
+        seq = []
+        for _ in range(num_terms):
+            seq.append(evaluator())
         self.assertEqual(seq_expected, seq)

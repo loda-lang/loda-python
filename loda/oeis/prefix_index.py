@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Prefix index for searching integer sequences."""
 
 import copy
-import os.path
-import re
+import functools
 
 from .sequence import Sequence
 
@@ -18,75 +15,25 @@ class PrefixIndex:
             self.end_index = size  # exclusive
             self.finished_ids = []
 
-    def __init__(self, path: str):
-        self.__path = path
-        self.__index = None
-        self.__lookup = None
-
-    def size(self) -> int:
-        if self.__index is None:
-            self.__load()
-        return len(self.__index)
-
-    def get(self, id: int):
-        if self.__index is None:
-            self.__load()
-        return copy.copy(self.__get(id))
-
-    def __get(self, id: int):
-        return self.__index[self.__lookup[id]]
-
-    def __parse_line(self, line: str, pattern):
-        line = line.strip()
-        if len(line) == 0 or line.startswith("#"):
-            return None
-        match = pattern.match(line)
-        if not match:
-            raise ValueError("parse error: {}".format(line))
-        return match
-
-    def __load(self):
-        seqs = []
-        # load sequence terms
-        stripped = os.path.join(self.__path, "stripped")
-        expected_id = 1
-        with open(stripped) as file:
-            pattern = re.compile("^A([0-9]+) ,([0-9,]+),$")
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError("unexpected ID: {}".format(line))
-                terms_str = match.group(2).split(",")
-                terms = [int(t) for t in terms_str]
-                seqs.append(Sequence(id, "", terms))
-                expected_id += 1
-        # load sequence names
-        names = os.path.join(self.__path, "names")
-        expected_id = 1
-        with open(names) as file:
-            pattern = re.compile("^A([0-9]+) (.+)$")
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError("unexpected ID: {}".format(line))
-                name = match.group(2)
-                seqs[id - 1].name = name
-                expected_id += 1
+    def __init__(self, seqs: list):
+        seqs = list(filter(lambda s: len(s.terms) > 0, seqs))
+        max_id = functools.reduce(lambda id, s: max(id, s.id), seqs, 0)
         self.__index = sorted(seqs)
-        self.__lookup = [0] * (len(seqs) + 1)
+        self.__lookup = [0] * (max_id + 1)
         for i in range(len(seqs)):
             id = self.__index[i].id
             self.__lookup[id] = i
 
+    def size(self) -> int:
+        return len(self.__index)
+
+    def get(self, id: int) -> Sequence:
+        return copy.copy(self.__get(id))
+
+    def __get(self, id: int) -> Sequence:
+        return self.__index[self.__lookup[id]]
+
     def global_match(self) -> Match:
-        if self.__index is None:
-            self.__load()
         return PrefixIndex.Match(len(self.__index))
 
     def refine_match(self, match: Match, term: int) -> bool:

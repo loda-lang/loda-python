@@ -1,19 +1,43 @@
-import os.path
+"""
+Keras RNN models for LODA program generation.
+
+## Example
+
+>>> # Train a model using existing programs:
+>>> program_cache = ProgramCache("path/to/programs")
+>>> model = train_model(program_cache)
+>>>
+>>> # Save a model to disk:
+>>> model.save("sample_model")
+>>>
+>>> # Load a model from disk:
+>>> model = load_model("sample_model")
+>>>
+>>> # Generated program using the model:
+>>> generator = Generator(model)
+>>> program = generator()
+"""
+
+import copy
+import time
 
 from loda.lang import Operation, Program
+from loda.oeis import ProgramCache
 from loda.ml import util
 
 import tensorflow as tf
-import os.path
 
 
 class Model(tf.keras.Model):
+    """Keras model for program generation using RNN."""
 
-    def __init__(self, vocabulary: list,
+    def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
                  embedding_dim: int = 256, num_rnn_units: int = 1024):
 
         super().__init__(self)
         self.vocabulary = vocabulary
+        self.num_ops_per_sample = num_ops_per_sample
+        self.num_nops_separator = num_nops_separator
 
         # Initialize token <-> ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -46,102 +70,163 @@ class Model(tf.keras.Model):
             return values
 
     def get_config(self):
-        return {"vocabulary": self.vocabulary}
+        return {"vocabulary": self.vocabulary,
+                "num_ops_per_sample": self.num_ops_per_sample,
+                "num_nops_separator": self.num_nops_separator}
 
     @classmethod
     def from_config(cls, config):
         return cls(**config)
 
 
-def load_model(model_file):
-    return tf.keras.models.load_model(model_file, custom_objects={"Model": Model})
-
-
 class Generator:
 
-    model: Model
-    temperature: float
+    def __init__(self, model: Model, initial_program: Program = Program(), num_lanes: int = 1, temperature: float = 1.0):
+        """
+        Program generator based on a previously trained RNN model.
 
-    def __init__(self, model: Model, temperature: float = 1.0):
+        Args:
+            model: Previously trained or loaded `Model`.
+            initial_program: Program to initialize the generation. This can be empty.
+            num_lanes: Number of parallel lanes to use for program generation. Using more lanes
+                potentially increases the program generation performance, but also the memory usage.
+            temperature: Controls the randomness of the generated programs.
+        """
+        # Store members:
         self.model = model
-        self.temperature = temperature
-        # Create a mask to prevent "[UNK]" from being generated.
-        skip_ids = model.tokens_to_ids(['[UNK]'])[:, None]
-        sparse_mask = tf.SparseTensor(
-            # Put a -inf at each bad index.
-            values=[-float('inf')]*len(skip_ids),
-            indices=skip_ids,
-            # Match the shape to the vocabulary
-            dense_shape=[model.get_vocab_size()])
-        self.prediction_mask = tf.sparse.to_dense(sparse_mask)
+        self.num_lanes = num_lanes
+        self.__temperature = temperature
+        # Prepare inputs and states:
+        initial_program = self.__prepare_initial_program(initial_program)
+        self.inputs = self.__program_to_input_ids(initial_program)
+        self.states = None
+        # Prepare lanes:
+        self.token_lanes = []
+        self.program_lanes = []
+        for _ in range(self.num_lanes):
+            self.token_lanes.append([])
+            self.program_lanes.append(Program())
+        # Prepare program queue:
+        self.program_queue = []
+        # Statistics:
+        self.num_generated_programs = 0
+        self.num_generated_tokens = 0
+        self.num_generated_operations = 0
+        self.num_generated_nops = 0
+        self.num_token_errors = 0
+        self.num_program_errors = 0
+        self.start_time = time.time()
 
-    def ids_to_tokens_str(self, ids) -> list:
+    def __call__(self) -> Program:
+        """Generate a program."""
+        while len(self.program_queue) == 0:
+            self.__generate_programs()
+        return self.program_queue.pop()
+
+    def __ids_to_tokens_str(self, ids) -> list:
         return [t.numpy().decode("utf-8") for t in self.model.ids_to_tokens(ids)]
 
-    def ids_to_programs(self, ids) -> list:
-        return util.split_program(util.tokens_to_program(self.ids_to_tokens_str(ids)))
+    def __prepare_initial_program(self, program: Program) -> Program:
+        initial = copy.deepcopy(program)
+        diff_sample_size = len(initial.operations) - \
+            self.model.num_ops_per_sample
+        if diff_sample_size > 0:
+            initial.operations = initial.operations[diff_sample_size:]
+        elif diff_sample_size < 0:
+            tmp_program = Program()
+            util.append_nops(tmp_program, -diff_sample_size)
+            tmp_program.operations.extend(initial.operations)
+            initial = tmp_program
+        return initial
 
-    def program_to_input_ids(self, program: Program, num_lanes: int = 1):
+    def __program_to_input_ids(self, program: Program):
         tokens, _ = util.program_to_tokens(program)
         ids = self.model.tokens_to_ids(tokens).numpy()
-        return tf.constant([ids] * num_lanes)
+        return tf.constant([ids] * self.num_lanes)
 
-    def generate_ids(self, inputs, states=None):
+    def __generate_ids(self):
 
         # Execute the model.
-        predicted_logits, states = self.model(inputs=inputs, states=states,
+        predicted_logits, states = self.model(inputs=self.inputs,
+                                              states=self.states,
                                               return_state=True)
         # Only use the last prediction.
         predicted_logits = predicted_logits[:, -1, :]
-        predicted_logits = predicted_logits/self.temperature
-
-        # Apply the prediction mask: prevent "[UNK]" from being generated.
-        predicted_logits = predicted_logits + self.prediction_mask
+        predicted_logits = predicted_logits/self.__temperature
 
         # Sample the output logits to generate token IDs.
-        predicted_ids = tf.random.categorical(predicted_logits, num_samples=1)
+        self.inputs = tf.random.categorical(predicted_logits, num_samples=1)
+        self.states = states
 
-        # Return the prdicted IDs and model state.
-        return predicted_ids, states
+    def __generate_tokens(self):
+        self.__generate_ids()
+        next_tokens = self.__ids_to_tokens_str(
+            tf.squeeze(self.inputs, axis=-1))
+        # print("TOKENS: {}".format(next_tokens))
+        for i in range(self.num_lanes):
+            self.token_lanes[i].append(next_tokens[i])
+        self.num_generated_tokens += self.num_lanes
 
-    def generate_tokens(self, inputs, states=None):
-        next_ids, states = self.generate_ids(inputs, states=states)
-        next_tokens = self.ids_to_tokens_str(tf.squeeze(next_ids, axis=-1))
-        return next_ids, next_tokens, states
-
-    def generate_operations(self, inputs, states=None):
-        next_ids, types, states = self.generate_tokens(inputs, states)
-        next_ids, targets, states = self.generate_tokens(next_ids, states)
-        next_ids, sources, states = self.generate_tokens(next_ids, states)
+    def __generate_operations(self):
+        # Generate three tokens for one operation:
+        self.__generate_tokens()
+        self.__generate_tokens()
+        self.__generate_tokens()
         operations = []
-        for i in range(len(types)):
-            operations.append(util.tokens_to_operation(
-                types[i], targets[i], sources[i]))
-        return next_ids, operations, states
+        for i in range(self.num_lanes):
+            op = util.tokens_to_operation(self.token_lanes[i], 0)
+            while op is None:
+                self.num_token_errors += 1
+                self.token_lanes[i].pop(0)
+                self.__generate_tokens()
+                op = util.tokens_to_operation(self.token_lanes[i], 0)
+            self.token_lanes[i].pop(0)
+            self.token_lanes[i].pop(0)
+            self.token_lanes[i].pop(0)
+            operations.append(op)
+        self.num_generated_operations += self.num_lanes
+        return operations
 
-    def generate_programs(self, num_programs: int, num_ops_per_sample: int, num_lanes: int = 10):
-        states = None
-        initial = Program()
-        util.append_nops(initial, num_ops_per_sample)
-        next_ids = self.program_to_input_ids(
-            initial, num_lanes=num_lanes)
-        lanes = [Program()] * num_lanes
-        programs = []
-        while len(programs) < num_programs:
-            next_ids, operations, states = self.generate_operations(
-                next_ids, states=states)
-            for i in range(num_lanes):
-                if operations[i].type == Operation.Type.NOP:
-                    if len(lanes[i].operations) > 0:
-                        programs.append(lanes[i])
-                        lanes[i] = Program()
-                else:
-                    lanes[i].operations.append(operations[i])
-        return programs
+    def __generate_programs(self):
+        operations = self.__generate_operations()
+        for i in range(self.num_lanes):
+            if operations[i].type == Operation.Type.NOP:
+                self.num_generated_nops += 1
+                if len(self.program_lanes[i].operations) > 0:
+                    try:
+                        self.program_lanes[i].validate()
+                        self.program_queue.append(self.program_lanes[i])
+                    except Exception as e:
+                        # print("PRORGRAM ERROR:", e)
+                        # print(program_lanes[i])
+                        self.num_program_errors += 1
+                    self.program_lanes[i] = Program()
+                    self.num_generated_programs += 1
+            else:
+                self.program_lanes[i].operations.append(operations[i])
+
+    def get_stats_info_str(self) -> str:
+        """
+        Returns an info string containing useful stats about this generator including
+        the number of generated programs, the generation speed, and error statistics.
+
+        Example output:
+        ```text
+        generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
+        ```
+        """
+        separator_overhead = 1 - (self.num_generated_nops /
+                                  (self.num_generated_programs * self.model.num_nops_separator))
+        return "generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%".format(
+            self.num_generated_programs,
+            self.num_generated_programs / (time.time() - self.start_time),
+            100 * self.num_token_errors / self.num_generated_tokens,
+            100 * self.num_program_errors / self.num_generated_programs,
+            100 * separator_overhead)
 
 
-def create_dataset(ids: list, sample_size: int,
-                   batch_size: int = 128, buffer_size: int = 10000):
+def __create_dataset(ids: list, sample_size: int,
+                     batch_size: int = 128, buffer_size: int = 10000):
 
     # Basic tensor dataset.
     slice_dataset = tf.data.Dataset.from_tensor_slices(ids)
@@ -160,3 +245,55 @@ def create_dataset(ids: list, sample_size: int,
         batch_size).prefetch(tf.data.experimental.AUTOTUNE))
 
     return prefetch_dataset
+
+
+def load_model(model_path: str) -> Model:
+    """
+    Load a Keras RNN Model for program generation.
+
+    The model should have been generated using `train_model` and saved before.
+
+    Args:
+        model_path: File system path to the model to be loaded.
+    Return:
+        Returns the loaded `Model`.
+    """
+    return tf.keras.models.load_model(model_path, custom_objects={"Model": Model})
+
+
+def train_model(program_cache: ProgramCache, num_programs: int = -1,
+                num_ops_per_sample: int = 32, num_nops_separator: int = 24, epochs: int = 3):
+    """
+    Train a Keras RNN model for program generation.
+
+    Args:
+        program_cache: Program cache that contains the programs used for training the model.
+        num_programs: Number of programs used for training (-1 for all available programs).
+        num_ops_per_sample: Number of operations per sample. We recommend to set this approximately
+            to the length of the longest loops in the training programs. This enables the model
+            to learn the structure of closed program loops and avoid generation of broken loops.
+        num_nops_separator: Number of `nop` operations used as separator between trained programs.
+            We recommend to set this to 75% of `num_ops_per_sample`, but at least 1.
+        epochs: Number of epochs for training. 
+
+    Return:
+        This function returns the trained Keras model.
+    """
+    # Load programs and convert to tokens and vocabulary.
+    merged_programs, _, sample_size = util.merge_programs(
+        program_cache,
+        num_programs=num_programs,
+        num_ops_per_sample=num_ops_per_sample,
+        num_nops_separator=num_nops_separator)
+    tokens, vocabulary = util.program_to_tokens(merged_programs)
+
+    # Create Keras model and dataset, run the training, and save the model.
+    model = Model(vocabulary,
+                  num_ops_per_sample=num_ops_per_sample,
+                  num_nops_separator=num_nops_separator)
+    ids = model.tokens_to_ids(tokens)
+    dataset = __create_dataset(ids, sample_size=sample_size)
+    loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
+    model.compile(optimizer="adam", loss=loss)
+    model.fit(dataset, epochs=epochs)
+    return model

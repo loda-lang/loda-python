@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-"""Evaluate programs."""
+"""Interpret programs."""
 
 from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
@@ -214,5 +212,5 @@ class Interpreter:
                 "overflow in {}; last operation: {}".format(op, last))
         mem[index] = v
 
-    def __raise(msg: str) -> None:
+    def __raise(self, msg: str) -> None:
         raise ValueError(msg)
