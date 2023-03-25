@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
+from loda.ml.keras.program_generation_rnn import Model
 
 from loda.oeis import ProgramCache
-from loda.ml import keras, util
+from loda.ml import util
 from tests.helpers import PROGRAMS_TEST_DIR
 
 
@@ -21,7 +22,7 @@ class KerasTests(TestCase):
         self.tokens, self.vocabulary = util.program_to_tokens(merged_programs)
 
     def test_model_tokens_to_ids(self):
-        model = keras.Model(
+        model = Model(
             self.vocabulary, self.num_ops_per_sample, self.num_nops_separator)
         ids = model.tokens_to_ids(self.tokens)
         self.assertGreater(len(ids), 0)

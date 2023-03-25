@@ -1,10 +1,9 @@
 import os.path
 
-from loda.lang import Program
-from loda.oeis import ProgramCache, Sequence, sequence
+from loda.oeis import ProgramCache, sequence
 from loda.runtime import Evaluator, Interpreter
 from loda.mine import Miner
-from loda.ml import keras
+from loda.ml.keras.program_generation_rnn import load_model, train_model, Generator
 
 
 class SampleLODA:
@@ -29,15 +28,15 @@ class SampleLODA:
             print(evaluator())
 
     def mine(self):
-        # model = keras.train_model(self.program_cache, num_programs=-1)
-        # model.save("sample_model")
+        model = train_model(self.program_cache, num_programs=-1)
+        model.save("sample_model")
 
         # Load the model back from disk.
-        loaded = keras.load_model("sample_model")
+        loaded = load_model("sample_model")
         loaded.summary()
 
         # Use the trained model to generate programs.
-        generator = keras.Generator(loaded, num_lanes=10)
+        generator = Generator(loaded, num_lanes=10)
 
         for _ in range(10):
             print(generator())
