@@ -65,22 +65,25 @@ def append_nops(program: Program, num_nops: int):
         program.operations.append(Operation())  # nop
 
 
-def merge_programs(program_cache: ProgramCache, num_programs: int,
-                   num_ops_per_sample: int, num_nops_separator: int) -> Program:
-
+def get_random_program_ids(program_cache: ProgramCache, num_programs: int = -1):
     # Get IDs of all existing programs. Shuffle them and reduce
     # the number of program IDs if requested.
     ids = program_cache.all_ids()
     random.shuffle(ids)
     if num_programs >= 0 and len(ids) > num_programs:
         ids = ids[0:num_programs]
+    return ids
+
+
+def merge_programs(program_cache: ProgramCache, program_ids: list,
+                   num_ops_per_sample: int, num_nops_separator: int):
 
     # Merge all programs into one program. Invidual programs are
     # separated by (multiple) nops. The number nops equals the
     # number of operations per sample.
     merged = Program()
     num_loaded = 0
-    for id in ids:
+    for id in program_ids:
         program = program_cache.get(id)
         append_nops(merged, num_nops_separator)
         for op in program.operations:

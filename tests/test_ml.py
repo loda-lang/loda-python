@@ -1,33 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
-from loda.ml.keras.program_generation_rnn import Model
+from loda.ml.keras.program_generation_rnn import *
 
 from loda.oeis import ProgramCache
 from loda.ml import util
 from tests.helpers import PROGRAMS_TEST_DIR
 
 
-class KerasTests(TestCase):
+class ProgramGenerationRNNTests(TestCase):
 
     def setUp(self):
         self.program_cache = ProgramCache(PROGRAMS_TEST_DIR)
-        self.num_ops_per_sample = 3
-        self.num_nops_separator = 2
-        merged_programs, self.num_samples, _ = util.merge_programs(
-            self.program_cache,
-            num_programs=-1,
-            num_ops_per_sample=self.num_ops_per_sample,
-            num_nops_separator=self.num_nops_separator)
-        self.tokens, self.vocabulary = util.program_to_tokens(merged_programs)
 
-    def test_model_tokens_to_ids(self):
-        model = Model(
-            self.vocabulary, self.num_ops_per_sample, self.num_nops_separator)
-        ids = model.tokens_to_ids(self.tokens)
-        self.assertGreater(len(ids), 0)
-        self.assertEqual(len(self.tokens), len(ids))
-        self.assertGreater(self.num_samples, 0)
+    def test_model(self):
+        model = train_model(self.program_cache)
+        model.save("test_model")
+        loaded = load_model("test_model")
+        loaded.summary()
+        generator = Generator(loaded, num_lanes=10)
+        for _ in range(10):
+            generator()
 
 
 class UtilTests(TestCase):
@@ -45,8 +38,9 @@ class UtilTests(TestCase):
         self.assertEqual(program, program2)
 
     def __merge_progs(self):
+        program_ids = util.get_random_program_ids(self.program_cache)
         merged, _, _ = util.merge_programs(
-            self.program_cache, num_programs=-1, num_ops_per_sample=3, num_nops_separator=3)
+            self.program_cache, program_ids=program_ids, num_ops_per_sample=3, num_nops_separator=3)
         return merged
 
     def test_program_to_tokens(self):

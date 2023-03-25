@@ -31,15 +31,21 @@ import tensorflow as tf
 class Model(tf.keras.Model):
     """Keras model for program generation using RNN."""
 
-    def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int, num_rnn_units: int):
+    def __init__(self, vocabulary: list,
+                 embedding_dim: int, num_rnn_units: int,
+                 num_samples: int, sample_size: int,
+                 num_ops_per_sample: int, num_nops_separator: int,
+                 program_ids: list):
 
         super().__init__(self)
         self.vocabulary = vocabulary
-        self.num_ops_per_sample = num_ops_per_sample
-        self.num_nops_separator = num_nops_separator
         self.embedding_dim = embedding_dim
         self.num_rnn_units = num_rnn_units
+        self.num_samples = num_samples
+        self.sample_size = sample_size
+        self.num_ops_per_sample = num_ops_per_sample
+        self.num_nops_separator = num_nops_separator
+        self.program_ids = program_ids
 
         # Initialize token <-> ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -73,10 +79,22 @@ class Model(tf.keras.Model):
 
     def get_config(self):
         return {"vocabulary": self.vocabulary,
+                "embedding_dim": self.embedding_dim,
+                "num_rnn_units": self.num_rnn_units,
+                "num_samples": self.num_samples,
+                "sample_size": self.sample_size,
                 "num_ops_per_sample": self.num_ops_per_sample,
                 "num_nops_separator": self.num_nops_separator,
-                "embedding_dim": self.embedding_dim,
-                "num_rnn_units": self.num_rnn_units}
+                "program_ids": self.program_ids}
+
+    def summary(self, line_length=None, positions=None, print_fn=None,
+                expand_nested=False, show_trainable=False, layer_range=None):
+        super().summary(line_length, positions, print_fn,
+                        expand_nested, show_trainable, layer_range)
+        print("Vocabulary size:", self.get_vocab_size())
+        print("Sample size:", self.sample_size)
+        print("Trained samples:", self.num_samples)
+        print("Trained programs:", len(self.program_ids))
 
     @classmethod
     def from_config(cls, config):
@@ -287,20 +305,26 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
     Return:
         This function returns the trained Keras model.
     """
+    # Get random program IDs.
+    program_ids = util.get_random_program_ids(program_cache, num_programs)
+
     # Load programs and convert to tokens and vocabulary.
-    merged_programs, _, sample_size = util.merge_programs(
-        program_cache,
-        num_programs=num_programs,
+    merged_programs, num_samples, sample_size = util.merge_programs(
+        program_cache, program_ids,
         num_ops_per_sample=num_ops_per_sample,
         num_nops_separator=num_nops_separator)
     tokens, vocabulary = util.program_to_tokens(merged_programs)
 
     # Create Keras model and dataset, run the training, and save the model.
+    program_ids = sorted(program_ids)
     model = Model(vocabulary,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units,
+                  num_samples=num_samples,
+                  sample_size=sample_size,
                   num_ops_per_sample=num_ops_per_sample,
                   num_nops_separator=num_nops_separator,
-                  embedding_dim=embedding_dim,
-                  num_rnn_units=num_rnn_units)
+                  program_ids=program_ids)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)

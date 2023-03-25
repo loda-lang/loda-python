@@ -131,5 +131,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Trained sample model
+# Test models
 /sample_model/
+/test_model/
