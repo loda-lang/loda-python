@@ -27,13 +27,10 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># -*- coding: utf-8 -*-
-
-&#34;&#34;&#34;Prefix index for searching integer sequences.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Prefix index for searching integer sequences.&#34;&#34;&#34;
 
 import copy
-import os.path
-import re
+import functools
 
 from .sequence import Sequence
 
@@ -47,75 +44,25 @@ class PrefixIndex:
             self.end_index = size  # exclusive
             self.finished_ids = []
 
-    def __init__(self, path: str):
-        self.__path = path
-        self.__index = None
-        self.__lookup = None
-
-    def size(self) -&gt; int:
-        if self.__index is None:
-            self.__load()
-        return len(self.__index)
-
-    def get(self, id: int):
-        if self.__index is None:
-            self.__load()
-        return copy.copy(self.__get(id))
-
-    def __get(self, id: int):
-        return self.__index[self.__lookup[id]]
-
-    def __parse_line(self, line: str, pattern):
-        line = line.strip()
-        if len(line) == 0 or line.startswith(&#34;#&#34;):
-            return None
-        match = pattern.match(line)
-        if not match:
-            raise ValueError(&#34;parse error: {}&#34;.format(line))
-        return match
-
-    def __load(self):
-        seqs = []
-        # load sequence terms
-        stripped = os.path.join(self.__path, &#34;stripped&#34;)
-        expected_id = 1
-        with open(stripped) as file:
-            pattern = re.compile(&#34;^A([0-9]+) ,([0-9,]+),$&#34;)
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError(&#34;unexpected ID: {}&#34;.format(line))
-                terms_str = match.group(2).split(&#34;,&#34;)
-                terms = [int(t) for t in terms_str]
-                seqs.append(Sequence(id, &#34;&#34;, terms))
-                expected_id += 1
-        # load sequence names
-        names = os.path.join(self.__path, &#34;names&#34;)
-        expected_id = 1
-        with open(names) as file:
-            pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError(&#34;unexpected ID: {}&#34;.format(line))
-                name = match.group(2)
-                seqs[id - 1].name = name
-                expected_id += 1
+    def __init__(self, seqs: list):
+        seqs = list(filter(lambda s: len(s.terms) &gt; 0, seqs))
+        max_id = functools.reduce(lambda id, s: max(id, s.id), seqs, 0)
         self.__index = sorted(seqs)
-        self.__lookup = [0] * (len(seqs) + 1)
+        self.__lookup = [0] * (max_id + 1)
         for i in range(len(seqs)):
             id = self.__index[i].id
             self.__lookup[id] = i
 
+    def size(self) -&gt; int:
+        return len(self.__index)
+
+    def get(self, id: int) -&gt; Sequence:
+        return copy.copy(self.__get(id))
+
+    def __get(self, id: int) -&gt; Sequence:
+        return self.__index[self.__lookup[id]]
+
     def global_match(self) -&gt; Match:
-        if self.__index is None:
-            self.__load()
         return PrefixIndex.Match(len(self.__index))
 
     def refine_match(self, match: Match, term: int) -&gt; bool:
@@ -154,7 +101,7 @@ class PrefixIndex:
 <dl>
 <dt id="loda.oeis.prefix_index.PrefixIndex"><code class="flex name class">
 <span>class <span class="ident">PrefixIndex</span></span>
-<span>(</span><span>path: str)</span>
+<span>(</span><span>seqs: list)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -171,75 +118,25 @@ class PrefixIndex:
             self.end_index = size  # exclusive
             self.finished_ids = []
 
-    def __init__(self, path: str):
-        self.__path = path
-        self.__index = None
-        self.__lookup = None
-
-    def size(self) -&gt; int:
-        if self.__index is None:
-            self.__load()
-        return len(self.__index)
-
-    def get(self, id: int):
-        if self.__index is None:
-            self.__load()
-        return copy.copy(self.__get(id))
-
-    def __get(self, id: int):
-        return self.__index[self.__lookup[id]]
-
-    def __parse_line(self, line: str, pattern):
-        line = line.strip()
-        if len(line) == 0 or line.startswith(&#34;#&#34;):
-            return None
-        match = pattern.match(line)
-        if not match:
-            raise ValueError(&#34;parse error: {}&#34;.format(line))
-        return match
-
-    def __load(self):
-        seqs = []
-        # load sequence terms
-        stripped = os.path.join(self.__path, &#34;stripped&#34;)
-        expected_id = 1
-        with open(stripped) as file:
-            pattern = re.compile(&#34;^A([0-9]+) ,([0-9,]+),$&#34;)
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError(&#34;unexpected ID: {}&#34;.format(line))
-                terms_str = match.group(2).split(&#34;,&#34;)
-                terms = [int(t) for t in terms_str]
-                seqs.append(Sequence(id, &#34;&#34;, terms))
-                expected_id += 1
-        # load sequence names
-        names = os.path.join(self.__path, &#34;names&#34;)
-        expected_id = 1
-        with open(names) as file:
-            pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
-            for line in file:
-                match = self.__parse_line(line, pattern)
-                if not match:
-                    continue
-                id = int(match.group(1))
-                if id != expected_id:
-                    raise ValueError(&#34;unexpected ID: {}&#34;.format(line))
-                name = match.group(2)
-                seqs[id - 1].name = name
-                expected_id += 1
+    def __init__(self, seqs: list):
+        seqs = list(filter(lambda s: len(s.terms) &gt; 0, seqs))
+        max_id = functools.reduce(lambda id, s: max(id, s.id), seqs, 0)
         self.__index = sorted(seqs)
-        self.__lookup = [0] * (len(seqs) + 1)
+        self.__lookup = [0] * (max_id + 1)
         for i in range(len(seqs)):
             id = self.__index[i].id
             self.__lookup[id] = i
 
+    def size(self) -&gt; int:
+        return len(self.__index)
+
+    def get(self, id: int) -&gt; Sequence:
+        return copy.copy(self.__get(id))
+
+    def __get(self, id: int) -&gt; Sequence:
+        return self.__index[self.__lookup[id]]
+
     def global_match(self) -&gt; Match:
-        if self.__index is None:
-            self.__load()
         return PrefixIndex.Match(len(self.__index))
 
     def refine_match(self, match: Match, term: int) -&gt; bool:
@@ -276,7 +173,7 @@ class PrefixIndex:
 <h3>Methods</h3>
 <dl>
 <dt id="loda.oeis.prefix_index.PrefixIndex.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>self, id: int)</span>
+<span>def <span class="ident">get</span></span>(<span>self, id: int) ‑> <a title="loda.oeis.sequence.Sequence" href="sequence.html#loda.oeis.sequence.Sequence">Sequence</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -284,9 +181,7 @@ class PrefixIndex:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get(self, id: int):
-    if self.__index is None:
-        self.__load()
+<pre><code class="python">def get(self, id: int) -&gt; Sequence:
     return copy.copy(self.__get(id))</code></pre>
 </details>
 </dd>
@@ -316,8 +211,6 @@ class PrefixIndex:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def global_match(self) -&gt; Match:
-    if self.__index is None:
-        self.__load()
     return PrefixIndex.Match(len(self.__index))</code></pre>
 </details>
 </dd>
@@ -359,8 +252,6 @@ class PrefixIndex:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def size(self) -&gt; int:
-    if self.__index is None:
-        self.__load()
     return len(self.__index)</code></pre>
 </details>
 </dd>

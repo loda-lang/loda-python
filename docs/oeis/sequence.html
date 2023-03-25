@@ -27,11 +27,11 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># -*- coding: utf-8 -*-
-
-&#34;&#34;&#34;Integer sequence model.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;Integer sequence model.&#34;&#34;&#34;
 
 import functools
+import os.path
+import re
 
 
 @functools.total_ordering
@@ -55,7 +55,56 @@ class Sequence:
         return False
 
     def id_str(self) -&gt; str:
-        return &#34;A{:06}&#34;.format(self.id)</code></pre>
+        return &#34;A{:06}&#34;.format(self.id)
+
+
+def __parse_line(line: str, pattern):
+    line = line.strip()
+    if len(line) == 0 or line.startswith(&#34;#&#34;):
+        return None
+    match = pattern.match(line)
+    if not match:
+        raise ValueError(&#34;parse error: {}&#34;.format(line))
+    return match
+
+
+def __fill_seqs(seqs: list, id: int):
+    current_size = len(seqs)
+    for i in range(current_size, id+2):
+        seqs.append(Sequence(i, &#34;&#34;, []))
+
+
+def load(oeis_path: str) -&gt; list:
+    &#34;&#34;&#34;
+    Load sequences from `stripped` from `names` files.
+    &#34;&#34;&#34;
+    seqs = []
+    # load sequence terms
+    stripped = os.path.join(oeis_path, &#34;stripped&#34;)
+    with open(stripped) as file:
+        pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
+        for line in file:
+            match = __parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            __fill_seqs(seqs, id)
+            seqs[id].id = id
+            terms_str = match.group(2).split(&#34;,&#34;)
+            seqs[id].terms = [int(t) for t in terms_str]
+    # load sequence names
+    names = os.path.join(oeis_path, &#34;names&#34;)
+    with open(names) as file:
+        pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
+        for line in file:
+            match = __parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            __fill_seqs(seqs, id)
+            name = match.group(2)
+            seqs[id].name = name
+    return seqs</code></pre>
 </details>
 </section>
 <section>
@@ -63,6 +112,51 @@ class Sequence:
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.oeis.sequence.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>oeis_path: str) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load sequences from <code>stripped</code> from <code>names</code> files.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(oeis_path: str) -&gt; list:
+    &#34;&#34;&#34;
+    Load sequences from `stripped` from `names` files.
+    &#34;&#34;&#34;
+    seqs = []
+    # load sequence terms
+    stripped = os.path.join(oeis_path, &#34;stripped&#34;)
+    with open(stripped) as file:
+        pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
+        for line in file:
+            match = __parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            __fill_seqs(seqs, id)
+            seqs[id].id = id
+            terms_str = match.group(2).split(&#34;,&#34;)
+            seqs[id].terms = [int(t) for t in terms_str]
+    # load sequence names
+    names = os.path.join(oeis_path, &#34;names&#34;)
+    with open(names) as file:
+        pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
+        for line in file:
+            match = __parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            __fill_seqs(seqs, id)
+            name = match.group(2)
+            seqs[id].name = name
+    return seqs</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -129,6 +223,11 @@ class Sequence:
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="loda.oeis" href="index.html">loda.oeis</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.oeis.sequence.load" href="#loda.oeis.sequence.load">load</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

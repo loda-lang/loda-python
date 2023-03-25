@@ -30,10 +30,9 @@ from loda.runtime import Interpreter
 with open(&quot;fibonacci.asm&quot;, &quot;r&quot;) as file:
     program = Program(file.read())
     interpreter = Interpreter()
-    print(interpreter.eval_to_seq(program, num_terms=10))
-</code></pre>
-<p>The result is a pair, where the first entry is the list of computed Fibonacci numbers:</p>
-<pre><code class="language-python">([0, 1, 1, 2, 3, 5, 8, 13, 21, 34], 305)
+    evaluator = Evaluator(program, interpreter)
+    for _ in range(10):
+        print(evaluator())
 </code></pre>
 <details class="source">
 <summary>
@@ -45,6 +44,7 @@ Evaluate programs to integer sequences.
 .. include:: ./documentation.md
 &#34;&#34;&#34;
 
+from .evaluator import Evaluator
 from .interpreter import Interpreter
 from .operations import *</code></pre>
 </details>
@@ -52,9 +52,13 @@ from .operations import *</code></pre>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
+<dt><code class="name"><a title="loda.runtime.evaluator" href="evaluator.html">loda.runtime.evaluator</a></code></dt>
+<dd>
+<div class="desc"><p>Evaluate programs to integer sequences.</p></div>
+</dd>
 <dt><code class="name"><a title="loda.runtime.interpreter" href="interpreter.html">loda.runtime.interpreter</a></code></dt>
 <dd>
-<div class="desc"><p>Evaluate programs.</p></div>
+<div class="desc"><p>Interpret programs.</p></div>
 </dd>
 <dt><code class="name"><a title="loda.runtime.operations" href="operations.html">loda.runtime.operations</a></code></dt>
 <dd>
@@ -82,6 +86,7 @@ from .operations import *</code></pre>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
+<li><code><a title="loda.runtime.evaluator" href="evaluator.html">loda.runtime.evaluator</a></code></li>
 <li><code><a title="loda.runtime.interpreter" href="interpreter.html">loda.runtime.interpreter</a></code></li>
 <li><code><a title="loda.runtime.operations" href="operations.html">loda.runtime.operations</a></code></li>
 </ul>

@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>loda API documentation</title>
-<meta name="description" content="Python implementation of the [LODA Language](https://loda-lang.org/):
-an assembly language and computational model for integer sequences …" />
+<title>loda.runtime.evaluator API documentation</title>
+<meta name="description" content="Evaluate programs to integer sequences." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -20,101 +19,170 @@ an assembly language and computational model for integer sequences …" />
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>loda</code></h1>
+<h1 class="title">Module <code>loda.runtime.evaluator</code></h1>
 </header>
 <section id="section-intro">
-<p>Python implementation of the <a href="https://loda-lang.org/">LODA Language</a>:
-an assembly language and computational model for integer sequences.</p>
-<p>This Python package allows you to read and write LODA programs, to evaluate
-them to integer sequences, to search for matches in the
-<a href="https://www.oeis.org/">OEIS</a> database,
-and to use machine learning from <a href="https://www.tensorflow.org/">Tensorflow</a>
-to generate new integer sequence programs.</p>
-<h2 id="installation">Installation</h2>
-<p>You need Python 3.7 or higher. To install the dependencies for LODA, run these commands:</p>
-<pre><code class="language-bash">python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-</code></pre>
-<h2 id="getting-started">Getting Started</h2>
-<p>LODA programs are stored in <code>*.asm</code> files. Below you can find the example program <code>fibonacci.asm</code> which
-computes the Fibonacci numbers. For a comprehensive overview of the language, see the <a href="https://loda-lang.org/spec/">LODA Language Specification</a>.</p>
-<pre><code class="language-asm">; A000045: Fibonacci numbers.
-mov $3,1
-lpb $0
-  sub $0,1
-  mov $2,$1
-  add $1,$3
-  mov $3,$2
-lpe
-mov $0,$1
-</code></pre>
-<p>Check out the <a href="#header-submodules">sub-modules</a> for working with LODA programs.</p>
-<h2 id="development">Development</h2>
-<p>To execute the tests, run the following command:</p>
-<pre><code class="language-bash">nose2 tests -v
-</code></pre>
+<p>Evaluate programs to integer sequences.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;
-Python implementation of the [LODA Language](https://loda-lang.org/):
-an assembly language and computational model for integer sequences.
+<pre><code class="python">&#34;&#34;&#34;Evaluate programs to integer sequences.&#34;&#34;&#34;
 
-.. include:: ./documentation.md
-&#34;&#34;&#34;</code></pre>
+from loda.lang import Program
+from .interpreter import Interpreter
+
+
+class Evaluator:
+
+    num_total_steps: int
+    &#34;&#34;&#34;Total number of executed interpreter steps&#34;&#34;&#34;
+
+    def __init__(self, program: Program, interpreter: Interpreter, eval_to_steps=False):
+        &#34;&#34;&#34;
+        Evaluate a program to an integer sequence.
+
+        Args:
+            program: Program that should be evaluated.
+            interpreter: Interpreter to be used.
+            eval_to_steps: Flag indicating whether the number of execution steps should
+                be returned instead of the actual evaluation result.
+
+        ## Example
+        &gt;&gt;&gt; Initialize evaluator:
+        &gt;&gt;&gt; fibonacci = Program(...)
+        &gt;&gt;&gt; interpreter = Interpreter()
+        &gt;&gt;&gt; evaluator = Evaluator(fibonacci, interpreter)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Evaluate first ten terms:
+        &gt;&gt;&gt; for _ in range(10)
+        &gt;&gt;&gt;     print(evaluator())
+        &#34;&#34;&#34;
+        self.__program = program
+        self.__interpreter = interpreter
+        self.__eval_to_steps = eval_to_steps
+        self.__memory = {}
+        self.__argument = 0
+        self.num_total_steps = 0
+
+    def __call__(self):
+        self.__memory.clear()
+        self.__memory[0] = self.__argument
+        num_steps = self.__interpreter.run(self.__program, self.__memory)
+        self.num_total_steps += num_steps
+        self.__argument += 1
+        return num_steps if self.__eval_to_steps else self.__memory[0]</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="loda.lang" href="lang/index.html">loda.lang</a></code></dt>
+<dt id="loda.runtime.evaluator.Evaluator"><code class="flex name class">
+<span>class <span class="ident">Evaluator</span></span>
+<span>(</span><span>program: <a title="loda.lang.program.Program" href="../lang/program.html#loda.lang.program.Program">Program</a>, interpreter: <a title="loda.runtime.interpreter.Interpreter" href="interpreter.html#loda.runtime.interpreter.Interpreter">Interpreter</a>, eval_to_steps=False)</span>
+</code></dt>
 <dd>
-<div class="desc"><p>Load and save programs …</p></div>
-</dd>
-<dt><code class="name"><a title="loda.mine" href="mine/index.html">loda.mine</a></code></dt>
+<div class="desc"><p>Evaluate a program to an integer sequence.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program</code></strong></dt>
+<dd>Program that should be evaluated.</dd>
+<dt><strong><code>interpreter</code></strong></dt>
+<dd>Interpreter to be used.</dd>
+<dt><strong><code>eval_to_steps</code></strong></dt>
+<dd>Flag indicating whether the number of execution steps should
+be returned instead of the actual evaluation result.</dd>
+</dl>
+<h2 id="example">Example</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; Initialize evaluator:
+&gt;&gt;&gt; fibonacci = Program(...)
+&gt;&gt;&gt; interpreter = Interpreter()
+&gt;&gt;&gt; evaluator = Evaluator(fibonacci, interpreter)
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Evaluate first ten terms:
+&gt;&gt;&gt; for _ in range(10)
+&gt;&gt;&gt;     print(evaluator())
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Evaluator:
+
+    num_total_steps: int
+    &#34;&#34;&#34;Total number of executed interpreter steps&#34;&#34;&#34;
+
+    def __init__(self, program: Program, interpreter: Interpreter, eval_to_steps=False):
+        &#34;&#34;&#34;
+        Evaluate a program to an integer sequence.
+
+        Args:
+            program: Program that should be evaluated.
+            interpreter: Interpreter to be used.
+            eval_to_steps: Flag indicating whether the number of execution steps should
+                be returned instead of the actual evaluation result.
+
+        ## Example
+        &gt;&gt;&gt; Initialize evaluator:
+        &gt;&gt;&gt; fibonacci = Program(...)
+        &gt;&gt;&gt; interpreter = Interpreter()
+        &gt;&gt;&gt; evaluator = Evaluator(fibonacci, interpreter)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Evaluate first ten terms:
+        &gt;&gt;&gt; for _ in range(10)
+        &gt;&gt;&gt;     print(evaluator())
+        &#34;&#34;&#34;
+        self.__program = program
+        self.__interpreter = interpreter
+        self.__eval_to_steps = eval_to_steps
+        self.__memory = {}
+        self.__argument = 0
+        self.num_total_steps = 0
+
+    def __call__(self):
+        self.__memory.clear()
+        self.__memory[0] = self.__argument
+        num_steps = self.__interpreter.run(self.__program, self.__memory)
+        self.num_total_steps += num_steps
+        self.__argument += 1
+        return num_steps if self.__eval_to_steps else self.__memory[0]</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="loda.runtime.evaluator.Evaluator.num_total_steps"><code class="name">var <span class="ident">num_total_steps</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Program mining for integer sequences.</p></div>
-</dd>
-<dt><code class="name"><a title="loda.ml" href="ml/index.html">loda.ml</a></code></dt>
-<dd>
-<div class="desc"><p>Machine learning integration.</p></div>
-</dd>
-<dt><code class="name"><a title="loda.oeis" href="oeis/index.html">loda.oeis</a></code></dt>
-<dd>
-<div class="desc"><p><a href="https://www.oeis.org/">OEIS</a> integration …</p></div>
-</dd>
-<dt><code class="name"><a title="loda.runtime" href="runtime/index.html">loda.runtime</a></code></dt>
-<dd>
-<div class="desc"><p>Evaluate programs to integer sequences …</p></div>
+<div class="desc"><p>Total number of executed interpreter steps</p></div>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#development">Development</a></li>
-</ul>
+<ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="loda.lang" href="lang/index.html">loda.lang</a></code></li>
-<li><code><a title="loda.mine" href="mine/index.html">loda.mine</a></code></li>
-<li><code><a title="loda.ml" href="ml/index.html">loda.ml</a></code></li>
-<li><code><a title="loda.oeis" href="oeis/index.html">loda.oeis</a></code></li>
-<li><code><a title="loda.runtime" href="runtime/index.html">loda.runtime</a></code></li>
+<li><code><a title="loda.runtime" href="index.html">loda.runtime</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.runtime.evaluator.Evaluator" href="#loda.runtime.evaluator.Evaluator">Evaluator</a></code></h4>
+<ul class="">
+<li><code><a title="loda.runtime.evaluator.Evaluator.num_total_steps" href="#loda.runtime.evaluator.Evaluator.num_total_steps">num_total_steps</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

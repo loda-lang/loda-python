@@ -31,7 +31,7 @@
 
 &#34;&#34;&#34;Program model and serialization.&#34;&#34;&#34;
 
-from .operation import Operation
+from .operation import Operation, Operand
 
 
 class Program:
@@ -79,7 +79,21 @@ class Program:
             result += &#34;{}{}\n&#34;.format(&#34;  &#34; * indent, op)
             if op.type == Operation.Type.LPB:
                 indent += 1
-        return result</code></pre>
+        return result
+
+    def validate(self):
+        loop_depth = 0
+        for op in self.operations:
+            if op.type != Operation.Type.NOP and op.type != Operation.Type.LPE and op.target.type == Operand.Type.CONSTANT:
+                raise ValueError(&#34;target cannot be a constant&#34;)
+            if op.type == Operation.Type.LPB:
+                loop_depth += 1
+            elif op.type == Operation.Type.LPE:
+                if loop_depth == 0:
+                    raise ValueError(&#34;unexpected lpe&#34;)
+                loop_depth -= 1
+        if loop_depth != 0:
+            raise ValueError(&#34;missing lpe&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -160,7 +174,21 @@ div $0,$2
             result += &#34;{}{}\n&#34;.format(&#34;  &#34; * indent, op)
             if op.type == Operation.Type.LPB:
                 indent += 1
-        return result</code></pre>
+        return result
+
+    def validate(self):
+        loop_depth = 0
+        for op in self.operations:
+            if op.type != Operation.Type.NOP and op.type != Operation.Type.LPE and op.target.type == Operand.Type.CONSTANT:
+                raise ValueError(&#34;target cannot be a constant&#34;)
+            if op.type == Operation.Type.LPB:
+                loop_depth += 1
+            elif op.type == Operation.Type.LPE:
+                if loop_depth == 0:
+                    raise ValueError(&#34;unexpected lpe&#34;)
+                loop_depth -= 1
+        if loop_depth != 0:
+            raise ValueError(&#34;missing lpe&#34;)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -187,6 +215,30 @@ div $0,$2
         self.operations.append(Operation(line))</code></pre>
 </details>
 </dd>
+<dt id="loda.lang.program.Program.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self):
+    loop_depth = 0
+    for op in self.operations:
+        if op.type != Operation.Type.NOP and op.type != Operation.Type.LPE and op.target.type == Operand.Type.CONSTANT:
+            raise ValueError(&#34;target cannot be a constant&#34;)
+        if op.type == Operation.Type.LPB:
+            loop_depth += 1
+        elif op.type == Operation.Type.LPE:
+            if loop_depth == 0:
+                raise ValueError(&#34;unexpected lpe&#34;)
+            loop_depth -= 1
+    if loop_depth != 0:
+        raise ValueError(&#34;missing lpe&#34;)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -210,6 +262,7 @@ div $0,$2
 <ul class="">
 <li><code><a title="loda.lang.program.Program.operations" href="#loda.lang.program.Program.operations">operations</a></code></li>
 <li><code><a title="loda.lang.program.Program.read" href="#loda.lang.program.Program.read">read</a></code></li>
+<li><code><a title="loda.lang.program.Program.validate" href="#loda.lang.program.Program.validate">validate</a></code></li>
 </ul>
 </li>
 </ul>
