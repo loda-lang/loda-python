@@ -32,12 +32,14 @@ class Model(tf.keras.Model):
     """Keras model for program generation using RNN."""
 
     def __init__(self, vocabulary: list, num_ops_per_sample: int, num_nops_separator: int,
-                 embedding_dim: int = 256, num_rnn_units: int = 1024):
+                 embedding_dim: int, num_rnn_units: int):
 
         super().__init__(self)
         self.vocabulary = vocabulary
         self.num_ops_per_sample = num_ops_per_sample
         self.num_nops_separator = num_nops_separator
+        self.embedding_dim = embedding_dim
+        self.num_rnn_units = num_rnn_units
 
         # Initialize token <-> ID lookup layers.
         self.tokens_to_ids = tf.keras.layers.StringLookup(
@@ -72,7 +74,9 @@ class Model(tf.keras.Model):
     def get_config(self):
         return {"vocabulary": self.vocabulary,
                 "num_ops_per_sample": self.num_ops_per_sample,
-                "num_nops_separator": self.num_nops_separator}
+                "num_nops_separator": self.num_nops_separator,
+                "embedding_dim": self.embedding_dim,
+                "num_rnn_units": self.num_rnn_units}
 
     @classmethod
     def from_config(cls, config):
@@ -262,7 +266,9 @@ def load_model(model_path: str) -> Model:
 
 
 def train_model(program_cache: ProgramCache, num_programs: int = -1,
-                num_ops_per_sample: int = 32, num_nops_separator: int = 24, epochs: int = 3):
+                num_ops_per_sample: int = 32, num_nops_separator: int = 24,
+                embedding_dim: int = 256, num_rnn_units: int = 1024,
+                epochs: int = 3):
     """
     Train a Keras RNN model for program generation.
 
@@ -274,6 +280,8 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
             to learn the structure of closed program loops and avoid generation of broken loops.
         num_nops_separator: Number of `nop` operations used as separator between trained programs.
             We recommend to set this to 75% of `num_ops_per_sample`, but at least 1.
+        embedding_dim: Embedding dimensions.
+        num_rnn_units: Number of RNN units.
         epochs: Number of epochs for training. 
 
     Return:
@@ -290,7 +298,9 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
     # Create Keras model and dataset, run the training, and save the model.
     model = Model(vocabulary,
                   num_ops_per_sample=num_ops_per_sample,
-                  num_nops_separator=num_nops_separator)
+                  num_nops_separator=num_nops_separator,
+                  embedding_dim=embedding_dim,
+                  num_rnn_units=num_rnn_units)
     ids = model.tokens_to_ids(tokens)
     dataset = __create_dataset(ids, sample_size=sample_size)
     loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
