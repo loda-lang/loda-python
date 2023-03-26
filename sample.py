@@ -10,7 +10,8 @@ class SampleLODA:
 
     def __init__(self):
         # Initialize LODA programs cache using *.asm files from tests folder
-        programs_dir = os.path.expanduser("~/loda/programs/oeis")
+        programs_dir = os.path.join("tests", "programs", "oeis")
+        # programs_dir = os.path.expanduser("~/loda/programs/oeis")
         self.program_cache = ProgramCache(programs_dir)
         self.interpreter = Interpreter(self.program_cache)
 
@@ -28,7 +29,7 @@ class SampleLODA:
             print(evaluator())
 
     def mine(self):
-        model = train_model(self.program_cache, num_programs=-1)
+        model = train_model(self.program_cache, num_programs=1000)
         model.save("sample_model")
 
         # Load the model back from disk.
