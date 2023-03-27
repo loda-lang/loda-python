@@ -57,54 +57,118 @@ class Sequence:
     def id_str(self) -&gt; str:
         return &#34;A{:06}&#34;.format(self.id)
 
+    @classmethod
+    def load_oeis(cls, oeis_path: str) -&gt; list:
+        &#34;&#34;&#34;
+        Load sequences from `stripped` from `names` files.
+        &#34;&#34;&#34;
+        seqs = []
+        # load sequence terms
+        stripped = os.path.join(oeis_path, &#34;stripped&#34;)
+        with open(stripped) as file:
+            pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
+            for line in file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                id = int(match.group(1))
+                cls.__fill_seqs(seqs, id)
+                seqs[id].id = id
+                terms_str = match.group(2).split(&#34;,&#34;)
+                seqs[id].terms = [int(t) for t in terms_str]
+        # load sequence names
+        names = os.path.join(oeis_path, &#34;names&#34;)
+        with open(names) as file:
+            pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
+            for line in file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                id = int(match.group(1))
+                cls.__fill_seqs(seqs, id)
+                name = match.group(2)
+                seqs[id].name = name
+        return seqs
 
-def __parse_line(line: str, pattern):
-    line = line.strip()
-    if len(line) == 0 or line.startswith(&#34;#&#34;):
-        return None
-    match = pattern.match(line)
-    if not match:
-        raise ValueError(&#34;parse error: {}&#34;.format(line))
-    return match
+    @classmethod
+    def __parse_line(cls, line: str, pattern):
+        line = line.strip()
+        if len(line) == 0 or line.startswith(&#34;#&#34;):
+            return None
+        match = pattern.match(line)
+        if not match:
+            raise ValueError(&#34;parse error: {}&#34;.format(line))
+        return match
 
+    @classmethod
+    def __fill_seqs(cls, seqs: list, id: int):
+        current_size = len(seqs)
+        for i in range(current_size, id+2):
+            seqs.append(Sequence(i, &#34;&#34;, []))
 
-def __fill_seqs(seqs: list, id: int):
-    current_size = len(seqs)
-    for i in range(current_size, id+2):
-        seqs.append(Sequence(i, &#34;&#34;, []))
+    def load_b_file(self, path: str) -&gt; list:
+        &#34;&#34;&#34;
+        Load additional terms from a b-file.
 
+        Args:
+            path: Either path to a b-file (uncompressed `b*.txt` file) or a
+                folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
+        &#34;&#34;&#34;
+        terms = []
+        if len(path) == 0 or os.path.isdir(path):
+            dir = &#34;{:03}&#34;.format(self.id//1000)
+            txt = &#34;b{:06}.txt&#34;.format(self.id)
+            path = os.path.join(path, &#34;b&#34;, dir, txt)
+        with open(path) as b_file:
+            expected_index = -1
+            for line in b_file:
+                line = line.strip()
+                if len(line) == 0 or line[0] == &#34;#&#34;:
+                    continue
+                fields = line.split()
+                if len(fields) &lt; 2:
+                    raise ValueError(&#34;unexpected line: {}&#34;.format(line))
+                index = int(fields[0])
+                value = int(fields[1])
+                if expected_index == -1:
+                    expected_index = index
+                    if index != expected_index:
+                        raise ValueError(&#34;unexpected index: {}&#34;.format(index))
+                terms.append(value)
+                expected_index += 1
+        terms = self.__align(terms)
+        if terms is None:
+            raise ValueError(&#34;unexpected terms in b-file&#34;)
+        if len(terms) &lt; len(self.terms):
+            terms = self.terms
+        elif terms[0:len(self.terms)] != self.terms:
+            raise ValueError(&#34;unexpected terms in b-file&#34;)
+        return terms
 
-def load(oeis_path: str) -&gt; list:
-    &#34;&#34;&#34;
-    Load sequences from `stripped` from `names` files.
-    &#34;&#34;&#34;
-    seqs = []
-    # load sequence terms
-    stripped = os.path.join(oeis_path, &#34;stripped&#34;)
-    with open(stripped) as file:
-        pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
-        for line in file:
-            match = __parse_line(line, pattern)
-            if not match:
-                continue
-            id = int(match.group(1))
-            __fill_seqs(seqs, id)
-            seqs[id].id = id
-            terms_str = match.group(2).split(&#34;,&#34;)
-            seqs[id].terms = [int(t) for t in terms_str]
-    # load sequence names
-    names = os.path.join(oeis_path, &#34;names&#34;)
-    with open(names) as file:
-        pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
-        for line in file:
-            match = __parse_line(line, pattern)
-            if not match:
-                continue
-            id = int(match.group(1))
-            __fill_seqs(seqs, id)
-            name = match.group(2)
-            seqs[id].name = name
-    return seqs</code></pre>
+    def __align(self, terms: list, max_offset: int = 10) -&gt; list:
+        &#34;&#34;&#34;Align terms from a b-file possible by shifting by an offset&#34;&#34;&#34;
+        # check if they agree on prefix already
+        min_length = min(len(self.terms), len(terms))
+        if self.terms[0:min_length] == terms[0:min_length]:
+            return terms
+        # try to align them
+        for offset in range(1, max_offset+1):
+            if offset &gt;= min_length:
+                break
+            agree_pos = True
+            agree_neg = True
+            for i in range(min_length):
+                if i+offset &lt; len(terms) and terms[i + offset] != self.terms[i]:
+                    agree_pos = False
+                if i+offset &lt; len(self.terms) and terms[i] != self.terms[i+offset]:
+                    agree_neg = False
+            if agree_pos:
+                return terms[offset:]
+            if agree_neg:
+                result = self.terms[0:offset]
+                result.extend(terms)
+                return result
+        return None</code></pre>
 </details>
 </section>
 <section>
@@ -112,51 +176,6 @@ def load(oeis_path: str) -&gt; list:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="loda.oeis.sequence.load"><code class="name flex">
-<span>def <span class="ident">load</span></span>(<span>oeis_path: str) ‑> list</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Load sequences from <code>stripped</code> from <code>names</code> files.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def load(oeis_path: str) -&gt; list:
-    &#34;&#34;&#34;
-    Load sequences from `stripped` from `names` files.
-    &#34;&#34;&#34;
-    seqs = []
-    # load sequence terms
-    stripped = os.path.join(oeis_path, &#34;stripped&#34;)
-    with open(stripped) as file:
-        pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
-        for line in file:
-            match = __parse_line(line, pattern)
-            if not match:
-                continue
-            id = int(match.group(1))
-            __fill_seqs(seqs, id)
-            seqs[id].id = id
-            terms_str = match.group(2).split(&#34;,&#34;)
-            seqs[id].terms = [int(t) for t in terms_str]
-    # load sequence names
-    names = os.path.join(oeis_path, &#34;names&#34;)
-    with open(names) as file:
-        pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
-        for line in file:
-            match = __parse_line(line, pattern)
-            if not match:
-                continue
-            id = int(match.group(1))
-            __fill_seqs(seqs, id)
-            name = match.group(2)
-            seqs[id].name = name
-    return seqs</code></pre>
-</details>
-</dd>
-</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -192,8 +211,167 @@ class Sequence:
         return False
 
     def id_str(self) -&gt; str:
-        return &#34;A{:06}&#34;.format(self.id)</code></pre>
+        return &#34;A{:06}&#34;.format(self.id)
+
+    @classmethod
+    def load_oeis(cls, oeis_path: str) -&gt; list:
+        &#34;&#34;&#34;
+        Load sequences from `stripped` from `names` files.
+        &#34;&#34;&#34;
+        seqs = []
+        # load sequence terms
+        stripped = os.path.join(oeis_path, &#34;stripped&#34;)
+        with open(stripped) as file:
+            pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
+            for line in file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                id = int(match.group(1))
+                cls.__fill_seqs(seqs, id)
+                seqs[id].id = id
+                terms_str = match.group(2).split(&#34;,&#34;)
+                seqs[id].terms = [int(t) for t in terms_str]
+        # load sequence names
+        names = os.path.join(oeis_path, &#34;names&#34;)
+        with open(names) as file:
+            pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
+            for line in file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                id = int(match.group(1))
+                cls.__fill_seqs(seqs, id)
+                name = match.group(2)
+                seqs[id].name = name
+        return seqs
+
+    @classmethod
+    def __parse_line(cls, line: str, pattern):
+        line = line.strip()
+        if len(line) == 0 or line.startswith(&#34;#&#34;):
+            return None
+        match = pattern.match(line)
+        if not match:
+            raise ValueError(&#34;parse error: {}&#34;.format(line))
+        return match
+
+    @classmethod
+    def __fill_seqs(cls, seqs: list, id: int):
+        current_size = len(seqs)
+        for i in range(current_size, id+2):
+            seqs.append(Sequence(i, &#34;&#34;, []))
+
+    def load_b_file(self, path: str) -&gt; list:
+        &#34;&#34;&#34;
+        Load additional terms from a b-file.
+
+        Args:
+            path: Either path to a b-file (uncompressed `b*.txt` file) or a
+                folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
+        &#34;&#34;&#34;
+        terms = []
+        if len(path) == 0 or os.path.isdir(path):
+            dir = &#34;{:03}&#34;.format(self.id//1000)
+            txt = &#34;b{:06}.txt&#34;.format(self.id)
+            path = os.path.join(path, &#34;b&#34;, dir, txt)
+        with open(path) as b_file:
+            expected_index = -1
+            for line in b_file:
+                line = line.strip()
+                if len(line) == 0 or line[0] == &#34;#&#34;:
+                    continue
+                fields = line.split()
+                if len(fields) &lt; 2:
+                    raise ValueError(&#34;unexpected line: {}&#34;.format(line))
+                index = int(fields[0])
+                value = int(fields[1])
+                if expected_index == -1:
+                    expected_index = index
+                    if index != expected_index:
+                        raise ValueError(&#34;unexpected index: {}&#34;.format(index))
+                terms.append(value)
+                expected_index += 1
+        terms = self.__align(terms)
+        if terms is None:
+            raise ValueError(&#34;unexpected terms in b-file&#34;)
+        if len(terms) &lt; len(self.terms):
+            terms = self.terms
+        elif terms[0:len(self.terms)] != self.terms:
+            raise ValueError(&#34;unexpected terms in b-file&#34;)
+        return terms
+
+    def __align(self, terms: list, max_offset: int = 10) -&gt; list:
+        &#34;&#34;&#34;Align terms from a b-file possible by shifting by an offset&#34;&#34;&#34;
+        # check if they agree on prefix already
+        min_length = min(len(self.terms), len(terms))
+        if self.terms[0:min_length] == terms[0:min_length]:
+            return terms
+        # try to align them
+        for offset in range(1, max_offset+1):
+            if offset &gt;= min_length:
+                break
+            agree_pos = True
+            agree_neg = True
+            for i in range(min_length):
+                if i+offset &lt; len(terms) and terms[i + offset] != self.terms[i]:
+                    agree_pos = False
+                if i+offset &lt; len(self.terms) and terms[i] != self.terms[i+offset]:
+                    agree_neg = False
+            if agree_pos:
+                return terms[offset:]
+            if agree_neg:
+                result = self.terms[0:offset]
+                result.extend(terms)
+                return result
+        return None</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="loda.oeis.sequence.Sequence.load_oeis"><code class="name flex">
+<span>def <span class="ident">load_oeis</span></span>(<span>oeis_path: str) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load sequences from <code>stripped</code> from <code>names</code> files.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def load_oeis(cls, oeis_path: str) -&gt; list:
+    &#34;&#34;&#34;
+    Load sequences from `stripped` from `names` files.
+    &#34;&#34;&#34;
+    seqs = []
+    # load sequence terms
+    stripped = os.path.join(oeis_path, &#34;stripped&#34;)
+    with open(stripped) as file:
+        pattern = re.compile(&#34;^A([0-9]+) ,([\\-0-9,]+),$&#34;)
+        for line in file:
+            match = cls.__parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            cls.__fill_seqs(seqs, id)
+            seqs[id].id = id
+            terms_str = match.group(2).split(&#34;,&#34;)
+            seqs[id].terms = [int(t) for t in terms_str]
+    # load sequence names
+    names = os.path.join(oeis_path, &#34;names&#34;)
+    with open(names) as file:
+        pattern = re.compile(&#34;^A([0-9]+) (.+)$&#34;)
+        for line in file:
+            match = cls.__parse_line(line, pattern)
+            if not match:
+                continue
+            id = int(match.group(1))
+            cls.__fill_seqs(seqs, id)
+            name = match.group(2)
+            seqs[id].name = name
+    return seqs</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="loda.oeis.sequence.Sequence.id_str"><code class="name flex">
@@ -207,6 +385,61 @@ class Sequence:
 </summary>
 <pre><code class="python">def id_str(self) -&gt; str:
     return &#34;A{:06}&#34;.format(self.id)</code></pre>
+</details>
+</dd>
+<dt id="loda.oeis.sequence.Sequence.load_b_file"><code class="name flex">
+<span>def <span class="ident">load_b_file</span></span>(<span>self, path: str) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load additional terms from a b-file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>Either path to a b-file (uncompressed <code>b*.txt</code> file) or a
+folder that contains the b-files in sub-directories, e.g. <code>b/123/b123456.txt</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_b_file(self, path: str) -&gt; list:
+    &#34;&#34;&#34;
+    Load additional terms from a b-file.
+
+    Args:
+        path: Either path to a b-file (uncompressed `b*.txt` file) or a
+            folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
+    &#34;&#34;&#34;
+    terms = []
+    if len(path) == 0 or os.path.isdir(path):
+        dir = &#34;{:03}&#34;.format(self.id//1000)
+        txt = &#34;b{:06}.txt&#34;.format(self.id)
+        path = os.path.join(path, &#34;b&#34;, dir, txt)
+    with open(path) as b_file:
+        expected_index = -1
+        for line in b_file:
+            line = line.strip()
+            if len(line) == 0 or line[0] == &#34;#&#34;:
+                continue
+            fields = line.split()
+            if len(fields) &lt; 2:
+                raise ValueError(&#34;unexpected line: {}&#34;.format(line))
+            index = int(fields[0])
+            value = int(fields[1])
+            if expected_index == -1:
+                expected_index = index
+                if index != expected_index:
+                    raise ValueError(&#34;unexpected index: {}&#34;.format(index))
+            terms.append(value)
+            expected_index += 1
+    terms = self.__align(terms)
+    if terms is None:
+        raise ValueError(&#34;unexpected terms in b-file&#34;)
+    if len(terms) &lt; len(self.terms):
+        terms = self.terms
+    elif terms[0:len(self.terms)] != self.terms:
+        raise ValueError(&#34;unexpected terms in b-file&#34;)
+    return terms</code></pre>
 </details>
 </dd>
 </dl>
@@ -225,17 +458,14 @@ class Sequence:
 <li><code><a title="loda.oeis" href="index.html">loda.oeis</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="loda.oeis.sequence.load" href="#loda.oeis.sequence.load">load</a></code></li>
-</ul>
-</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
 <h4><code><a title="loda.oeis.sequence.Sequence" href="#loda.oeis.sequence.Sequence">Sequence</a></code></h4>
 <ul class="">
 <li><code><a title="loda.oeis.sequence.Sequence.id_str" href="#loda.oeis.sequence.Sequence.id_str">id_str</a></code></li>
+<li><code><a title="loda.oeis.sequence.Sequence.load_b_file" href="#loda.oeis.sequence.Sequence.load_b_file">load_b_file</a></code></li>
+<li><code><a title="loda.oeis.sequence.Sequence.load_oeis" href="#loda.oeis.sequence.Sequence.load_oeis">load_oeis</a></code></li>
 </ul>
 </li>
 </ul>
