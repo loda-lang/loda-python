@@ -1,6 +1,6 @@
 import os.path
 
-from loda.oeis import ProgramCache, sequence
+from loda.oeis import ProgramCache, Sequence
 from loda.runtime import Evaluator, Interpreter
 from loda.mine import Miner
 from loda.ml.keras.program_generation_rnn import load_model, train_model, Generator
@@ -43,12 +43,12 @@ class SampleLODA:
             print(generator())
 
         existing_ids = set(self.program_cache.all_ids())
-        seqs = sequence.load(os.path.expanduser("~/loda/oeis"))
+        seqs = Sequence.load_oeis(os.path.expanduser("~/loda/oeis"))
         seqs = list(filter(lambda s:
                            len(s.terms) >= 8 and s.id not in existing_ids, seqs))
         print("Loaded {} sequences".format(len(seqs)))
         miner = Miner(seqs, self.interpreter, generator)
-        for i in range(500):
+        for i in range(20):
             miner()
             if i % 10 == 0:
                 print(generator.get_stats_info_str())
