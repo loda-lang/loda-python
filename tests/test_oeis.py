@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from loda.oeis import PrefixIndex, ProgramCache, Sequence, sequence
+from loda.oeis import PrefixIndex, ProgramCache, Sequence
 from tests.helpers import OEIS_TEST_DIR, PROGRAMS_TEST_DIR
 
 NUM_SEQS = 5
@@ -10,7 +10,7 @@ NUM_PROGRAMS = 16
 class PrefixIndexTests(TestCase):
 
     def setUp(self):
-        seqs = sequence.load(OEIS_TEST_DIR)
+        seqs = Sequence.load_oeis(OEIS_TEST_DIR)
         self.index = PrefixIndex(seqs)
 
     def test_index_size(self):
