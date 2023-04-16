@@ -150,3 +150,16 @@ class Sequence:
                 result.extend(terms)
                 return result
         return None
+
+    @classmethod
+    def load_id_list(cls, path: str) -> list:
+        """Load sequence IDs from a text file"""
+        ids = []
+        with open(path) as list_file:
+            pattern = re.compile("^A([0-9]+)(:?.*)$")
+            for line in list_file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                ids.append(int(match.group(1)))
+        return ids

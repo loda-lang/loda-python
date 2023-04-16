@@ -14,10 +14,13 @@ def mine(model_path: str):
     generator = Generator(model, num_lanes=10)
     programs_dir = os.path.expanduser("~/loda/programs/oeis")
     program_cache = ProgramCache(programs_dir)
-    existing_ids = set(program_cache.all_ids())
+    ignore_ids = set()
+    ignore_ids.update(program_cache.all_ids())
+    ignore_ids.update(Sequence.load_id_list(
+        os.path.expanduser("~/loda/programs/oeis/deny.txt")))
     seqs = Sequence.load_oeis(os.path.expanduser("~/loda/oeis"))
     seqs = list(filter(lambda s: len(s.terms) >=
-                8 and s.id not in existing_ids, seqs))
+                8 and s.id not in ignore_ids, seqs))
     print("Loaded {} sequences".format(len(seqs)))
     interpreter = Interpreter(program_cache)
     miner = Miner(seqs, interpreter, generator)
