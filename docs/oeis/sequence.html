@@ -178,7 +178,20 @@ class Sequence:
                 result = self.terms[0:offset]
                 result.extend(terms)
                 return result
-        return None</code></pre>
+        return None
+
+    @classmethod
+    def load_id_list(cls, path: str) -&gt; list:
+        &#34;&#34;&#34;Load sequence IDs from a text file&#34;&#34;&#34;
+        ids = []
+        with open(path) as list_file:
+            pattern = re.compile(&#34;^A([0-9]+)(:?.*)$&#34;)
+            for line in list_file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                ids.append(int(match.group(1)))
+        return ids</code></pre>
 </details>
 </section>
 <section>
@@ -342,10 +355,46 @@ class Sequence:
                 result = self.terms[0:offset]
                 result.extend(terms)
                 return result
-        return None</code></pre>
+        return None
+
+    @classmethod
+    def load_id_list(cls, path: str) -&gt; list:
+        &#34;&#34;&#34;Load sequence IDs from a text file&#34;&#34;&#34;
+        ids = []
+        with open(path) as list_file:
+            pattern = re.compile(&#34;^A([0-9]+)(:?.*)$&#34;)
+            for line in list_file:
+                match = cls.__parse_line(line, pattern)
+                if not match:
+                    continue
+                ids.append(int(match.group(1)))
+        return ids</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
+<dt id="loda.oeis.sequence.Sequence.load_id_list"><code class="name flex">
+<span>def <span class="ident">load_id_list</span></span>(<span>path: str) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load sequence IDs from a text file</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def load_id_list(cls, path: str) -&gt; list:
+    &#34;&#34;&#34;Load sequence IDs from a text file&#34;&#34;&#34;
+    ids = []
+    with open(path) as list_file:
+        pattern = re.compile(&#34;^A([0-9]+)(:?.*)$&#34;)
+        for line in list_file:
+            match = cls.__parse_line(line, pattern)
+            if not match:
+                continue
+            ids.append(int(match.group(1)))
+    return ids</code></pre>
+</details>
+</dd>
 <dt id="loda.oeis.sequence.Sequence.load_oeis"><code class="name flex">
 <span>def <span class="ident">load_oeis</span></span>(<span>oeis_path: str) ‑> list</span>
 </code></dt>
@@ -491,6 +540,7 @@ folder that contains the b-files in sub-directories, e.g. <code>b/123/b123456.tx
 <ul class="">
 <li><code><a title="loda.oeis.sequence.Sequence.id_str" href="#loda.oeis.sequence.Sequence.id_str">id_str</a></code></li>
 <li><code><a title="loda.oeis.sequence.Sequence.load_b_file" href="#loda.oeis.sequence.Sequence.load_b_file">load_b_file</a></code></li>
+<li><code><a title="loda.oeis.sequence.Sequence.load_id_list" href="#loda.oeis.sequence.Sequence.load_id_list">load_id_list</a></code></li>
 <li><code><a title="loda.oeis.sequence.Sequence.load_oeis" href="#loda.oeis.sequence.Sequence.load_oeis">load_oeis</a></code></li>
 </ul>
 </li>
