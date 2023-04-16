@@ -29,6 +29,10 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Miner class for finding integer sequence programs.&#34;&#34;&#34;
 
+import os
+import time
+
+from loda.lang import Program
 from loda.oeis import PrefixIndex, Sequence
 from loda.runtime import Evaluator, Interpreter
 
@@ -39,25 +43,55 @@ class Miner:
         self.__index = PrefixIndex(sequences)
         self.__interpreter = interpreter
         self.__generator = generator
+        self.__basic_timeout = 60
+        self.__extended_timeout = 600
 
     def __call__(self):
         program = self.__generator()
         evaluator = Evaluator(program, self.__interpreter)
         match = self.__index.global_match()
         refine = True
+        start_time = time.time()
         try:
             while refine:
                 term = evaluator()
-                # print(term)
                 refine = self.__index.refine_match(match, term)
+                if (time.time() - start_time) &gt; self.__basic_timeout:
+                    print(&#34;timeout&#34;)
+                    return
         except Exception as e:
             print(&#34;evaluation error: {}&#34;.format(e))
             return
-
         ids = self.__index.get_match_ids(match)
         for id in ids:
-            print(&#34;Found match for {}&#34;.format(Sequence(id)))
-            print(program)</code></pre>
+            self.__check_match(program, id)
+
+    def __check_match(self, program: Program, id: int):
+        seq = self.__index.get(id)
+        terms = seq.load_b_file(os.path.expanduser(&#34;~/loda/oeis&#34;))
+        if terms is None or len(terms) == len(seq.terms):
+            print(&#34;Skipping check for {}&#34;.format(seq))
+            return
+        print(&#34;Checking match for {}&#34;.format(seq))
+        start_time = time.time()
+        if len(terms) &gt; 1000:
+            terms = terms[0:1000]
+        evaluator = Evaluator(program, self.__interpreter)
+        correct = True
+        for t in terms:
+            n = evaluator()
+            if n != t:
+                correct = False
+                break
+            if (time.time() - start_time) &gt; self.__extended_timeout:
+                print(&#34;timeout&#34;)
+                return
+        if correct:
+            print(&#34;Found match for {}&#34;.format(seq))
+            p = &#34;~/loda/programs/local/{}.asm&#34;.format(seq.id_str())
+            with open(os.path.expanduser(p), &#34;w&#34;) as asm_file:
+                asm_file.write(&#34;; {}\n&#34;.format(seq))
+                asm_file.write(str(program))</code></pre>
 </details>
 </section>
 <section>
@@ -85,25 +119,55 @@ class Miner:
         self.__index = PrefixIndex(sequences)
         self.__interpreter = interpreter
         self.__generator = generator
+        self.__basic_timeout = 60
+        self.__extended_timeout = 600
 
     def __call__(self):
         program = self.__generator()
         evaluator = Evaluator(program, self.__interpreter)
         match = self.__index.global_match()
         refine = True
+        start_time = time.time()
         try:
             while refine:
                 term = evaluator()
-                # print(term)
                 refine = self.__index.refine_match(match, term)
+                if (time.time() - start_time) &gt; self.__basic_timeout:
+                    print(&#34;timeout&#34;)
+                    return
         except Exception as e:
             print(&#34;evaluation error: {}&#34;.format(e))
             return
-
         ids = self.__index.get_match_ids(match)
         for id in ids:
-            print(&#34;Found match for {}&#34;.format(Sequence(id)))
-            print(program)</code></pre>
+            self.__check_match(program, id)
+
+    def __check_match(self, program: Program, id: int):
+        seq = self.__index.get(id)
+        terms = seq.load_b_file(os.path.expanduser(&#34;~/loda/oeis&#34;))
+        if terms is None or len(terms) == len(seq.terms):
+            print(&#34;Skipping check for {}&#34;.format(seq))
+            return
+        print(&#34;Checking match for {}&#34;.format(seq))
+        start_time = time.time()
+        if len(terms) &gt; 1000:
+            terms = terms[0:1000]
+        evaluator = Evaluator(program, self.__interpreter)
+        correct = True
+        for t in terms:
+            n = evaluator()
+            if n != t:
+                correct = False
+                break
+            if (time.time() - start_time) &gt; self.__extended_timeout:
+                print(&#34;timeout&#34;)
+                return
+        if correct:
+            print(&#34;Found match for {}&#34;.format(seq))
+            p = &#34;~/loda/programs/local/{}.asm&#34;.format(seq.id_str())
+            with open(os.path.expanduser(p), &#34;w&#34;) as asm_file:
+                asm_file.write(&#34;; {}\n&#34;.format(seq))
+                asm_file.write(str(program))</code></pre>
 </details>
 </dd>
 </dl>

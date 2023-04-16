@@ -32,6 +32,8 @@
 import functools
 import os.path
 import re
+import requests
+import subprocess
 
 
 @functools.total_ordering
@@ -115,10 +117,18 @@ class Sequence:
                 folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
         &#34;&#34;&#34;
         terms = []
+        txt = &#34;b{:06}.txt&#34;.format(self.id)
         if len(path) == 0 or os.path.isdir(path):
             dir = &#34;{:03}&#34;.format(self.id//1000)
-            txt = &#34;b{:06}.txt&#34;.format(self.id)
             path = os.path.join(path, &#34;b&#34;, dir, txt)
+        if not os.path.isfile(path):
+            b_url = &#34;http://api.loda-lang.org/miner/v1/oeis/{}.gz&#34;.format(txt)
+            print(&#34;Fetching {}&#34;.format(b_url))
+            req = requests.get(b_url)
+            gz_path = path + &#34;.gz&#34;
+            with open(gz_path, &#39;wb&#39;) as gz:
+                gz.write(req.content)
+            subprocess.run([&#34;gunzip&#34;, gz_path])
         with open(path) as b_file:
             expected_index = -1
             for line in b_file:
@@ -271,10 +281,18 @@ class Sequence:
                 folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
         &#34;&#34;&#34;
         terms = []
+        txt = &#34;b{:06}.txt&#34;.format(self.id)
         if len(path) == 0 or os.path.isdir(path):
             dir = &#34;{:03}&#34;.format(self.id//1000)
-            txt = &#34;b{:06}.txt&#34;.format(self.id)
             path = os.path.join(path, &#34;b&#34;, dir, txt)
+        if not os.path.isfile(path):
+            b_url = &#34;http://api.loda-lang.org/miner/v1/oeis/{}.gz&#34;.format(txt)
+            print(&#34;Fetching {}&#34;.format(b_url))
+            req = requests.get(b_url)
+            gz_path = path + &#34;.gz&#34;
+            with open(gz_path, &#39;wb&#39;) as gz:
+                gz.write(req.content)
+            subprocess.run([&#34;gunzip&#34;, gz_path])
         with open(path) as b_file:
             expected_index = -1
             for line in b_file:
@@ -411,10 +429,18 @@ folder that contains the b-files in sub-directories, e.g. <code>b/123/b123456.tx
             folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
     &#34;&#34;&#34;
     terms = []
+    txt = &#34;b{:06}.txt&#34;.format(self.id)
     if len(path) == 0 or os.path.isdir(path):
         dir = &#34;{:03}&#34;.format(self.id//1000)
-        txt = &#34;b{:06}.txt&#34;.format(self.id)
         path = os.path.join(path, &#34;b&#34;, dir, txt)
+    if not os.path.isfile(path):
+        b_url = &#34;http://api.loda-lang.org/miner/v1/oeis/{}.gz&#34;.format(txt)
+        print(&#34;Fetching {}&#34;.format(b_url))
+        req = requests.get(b_url)
+        gz_path = path + &#34;.gz&#34;
+        with open(gz_path, &#39;wb&#39;) as gz:
+            gz.write(req.content)
+        subprocess.run([&#34;gunzip&#34;, gz_path])
     with open(path) as b_file:
         expected_index = -1
         for line in b_file:
