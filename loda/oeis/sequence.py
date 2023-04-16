@@ -3,6 +3,8 @@
 import functools
 import os.path
 import re
+import requests
+import subprocess
 
 
 @functools.total_ordering
@@ -86,10 +88,18 @@ class Sequence:
                 folder that contains the b-files in sub-directories, e.g. `b/123/b123456.txt`.
         """
         terms = []
+        txt = "b{:06}.txt".format(self.id)
         if len(path) == 0 or os.path.isdir(path):
             dir = "{:03}".format(self.id//1000)
-            txt = "b{:06}.txt".format(self.id)
             path = os.path.join(path, "b", dir, txt)
+        if not os.path.isfile(path):
+            b_url = "http://api.loda-lang.org/miner/v1/oeis/{}.gz".format(txt)
+            print("Fetching {}".format(b_url))
+            req = requests.get(b_url)
+            gz_path = path + ".gz"
+            with open(gz_path, 'wb') as gz:
+                gz.write(req.content)
+            subprocess.run(["gunzip", gz_path])
         with open(path) as b_file:
             expected_index = -1
             for line in b_file:
