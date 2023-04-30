@@ -95,6 +95,8 @@ class Model(tf.keras.Model):
         print("Sample size:", self.sample_size)
         print("Trained samples:", self.num_samples)
         print("Trained programs:", len(self.program_ids))
+        print("Operation per sample:", self.num_ops_per_sample)
+        print("Nop separators:", self.num_nops_separator)
 
     @classmethod
     def from_config(cls, config):
@@ -237,8 +239,8 @@ class Generator:
         generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
         ```
         """
-        separator_overhead = 1 - (self.num_generated_nops /
-                                  (self.num_generated_programs * self.model.num_nops_separator))
+        separator_overhead = (
+            self.num_generated_nops / (self.num_generated_programs * self.model.num_nops_separator)) - 1
         return "generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%".format(
             self.num_generated_programs,
             self.num_generated_programs / (time.time() - self.start_time),

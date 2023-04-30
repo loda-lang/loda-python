@@ -1,6 +1,7 @@
 import datetime
 import os.path
 
+from loda.lang import Operation, Program
 from loda.oeis import ProgramCache, Sequence
 from loda.runtime import Interpreter
 from loda.mine import Miner
@@ -11,7 +12,9 @@ def mine(model_path: str):
 
     model = load_model(model_path)
     model.summary()
-    generator = Generator(model, num_lanes=10)
+    initial_program = Program()
+    initial_program.operations.append(Operation("mov $1,1"))
+    generator = Generator(model, initial_program=initial_program, num_lanes=10)
     programs_dir = os.path.expanduser("~/loda/programs/oeis")
     program_cache = ProgramCache(programs_dir)
     ignore_ids = set()
@@ -28,10 +31,10 @@ def mine(model_path: str):
     while True:
         miner()
         i += 1
-        if i % 100 == 0:
+        if i % 10 == 0:
             ct = datetime.datetime.now()
             print(ct, generator.get_stats_info_str())
 
 
 if __name__ == "__main__":
-    mine(os.path.expanduser("~/scripts/model-001"))
+    mine(os.path.expanduser("~/scripts/model-075"))
