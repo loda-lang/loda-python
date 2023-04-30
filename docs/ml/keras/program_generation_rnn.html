@@ -139,6 +139,8 @@ class Model(tf.keras.Model):
         print(&#34;Sample size:&#34;, self.sample_size)
         print(&#34;Trained samples:&#34;, self.num_samples)
         print(&#34;Trained programs:&#34;, len(self.program_ids))
+        print(&#34;Operation per sample:&#34;, self.num_ops_per_sample)
+        print(&#34;Nop separators:&#34;, self.num_nops_separator)
 
     @classmethod
     def from_config(cls, config):
@@ -281,8 +283,8 @@ class Generator:
         generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
         ```
         &#34;&#34;&#34;
-        separator_overhead = 1 - (self.num_generated_nops /
-                                  (self.num_generated_programs * self.model.num_nops_separator))
+        separator_overhead = (
+            self.num_generated_nops / (self.num_generated_programs * self.model.num_nops_separator)) - 1
         return &#34;generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%&#34;.format(
             self.num_generated_programs,
             self.num_generated_programs / (time.time() - self.start_time),
@@ -659,8 +661,8 @@ potentially increases the program generation performance, but also the memory us
         generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
         ```
         &#34;&#34;&#34;
-        separator_overhead = 1 - (self.num_generated_nops /
-                                  (self.num_generated_programs * self.model.num_nops_separator))
+        separator_overhead = (
+            self.num_generated_nops / (self.num_generated_programs * self.model.num_nops_separator)) - 1
         return &#34;generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%&#34;.format(
             self.num_generated_programs,
             self.num_generated_programs / (time.time() - self.start_time),
@@ -693,8 +695,8 @@ the number of generated programs, the generation speed, and error statistics.</p
     generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
     ```
     &#34;&#34;&#34;
-    separator_overhead = 1 - (self.num_generated_nops /
-                              (self.num_generated_programs * self.model.num_nops_separator))
+    separator_overhead = (
+        self.num_generated_nops / (self.num_generated_programs * self.model.num_nops_separator)) - 1
     return &#34;generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%&#34;.format(
         self.num_generated_programs,
         self.num_generated_programs / (time.time() - self.start_time),
@@ -782,6 +784,8 @@ the number of generated programs, the generation speed, and error statistics.</p
         print(&#34;Sample size:&#34;, self.sample_size)
         print(&#34;Trained samples:&#34;, self.num_samples)
         print(&#34;Trained programs:&#34;, len(self.program_ids))
+        print(&#34;Operation per sample:&#34;, self.num_ops_per_sample)
+        print(&#34;Nop separators:&#34;, self.num_nops_separator)
 
     @classmethod
     def from_config(cls, config):
@@ -974,7 +978,9 @@ By default <code>None</code> which considers all layers of model.</dd>
     print(&#34;Vocabulary size:&#34;, self.get_vocab_size())
     print(&#34;Sample size:&#34;, self.sample_size)
     print(&#34;Trained samples:&#34;, self.num_samples)
-    print(&#34;Trained programs:&#34;, len(self.program_ids))</code></pre>
+    print(&#34;Trained programs:&#34;, len(self.program_ids))
+    print(&#34;Operation per sample:&#34;, self.num_ops_per_sample)
+    print(&#34;Nop separators:&#34;, self.num_nops_separator)</code></pre>
 </details>
 </dd>
 </dl>

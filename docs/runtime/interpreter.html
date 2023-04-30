@@ -129,7 +129,7 @@ class Interpreter:
 
         # check for loops with fragments
         if any(op.type == Operation.Type.LPB and op.source != Operand(Operand.Type.CONSTANT, 1) for op in ops):
-            self.__raise(&#34;unsupported operation: {}&#34;.format(op))
+            self.__raise(&#34;fragments not supported&#34;)
 
         # check for empty program
         if len(ops) == 0:
@@ -378,7 +378,7 @@ the program cache must be supplied.</dd>
 
         # check for loops with fragments
         if any(op.type == Operation.Type.LPB and op.source != Operand(Operand.Type.CONSTANT, 1) for op in ops):
-            self.__raise(&#34;unsupported operation: {}&#34;.format(op))
+            self.__raise(&#34;fragments not supported&#34;)
 
         # check for empty program
         if len(ops) == 0:
