@@ -100,7 +100,7 @@ class Interpreter:
 
         # check for loops with fragments
         if any(op.type == Operation.Type.LPB and op.source != Operand(Operand.Type.CONSTANT, 1) for op in ops):
-            self.__raise("unsupported operation: {}".format(op))
+            self.__raise("fragments not supported")
 
         # check for empty program
         if len(ops) == 0:
