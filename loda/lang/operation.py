@@ -58,22 +58,24 @@ class Operation:
         GCD = 12    # greatest common divisor
         BIN = 13    # binomial coefficient
         FAC = 14    # falling and rising factorial
-        EQU = 15    # equality
-        NEQ = 16    # inequality
-        LEQ = 17    # less or equal
-        GEQ = 18    # greater or equal
-        MIN = 19    # minimum
-        MAX = 20    # maximum
-        BAN = 21    # bitwise and
-        BOR = 22    # bitwise or
-        BXO = 23    # bitwise xor
-        DGS = 24    # digit sum
-        DGR = 25    # digital root
-        LPB = 26    # loop begin
-        LPE = 27    # loop end
-        CLR = 28    # clear
-        SEQ = 29    # sequence
-        DBG = 30    # debug
+        LEX = 15    # largest exponent
+        LOG = 16    # discrete logarithm
+        EQU = 17    # equality
+        NEQ = 18    # inequality
+        LEQ = 19    # less or equal
+        GEQ = 20    # greater or equal
+        MIN = 21    # minimum
+        MAX = 22    # maximum
+        BAN = 23    # bitwise and
+        BOR = 24    # bitwise or
+        BXO = 25    # bitwise xor
+        DGS = 26    # digit sum
+        DGR = 27    # digital root
+        LPB = 28    # loop begin
+        LPE = 29    # loop end
+        CLR = 30    # clear
+        SEQ = 31    # sequence
+        DBG = 32    # debug
 
     type: Type
     """Type of this operation."""

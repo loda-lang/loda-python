@@ -236,6 +236,38 @@ def dgr(a, b):
     return sign * (1 + ((aa - 1) % (b - 1)))
 
 
+def lex(a, b):
+    """Largest exponent: returns the largest k such that b^k divides a (C++ semantics)."""
+    if a is None or b is None:
+        return None
+    if b == 0 or abs(b) == 1:
+        return 0
+    r = 0
+    aa = abs(a)
+    bb = abs(b)
+    while True:
+        aaa = dif(aa, bb)
+        if aaa == aa:
+            break
+        aa = aaa
+        r += 1
+    return r
+
+
+def log(a, b):
+    """Discrete logarithm: returns the integer part of log_b(a)."""
+    if a is None or b is None or a < 1 or b < 2:
+        return None
+    if a == 1:
+        return 0
+    m = 1
+    res = 0
+    while m < a:
+        m *= b
+        res += 1
+    return res if m == a else res - 1
+
+
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
@@ -264,6 +296,10 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return bin(a, b)
     elif t == Operation.Type.FAC:
         return fac(a, b)
+    elif t == Operation.Type.LEX:
+        return lex(a, b)
+    elif t == Operation.Type.LOG:
+        return log(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
     elif t == Operation.Type.NEQ:
