@@ -52,24 +52,25 @@ class Operation:
         MUL = 6     # multiplication
         DIV = 7     # division
         DIF = 8     # conditional division
-        MOD = 9     # modulo
-        POW = 10    # power
-        GCD = 11    # greatest common divisor
-        BIN = 12    # binomial coefficient
-        EQU = 13    # equality
-        NEQ = 14    # inequality
-        LEQ = 15    # less or equal
-        GEQ = 16    # greater or equal
-        MIN = 17    # minimum
-        MAX = 18    # maximum
-        BAN = 19    # bitwise and
-        BOR = 20    # bitwise or
-        BXO = 21    # bitwise xor
-        LPB = 22    # loop begin
-        LPE = 23    # loop end
-        CLR = 24    # clear
-        SEQ = 25    # sequence
-        DBG = 26    # debug
+        DIR = 9     # repeated division
+        MOD = 10    # modulo
+        POW = 11    # power
+        GCD = 12    # greatest common divisor
+        BIN = 13    # binomial coefficient
+        EQU = 14    # equality
+        NEQ = 15    # inequality
+        LEQ = 16    # less or equal
+        GEQ = 17    # greater or equal
+        MIN = 18    # minimum
+        MAX = 19    # maximum
+        BAN = 20    # bitwise and
+        BOR = 21    # bitwise or
+        BXO = 22    # bitwise xor
+        LPB = 23    # loop begin
+        LPE = 24    # loop end
+        CLR = 25    # clear
+        SEQ = 26    # sequence
+        DBG = 27    # debug
 
     type: Type
     """Type of this operation."""

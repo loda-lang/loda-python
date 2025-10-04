@@ -52,6 +52,19 @@ def dif(a, b):
     return d if a == mul(b, d) else a
 
 
+def dir(a, b):
+    """Repeated conditional division."""
+    if a is None or b is None:
+        return None
+    aa = a
+    while True:
+        r = dif(aa, b)
+        if abs(r) == abs(aa):
+            break
+        aa = r
+    return aa
+
+
 def mod(a, b):
     """Modulus (Remainder)."""
     if a == None or b == None or b == 0:
@@ -198,6 +211,8 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return div(a, b)
     elif t == Operation.Type.DIF:
         return dif(a, b)
+    elif t == Operation.Type.DIR:
+        return dir(a, b)
     elif t == Operation.Type.MOD:
         return mod(a, b)
     elif t == Operation.Type.POW:
