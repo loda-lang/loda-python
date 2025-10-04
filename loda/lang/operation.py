@@ -62,11 +62,14 @@ class Operation:
         GEQ = 16    # greater or equal
         MIN = 17    # minimum
         MAX = 18    # maximum
-        LPB = 19    # loop begin
-        LPE = 20    # loop end
-        CLR = 21    # clear
-        SEQ = 22    # sequence
-        DBG = 23    # debug
+        BAN = 19    # bitwise and
+        BOR = 20    # bitwise or
+        BXO = 21    # bitwise xor
+        LPB = 22    # loop begin
+        LPE = 23    # loop end
+        CLR = 24    # clear
+        SEQ = 25    # sequence
+        DBG = 26    # debug
 
     type: Type
     """Type of this operation."""

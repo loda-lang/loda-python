@@ -161,6 +161,27 @@ def max(a, b):
     return a if a > b else b
 
 
+def ban(a, b):
+    """Bitwise AND."""
+    if a is None or b is None:
+        return None
+    return a & b
+
+
+def bor(a, b):
+    """Bitwise OR."""
+    if a is None or b is None:
+        return None
+    return a | b
+
+
+def bxo(a, b):
+    """Bitwise XOR."""
+    if a is None or b is None:
+        return None
+    return a ^ b
+
+
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
@@ -197,5 +218,11 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return min(a, b)
     elif t == Operation.Type.MAX:
         return max(a, b)
+    elif t == Operation.Type.BAN:
+        return ban(a, b)
+    elif t == Operation.Type.BOR:
+        return bor(a, b)
+    elif t == Operation.Type.BXO:
+        return bxo(a, b)
     else:
         raise ValueError("operation type not arithmetic: {}".format(t))
