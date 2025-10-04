@@ -57,20 +57,21 @@ class Operation:
         POW = 11    # power
         GCD = 12    # greatest common divisor
         BIN = 13    # binomial coefficient
-        EQU = 14    # equality
-        NEQ = 15    # inequality
-        LEQ = 16    # less or equal
-        GEQ = 17    # greater or equal
-        MIN = 18    # minimum
-        MAX = 19    # maximum
-        BAN = 20    # bitwise and
-        BOR = 21    # bitwise or
-        BXO = 22    # bitwise xor
-        LPB = 23    # loop begin
-        LPE = 24    # loop end
-        CLR = 25    # clear
-        SEQ = 26    # sequence
-        DBG = 27    # debug
+        FAC = 14    # falling and rising factorial
+        EQU = 15    # equality
+        NEQ = 16    # inequality
+        LEQ = 17    # less or equal
+        GEQ = 18    # greater or equal
+        MIN = 19    # minimum
+        MAX = 20    # maximum
+        BAN = 21    # bitwise and
+        BOR = 22    # bitwise or
+        BXO = 23    # bitwise xor
+        LPB = 24    # loop begin
+        LPE = 25    # loop end
+        CLR = 26    # clear
+        SEQ = 27    # sequence
+        DBG = 28    # debug
 
     type: Type
     """Type of this operation."""

@@ -132,6 +132,23 @@ def bin(n, k):
     return mul(sign, r)
 
 
+def fac(n, k):
+    """Falling and rising factorial."""
+    if n is None or k is None:
+        return None
+    d = 1
+    res = 1
+    if k < 0:
+        k = -k
+        d = -1
+    for i in range(k):
+        res *= n
+        if res == 0:
+            return 0
+        n += d
+    return res
+
+
 def equ(a, b):
     """Equality."""
     if a == None or b == None:
@@ -221,6 +238,8 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return gcd(a, b)
     elif t == Operation.Type.BIN:
         return bin(a, b)
+    elif t == Operation.Type.FAC:
+        return fac(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
     elif t == Operation.Type.NEQ:
