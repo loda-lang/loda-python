@@ -94,26 +94,29 @@ el.replaceWith(d);
 
     class Type(Enum):
         &#34;&#34;&#34;Operation type. Type names are written as three-letter, lower-case words.&#34;&#34;&#34;
-        NOP = 1
-        MOV = 2
-        ADD = 3
-        SUB = 4
-        TRN = 5
-        MUL = 6
-        DIV = 7
-        DIF = 8
-        MOD = 9
-        POW = 10
-        GCD = 11
-        BIN = 12
-        EQU = 13
-        MIN = 14
-        MAX = 15
-        LPB = 16
-        LPE = 17
-        CLR = 18
-        SEQ = 19
-        DBG = 20
+        NOP = 1     # no operation
+        MOV = 2     # assignment
+        ADD = 3     # addition
+        SUB = 4     # subtraction
+        TRN = 5     # truncated subtraction
+        MUL = 6     # multiplication
+        DIV = 7     # division
+        DIF = 8     # conditional division
+        MOD = 9     # modulo
+        POW = 10    # power
+        GCD = 11    # greatest common divisor
+        BIN = 12    # binomial coefficient
+        EQU = 13    # equality
+        NEQ = 14    # inequality
+        LEQ = 15    # less or equal
+        GEQ = 16    # greater or equal
+        MIN = 17    # minimum
+        MAX = 18    # maximum
+        LPB = 19    # loop begin
+        LPE = 20    # loop end
+        CLR = 21    # clear
+        SEQ = 22    # sequence
+        DBG = 23    # debug
 
     type: Type
     &#34;&#34;&#34;Type of this operation.&#34;&#34;&#34;

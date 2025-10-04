@@ -187,6 +187,12 @@ el.replaceWith(d);
         return bin(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
+    elif t == Operation.Type.NEQ:
+        return neq(a, b)
+    elif t == Operation.Type.LEQ:
+        return leq(a, b)
+    elif t == Operation.Type.GEQ:
+        return geq(a, b)
     elif t == Operation.Type.MIN:
         return min(a, b)
     elif t == Operation.Type.MAX:
@@ -211,6 +217,38 @@ el.replaceWith(d);
     return math.gcd(a, b)</code></pre>
 </details>
 <div class="desc"><p>Greatest Common Divisor.</p></div>
+</dd>
+<dt id="loda.runtime.operations.geq"><code class="name flex">
+<span>def <span class="ident">geq</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def geq(a, b):
+    &#34;&#34;&#34;Greater or equal.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    return 1 if a &gt;= b else 0</code></pre>
+</details>
+<div class="desc"><p>Greater or equal.</p></div>
+</dd>
+<dt id="loda.runtime.operations.leq"><code class="name flex">
+<span>def <span class="ident">leq</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def leq(a, b):
+    &#34;&#34;&#34;Less or equal.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    return 1 if a &lt;= b else 0</code></pre>
+</details>
+<div class="desc"><p>Less or equal.</p></div>
 </dd>
 <dt id="loda.runtime.operations.max"><code class="name flex">
 <span>def <span class="ident">max</span></span>(<span>a, b)</span>
@@ -275,6 +313,22 @@ el.replaceWith(d);
     return a * b</code></pre>
 </details>
 <div class="desc"><p>Multiplication.</p></div>
+</dd>
+<dt id="loda.runtime.operations.neq"><code class="name flex">
+<span>def <span class="ident">neq</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def neq(a, b):
+    &#34;&#34;&#34;Inequality.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    return 1 if a != b else 0</code></pre>
+</details>
+<div class="desc"><p>Inequality.</p></div>
 </dd>
 <dt id="loda.runtime.operations.pow"><code class="name flex">
 <span>def <span class="ident">pow</span></span>(<span>a, b)</span>
@@ -363,10 +417,13 @@ el.replaceWith(d);
 <li><code><a title="loda.runtime.operations.equ" href="#loda.runtime.operations.equ">equ</a></code></li>
 <li><code><a title="loda.runtime.operations.exec_arithmetic" href="#loda.runtime.operations.exec_arithmetic">exec_arithmetic</a></code></li>
 <li><code><a title="loda.runtime.operations.gcd" href="#loda.runtime.operations.gcd">gcd</a></code></li>
+<li><code><a title="loda.runtime.operations.geq" href="#loda.runtime.operations.geq">geq</a></code></li>
+<li><code><a title="loda.runtime.operations.leq" href="#loda.runtime.operations.leq">leq</a></code></li>
 <li><code><a title="loda.runtime.operations.max" href="#loda.runtime.operations.max">max</a></code></li>
 <li><code><a title="loda.runtime.operations.min" href="#loda.runtime.operations.min">min</a></code></li>
 <li><code><a title="loda.runtime.operations.mod" href="#loda.runtime.operations.mod">mod</a></code></li>
 <li><code><a title="loda.runtime.operations.mul" href="#loda.runtime.operations.mul">mul</a></code></li>
+<li><code><a title="loda.runtime.operations.neq" href="#loda.runtime.operations.neq">neq</a></code></li>
 <li><code><a title="loda.runtime.operations.pow" href="#loda.runtime.operations.pow">pow</a></code></li>
 <li><code><a title="loda.runtime.operations.sub" href="#loda.runtime.operations.sub">sub</a></code></li>
 <li><code><a title="loda.runtime.operations.trn" href="#loda.runtime.operations.trn">trn</a></code></li>
