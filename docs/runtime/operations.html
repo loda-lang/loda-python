@@ -101,22 +101,6 @@ el.replaceWith(d);
 </details>
 <div class="desc"><p>Binomial Coefficient.</p></div>
 </dd>
-<dt id="loda.runtime.operations.cmp"><code class="name flex">
-<span>def <span class="ident">cmp</span></span>(<span>a, b)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cmp(a, b):
-    &#34;&#34;&#34;Comparison.&#34;&#34;&#34;
-    if a == None or b == None:
-        return None
-    return 1 if a == b else 0</code></pre>
-</details>
-<div class="desc"><p>Comparison.</p></div>
-</dd>
 <dt id="loda.runtime.operations.dif"><code class="name flex">
 <span>def <span class="ident">dif</span></span>(<span>a, b)</span>
 </code></dt>
@@ -153,6 +137,22 @@ el.replaceWith(d);
 </details>
 <div class="desc"><p>Division.</p></div>
 </dd>
+<dt id="loda.runtime.operations.equ"><code class="name flex">
+<span>def <span class="ident">equ</span></span>(<span>a, b)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def equ(a, b):
+    &#34;&#34;&#34;Equality.&#34;&#34;&#34;
+    if a == None or b == None:
+        return None
+    return 1 if a == b else 0</code></pre>
+</details>
+<div class="desc"><p>Equality.</p></div>
+</dd>
 <dt id="loda.runtime.operations.exec_arithmetic"><code class="name flex">
 <span>def <span class="ident">exec_arithmetic</span></span>(<span>t: <a title="loda.lang.operation.Operation.Type" href="../lang/operation.html#loda.lang.operation.Operation.Type">Operation.Type</a>,<br>a,<br>b)</span>
 </code></dt>
@@ -185,8 +185,8 @@ el.replaceWith(d);
         return gcd(a, b)
     elif t == Operation.Type.BIN:
         return bin(a, b)
-    elif t == Operation.Type.CMP:
-        return cmp(a, b)
+    elif t == Operation.Type.EQU:
+        return equ(a, b)
     elif t == Operation.Type.MIN:
         return min(a, b)
     elif t == Operation.Type.MAX:
@@ -358,9 +358,9 @@ el.replaceWith(d);
 <ul class="two-column">
 <li><code><a title="loda.runtime.operations.add" href="#loda.runtime.operations.add">add</a></code></li>
 <li><code><a title="loda.runtime.operations.bin" href="#loda.runtime.operations.bin">bin</a></code></li>
-<li><code><a title="loda.runtime.operations.cmp" href="#loda.runtime.operations.cmp">cmp</a></code></li>
 <li><code><a title="loda.runtime.operations.dif" href="#loda.runtime.operations.dif">dif</a></code></li>
 <li><code><a title="loda.runtime.operations.div" href="#loda.runtime.operations.div">div</a></code></li>
+<li><code><a title="loda.runtime.operations.equ" href="#loda.runtime.operations.equ">equ</a></code></li>
 <li><code><a title="loda.runtime.operations.exec_arithmetic" href="#loda.runtime.operations.exec_arithmetic">exec_arithmetic</a></code></li>
 <li><code><a title="loda.runtime.operations.gcd" href="#loda.runtime.operations.gcd">gcd</a></code></li>
 <li><code><a title="loda.runtime.operations.max" href="#loda.runtime.operations.max">max</a></code></li>
