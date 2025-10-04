@@ -60,22 +60,23 @@ class Operation:
         FAC = 14    # falling and rising factorial
         LEX = 15    # largest exponent
         LOG = 16    # discrete logarithm
-        EQU = 17    # equality
-        NEQ = 18    # inequality
-        LEQ = 19    # less or equal
-        GEQ = 20    # greater or equal
-        MIN = 21    # minimum
-        MAX = 22    # maximum
-        BAN = 23    # bitwise and
-        BOR = 24    # bitwise or
-        BXO = 25    # bitwise xor
-        DGS = 26    # digit sum
-        DGR = 27    # digital root
-        LPB = 28    # loop begin
-        LPE = 29    # loop end
-        CLR = 30    # clear
-        SEQ = 31    # sequence
-        DBG = 32    # debug
+        NRT = 17    # discrete n-th root
+        EQU = 18    # equality
+        NEQ = 19    # inequality
+        LEQ = 20    # less or equal
+        GEQ = 21    # greater or equal
+        MIN = 22    # minimum
+        MAX = 23    # maximum
+        BAN = 24    # bitwise and
+        BOR = 25    # bitwise or
+        BXO = 26    # bitwise xor
+        DGS = 27    # digit sum
+        DGR = 28    # digital root
+        LPB = 29    # loop begin
+        LPE = 30    # loop end
+        CLR = 31    # clear
+        SEQ = 32    # sequence
+        DBG = 33    # debug
 
     type: Type
     """Type of this operation."""

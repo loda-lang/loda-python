@@ -268,6 +268,30 @@ def log(a, b):
     return res if m == a else res - 1
 
 
+def nrt(a, b):
+    """n-th root: returns the integer part of the b-th root of a."""
+    if a is None or b is None or a < 0 or b < 1:
+        return None
+    if a == 0 or a == 1 or b == 1:
+        return a
+    r = 1
+    l = 0
+    h = a
+    while l < h:
+        m = div(add(l, h), 2)
+        p = pow(m, b)
+        if p == a:
+            return m
+        if p < a:
+            l = m
+        else:
+            h = m
+        if r == m:
+            break
+        r = m
+    return r
+
+
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
@@ -300,6 +324,8 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return lex(a, b)
     elif t == Operation.Type.LOG:
         return log(a, b)
+    elif t == Operation.Type.NRT:
+        return nrt(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
     elif t == Operation.Type.NEQ:
