@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>loda.ml.keras.program_generation_rnn API documentation</title>
-<meta name="description" content="Keras RNN models for LODA program generation …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Keras RNN models for LODA program generation …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -38,346 +52,6 @@
 &gt;&gt;&gt; generator = Generator(model)
 &gt;&gt;&gt; program = generator()
 </code></pre>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
-Keras RNN models for LODA program generation.
-
-## Example
-
-&gt;&gt;&gt; # Train a model using existing programs:
-&gt;&gt;&gt; program_cache = ProgramCache(&#34;path/to/programs&#34;)
-&gt;&gt;&gt; model = train_model(program_cache)
-&gt;&gt;&gt;
-&gt;&gt;&gt; # Save a model to disk:
-&gt;&gt;&gt; model.save(&#34;sample_model&#34;)
-&gt;&gt;&gt;
-&gt;&gt;&gt; # Load a model from disk:
-&gt;&gt;&gt; model = load_model(&#34;sample_model&#34;)
-&gt;&gt;&gt;
-&gt;&gt;&gt; # Generated program using the model:
-&gt;&gt;&gt; generator = Generator(model)
-&gt;&gt;&gt; program = generator()
-&#34;&#34;&#34;
-
-import copy
-import time
-
-from loda.lang import Operation, Program
-from loda.oeis import ProgramCache
-from loda.ml import util
-
-import tensorflow as tf
-
-
-class Model(tf.keras.Model):
-    &#34;&#34;&#34;Keras model for program generation using RNN.&#34;&#34;&#34;
-
-    def __init__(self, vocabulary: list,
-                 embedding_dim: int, num_rnn_units: int,
-                 num_samples: int, sample_size: int,
-                 num_ops_per_sample: int, num_nops_separator: int,
-                 program_ids: list):
-
-        super().__init__(self)
-        self.vocabulary = vocabulary
-        self.embedding_dim = embedding_dim
-        self.num_rnn_units = num_rnn_units
-        self.num_samples = num_samples
-        self.sample_size = sample_size
-        self.num_ops_per_sample = num_ops_per_sample
-        self.num_nops_separator = num_nops_separator
-        self.program_ids = program_ids
-
-        # Initialize token &lt;-&gt; ID lookup layers.
-        self.tokens_to_ids = tf.keras.layers.StringLookup(
-            vocabulary=vocabulary, mask_token=None)
-        self.ids_to_tokens = tf.keras.layers.StringLookup(
-            vocabulary=self.tokens_to_ids.get_vocabulary(), invert=True, mask_token=None)
-        vocab_size = self.get_vocab_size()
-
-        # Create the processing layers.
-        self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)
-        self.gru = tf.keras.layers.GRU(num_rnn_units,
-                                       return_sequences=True,
-                                       return_state=True)
-        self.dense = tf.keras.layers.Dense(vocab_size)
-
-    def get_vocab_size(self):
-        return len(self.tokens_to_ids.get_vocabulary())
-
-    def call(self, inputs, states=None, return_state=False, training=False):
-        values = inputs
-        values = self.embedding(values, training=training)
-        if states is None:
-            states = self.gru.get_initial_state(values)
-        values, states = self.gru(
-            values, initial_state=states, training=training)
-        values = self.dense(values, training=training)
-        if return_state:
-            return values, states
-        else:
-            return values
-
-    def get_config(self):
-        return {&#34;vocabulary&#34;: self.vocabulary,
-                &#34;embedding_dim&#34;: self.embedding_dim,
-                &#34;num_rnn_units&#34;: self.num_rnn_units,
-                &#34;num_samples&#34;: self.num_samples,
-                &#34;sample_size&#34;: self.sample_size,
-                &#34;num_ops_per_sample&#34;: self.num_ops_per_sample,
-                &#34;num_nops_separator&#34;: self.num_nops_separator,
-                &#34;program_ids&#34;: self.program_ids}
-
-    def summary(self, line_length=None, positions=None, print_fn=None,
-                expand_nested=False, show_trainable=False, layer_range=None):
-        super().summary(line_length, positions, print_fn,
-                        expand_nested, show_trainable, layer_range)
-        print(&#34;Vocabulary size:&#34;, self.get_vocab_size())
-        print(&#34;Sample size:&#34;, self.sample_size)
-        print(&#34;Trained samples:&#34;, self.num_samples)
-        print(&#34;Trained programs:&#34;, len(self.program_ids))
-        print(&#34;Operation per sample:&#34;, self.num_ops_per_sample)
-        print(&#34;Nop separators:&#34;, self.num_nops_separator)
-
-    @classmethod
-    def from_config(cls, config):
-        return cls(**config)
-
-
-class Generator:
-
-    def __init__(self, model: Model, initial_program: Program = Program(), num_lanes: int = 1, temperature: float = 1.0):
-        &#34;&#34;&#34;
-        Program generator based on a previously trained RNN model.
-
-        Args:
-            model: Previously trained or loaded `Model`.
-            initial_program: Program to initialize the generation. This can be empty.
-            num_lanes: Number of parallel lanes to use for program generation. Using more lanes
-                potentially increases the program generation performance, but also the memory usage.
-            temperature: Controls the randomness of the generated programs.
-        &#34;&#34;&#34;
-        # Store members:
-        self.model = model
-        self.num_lanes = num_lanes
-        self.__temperature = temperature
-        # Prepare inputs and states:
-        initial_program = self.__prepare_initial_program(initial_program)
-        self.inputs = self.__program_to_input_ids(initial_program)
-        self.states = None
-        # Prepare lanes:
-        self.token_lanes = []
-        self.program_lanes = []
-        for _ in range(self.num_lanes):
-            self.token_lanes.append([])
-            self.program_lanes.append(Program())
-        # Prepare program queue:
-        self.program_queue = []
-        # Statistics:
-        self.num_generated_programs = 0
-        self.num_generated_tokens = 0
-        self.num_generated_operations = 0
-        self.num_generated_nops = 0
-        self.num_token_errors = 0
-        self.num_program_errors = 0
-        self.start_time = time.time()
-
-    def __call__(self) -&gt; Program:
-        &#34;&#34;&#34;Generate a program.&#34;&#34;&#34;
-        while len(self.program_queue) == 0:
-            self.__generate_programs()
-        return self.program_queue.pop()
-
-    def __ids_to_tokens_str(self, ids) -&gt; list:
-        return [t.numpy().decode(&#34;utf-8&#34;) for t in self.model.ids_to_tokens(ids)]
-
-    def __prepare_initial_program(self, program: Program) -&gt; Program:
-        initial = copy.deepcopy(program)
-        diff_sample_size = len(initial.operations) - \
-            self.model.num_ops_per_sample
-        if diff_sample_size &gt; 0:
-            initial.operations = initial.operations[diff_sample_size:]
-        elif diff_sample_size &lt; 0:
-            tmp_program = Program()
-            util.append_nops(tmp_program, -diff_sample_size)
-            tmp_program.operations.extend(initial.operations)
-            initial = tmp_program
-        return initial
-
-    def __program_to_input_ids(self, program: Program):
-        tokens, _ = util.program_to_tokens(program)
-        ids = self.model.tokens_to_ids(tokens).numpy()
-        return tf.constant([ids] * self.num_lanes)
-
-    def __generate_ids(self):
-
-        # Execute the model.
-        predicted_logits, states = self.model(inputs=self.inputs,
-                                              states=self.states,
-                                              return_state=True)
-        # Only use the last prediction.
-        predicted_logits = predicted_logits[:, -1, :]
-        predicted_logits = predicted_logits/self.__temperature
-
-        # Sample the output logits to generate token IDs.
-        self.inputs = tf.random.categorical(predicted_logits, num_samples=1)
-        self.states = states
-
-    def __generate_tokens(self):
-        self.__generate_ids()
-        next_tokens = self.__ids_to_tokens_str(
-            tf.squeeze(self.inputs, axis=-1))
-        # print(&#34;TOKENS: {}&#34;.format(next_tokens))
-        for i in range(self.num_lanes):
-            self.token_lanes[i].append(next_tokens[i])
-        self.num_generated_tokens += self.num_lanes
-
-    def __generate_operations(self):
-        # Generate three tokens for one operation:
-        self.__generate_tokens()
-        self.__generate_tokens()
-        self.__generate_tokens()
-        operations = []
-        for i in range(self.num_lanes):
-            op = util.tokens_to_operation(self.token_lanes[i], 0)
-            while op is None:
-                self.num_token_errors += 1
-                self.token_lanes[i].pop(0)
-                self.__generate_tokens()
-                op = util.tokens_to_operation(self.token_lanes[i], 0)
-            self.token_lanes[i].pop(0)
-            self.token_lanes[i].pop(0)
-            self.token_lanes[i].pop(0)
-            operations.append(op)
-        self.num_generated_operations += self.num_lanes
-        return operations
-
-    def __generate_programs(self):
-        operations = self.__generate_operations()
-        for i in range(self.num_lanes):
-            if operations[i].type == Operation.Type.NOP:
-                self.num_generated_nops += 1
-                if len(self.program_lanes[i].operations) &gt; 0:
-                    try:
-                        self.program_lanes[i].validate()
-                        self.program_queue.append(self.program_lanes[i])
-                    except Exception as e:
-                        # print(&#34;PRORGRAM ERROR:&#34;, e)
-                        # print(program_lanes[i])
-                        self.num_program_errors += 1
-                    self.program_lanes[i] = Program()
-                    self.num_generated_programs += 1
-            else:
-                self.program_lanes[i].operations.append(operations[i])
-
-    def get_stats_info_str(self) -&gt; str:
-        &#34;&#34;&#34;
-        Returns an info string containing useful stats about this generator including
-        the number of generated programs, the generation speed, and error statistics.
-
-        Example output:
-        ```text
-        generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
-        ```
-        &#34;&#34;&#34;
-        separator_overhead = (
-            self.num_generated_nops / (self.num_generated_programs * self.model.num_nops_separator)) - 1
-        return &#34;generated programs: {}, speed: {:.2f} programs/s, token errors: {:.2f}%, program errors: {:.2f}%, separator overhead: {:.2f}%&#34;.format(
-            self.num_generated_programs,
-            self.num_generated_programs / (time.time() - self.start_time),
-            100 * self.num_token_errors / self.num_generated_tokens,
-            100 * self.num_program_errors / self.num_generated_programs,
-            100 * separator_overhead)
-
-
-def __create_dataset(ids: list, sample_size: int,
-                     batch_size: int = 128, buffer_size: int = 10000):
-
-    # Basic tensor dataset.
-    slice_dataset = tf.data.Dataset.from_tensor_slices(ids)
-
-    # We repeat the original dataset to make sure we sample at all
-    # possible start positions. We made sure already before that the
-    # the dataset size mod the sample size is +/-1. So this works!
-    # Note also that we don&#39;t need to enable drop_remainder here.
-    batch_dataset = slice_dataset.repeat(sample_size).batch(sample_size)
-
-    # Split the samples into (input,label) pairs.
-    split_dataset = batch_dataset.map(util.split_sample)
-
-    # Shuffle dataset.
-    prefetch_dataset = (split_dataset.shuffle(buffer_size).batch(
-        batch_size).prefetch(tf.data.experimental.AUTOTUNE))
-
-    return prefetch_dataset
-
-
-def load_model(model_path: str) -&gt; Model:
-    &#34;&#34;&#34;
-    Load a Keras RNN Model for program generation.
-
-    The model should have been generated using `train_model` and saved before.
-
-    Args:
-        model_path: File system path to the model to be loaded.
-    Return:
-        Returns the loaded `Model`.
-    &#34;&#34;&#34;
-    return tf.keras.models.load_model(model_path, custom_objects={&#34;Model&#34;: Model})
-
-
-def train_model(program_cache: ProgramCache, num_programs: int = -1,
-                num_ops_per_sample: int = 32, num_nops_separator: int = 24,
-                embedding_dim: int = 256, num_rnn_units: int = 1024,
-                epochs: int = 3):
-    &#34;&#34;&#34;
-    Train a Keras RNN model for program generation.
-
-    Args:
-        program_cache: Program cache that contains the programs used for training the model.
-        num_programs: Number of programs used for training (-1 for all available programs).
-        num_ops_per_sample: Number of operations per sample. We recommend to set this approximately
-            to the length of the longest loops in the training programs. This enables the model
-            to learn the structure of closed program loops and avoid generation of broken loops.
-        num_nops_separator: Number of `nop` operations used as separator between trained programs.
-            We recommend to set this to 75% of `num_ops_per_sample`, but at least 1.
-        embedding_dim: Embedding dimensions.
-        num_rnn_units: Number of RNN units.
-        epochs: Number of epochs for training. 
-
-    Return:
-        This function returns the trained Keras model.
-    &#34;&#34;&#34;
-    # Get random program IDs.
-    program_ids = util.get_random_program_ids(program_cache, num_programs)
-
-    # Load programs and convert to tokens and vocabulary.
-    merged_programs, num_samples, sample_size = util.merge_programs(
-        program_cache, program_ids,
-        num_ops_per_sample=num_ops_per_sample,
-        num_nops_separator=num_nops_separator)
-    tokens, vocabulary = util.program_to_tokens(merged_programs)
-
-    # Create Keras model and dataset, run the training, and save the model.
-    program_ids = sorted(program_ids)
-    model = Model(vocabulary,
-                  embedding_dim=embedding_dim,
-                  num_rnn_units=num_rnn_units,
-                  num_samples=num_samples,
-                  sample_size=sample_size,
-                  num_ops_per_sample=num_ops_per_sample,
-                  num_nops_separator=num_nops_separator,
-                  program_ids=program_ids)
-    ids = model.tokens_to_ids(tokens)
-    dataset = __create_dataset(ids, sample_size=sample_size)
-    loss = tf.losses.SparseCategoricalCrossentropy(from_logits=True)
-    model.compile(optimizer=&#34;adam&#34;, loss=loss)
-    model.fit(dataset, epochs=epochs)
-    return model</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -390,15 +64,6 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
 <span>def <span class="ident">load_model</span></span>(<span>model_path: str) ‑> <a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Load a Keras RNN Model for program generation.</p>
-<p>The model should have been generated using <code><a title="loda.ml.keras.program_generation_rnn.train_model" href="#loda.ml.keras.program_generation_rnn.train_model">train_model()</a></code> and saved before.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>model_path</code></strong></dt>
-<dd>File system path to the model to be loaded.</dd>
-</dl>
-<h2 id="return">Return</h2>
-<p>Returns the loaded <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -416,34 +81,20 @@ def train_model(program_cache: ProgramCache, num_programs: int = -1,
     &#34;&#34;&#34;
     return tf.keras.models.load_model(model_path, custom_objects={&#34;Model&#34;: Model})</code></pre>
 </details>
-</dd>
-<dt id="loda.ml.keras.program_generation_rnn.train_model"><code class="name flex">
-<span>def <span class="ident">train_model</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>, num_programs: int = -1, num_ops_per_sample: int = 32, num_nops_separator: int = 24, embedding_dim: int = 256, num_rnn_units: int = 1024, epochs: int = 3)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Train a Keras RNN model for program generation.</p>
+<div class="desc"><p>Load a Keras RNN Model for program generation.</p>
+<p>The model should have been generated using <code><a title="loda.ml.keras.program_generation_rnn.train_model" href="#loda.ml.keras.program_generation_rnn.train_model">train_model()</a></code> and saved before.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>program_cache</code></strong></dt>
-<dd>Program cache that contains the programs used for training the model.</dd>
-<dt><strong><code>num_programs</code></strong></dt>
-<dd>Number of programs used for training (-1 for all available programs).</dd>
-<dt><strong><code>num_ops_per_sample</code></strong></dt>
-<dd>Number of operations per sample. We recommend to set this approximately
-to the length of the longest loops in the training programs. This enables the model
-to learn the structure of closed program loops and avoid generation of broken loops.</dd>
-<dt><strong><code>num_nops_separator</code></strong></dt>
-<dd>Number of <code>nop</code> operations used as separator between trained programs.
-We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least 1.</dd>
-<dt><strong><code>embedding_dim</code></strong></dt>
-<dd>Embedding dimensions.</dd>
-<dt><strong><code>num_rnn_units</code></strong></dt>
-<dd>Number of RNN units.</dd>
-<dt><strong><code>epochs</code></strong></dt>
-<dd>Number of epochs for training. </dd>
+<dt><strong><code>model_path</code></strong></dt>
+<dd>File system path to the model to be loaded.</dd>
 </dl>
 <h2 id="return">Return</h2>
-<p>This function returns the trained Keras model.</p></div>
+<p>Returns the loaded <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</p></div>
+</dd>
+<dt id="loda.ml.keras.program_generation_rnn.train_model"><code class="name flex">
+<span>def <span class="ident">train_model</span></span>(<span>program_cache: <a title="loda.oeis.program_cache.ProgramCache" href="../../oeis/program_cache.html#loda.oeis.program_cache.ProgramCache">ProgramCache</a>,<br>num_programs: int = -1,<br>num_ops_per_sample: int = 32,<br>num_nops_separator: int = 24,<br>embedding_dim: int = 256,<br>num_rnn_units: int = 1024,<br>epochs: int = 3)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -497,6 +148,29 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
     model.fit(dataset, epochs=epochs)
     return model</code></pre>
 </details>
+<div class="desc"><p>Train a Keras RNN model for program generation.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_cache</code></strong></dt>
+<dd>Program cache that contains the programs used for training the model.</dd>
+<dt><strong><code>num_programs</code></strong></dt>
+<dd>Number of programs used for training (-1 for all available programs).</dd>
+<dt><strong><code>num_ops_per_sample</code></strong></dt>
+<dd>Number of operations per sample. We recommend to set this approximately
+to the length of the longest loops in the training programs. This enables the model
+to learn the structure of closed program loops and avoid generation of broken loops.</dd>
+<dt><strong><code>num_nops_separator</code></strong></dt>
+<dd>Number of <code>nop</code> operations used as separator between trained programs.
+We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least 1.</dd>
+<dt><strong><code>embedding_dim</code></strong></dt>
+<dd>Embedding dimensions.</dd>
+<dt><strong><code>num_rnn_units</code></strong></dt>
+<dd>Number of RNN units.</dd>
+<dt><strong><code>epochs</code></strong></dt>
+<dd>Number of epochs for training. </dd>
+</dl>
+<h2 id="return">Return</h2>
+<p>This function returns the trained Keras model.</p></div>
 </dd>
 </dl>
 </section>
@@ -505,22 +179,9 @@ We recommend to set this to 75% of <code>num_ops_per_sample</code>, but at least
 <dl>
 <dt id="loda.ml.keras.program_generation_rnn.Generator"><code class="flex name class">
 <span>class <span class="ident">Generator</span></span>
-<span>(</span><span>model: <a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a>, initial_program: <a title="loda.lang.program.Program" href="../../lang/program.html#loda.lang.program.Program">Program</a> = &lt;loda.lang.program.Program object&gt;, num_lanes: int = 1, temperature: float = 1.0)</span>
+<span>(</span><span>model: <a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a>,<br>initial_program: <a title="loda.lang.program.Program" href="../../lang/program.html#loda.lang.program.Program">Program</a> = &lt;loda.lang.program.Program object&gt;,<br>num_lanes: int = 1,<br>temperature: float = 1.0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Program generator based on a previously trained RNN model.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>model</code></strong></dt>
-<dd>Previously trained or loaded <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</dd>
-<dt><strong><code>initial_program</code></strong></dt>
-<dd>Program to initialize the generation. This can be empty.</dd>
-<dt><strong><code>num_lanes</code></strong></dt>
-<dd>Number of parallel lanes to use for program generation. Using more lanes
-potentially increases the program generation performance, but also the memory usage.</dd>
-<dt><strong><code>temperature</code></strong></dt>
-<dd>Controls the randomness of the generated programs.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -670,17 +331,25 @@ potentially increases the program generation performance, but also the memory us
             100 * self.num_program_errors / self.num_generated_programs,
             100 * separator_overhead)</code></pre>
 </details>
+<div class="desc"><p>Program generator based on a previously trained RNN model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>Previously trained or loaded <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</dd>
+<dt><strong><code>initial_program</code></strong></dt>
+<dd>Program to initialize the generation. This can be empty.</dd>
+<dt><strong><code>num_lanes</code></strong></dt>
+<dd>Number of parallel lanes to use for program generation. Using more lanes
+potentially increases the program generation performance, but also the memory usage.</dd>
+<dt><strong><code>temperature</code></strong></dt>
+<dd>Controls the randomness of the generated programs.</dd>
+</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="loda.ml.keras.program_generation_rnn.Generator.get_stats_info_str"><code class="name flex">
 <span>def <span class="ident">get_stats_info_str</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns an info string containing useful stats about this generator including
-the number of generated programs, the generation speed, and error statistics.</p>
-<p>Example output:</p>
-<pre><code class="language-text">generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
-</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -704,15 +373,19 @@ the number of generated programs, the generation speed, and error statistics.</p
         100 * self.num_program_errors / self.num_generated_programs,
         100 * separator_overhead)</code></pre>
 </details>
+<div class="desc"><p>Returns an info string containing useful stats about this generator including
+the number of generated programs, the generation speed, and error statistics.</p>
+<p>Example output:</p>
+<pre><code class="language-text">generated programs: 233, speed: 17.43 programs/s, token errors: 0.03%, program errors: 6.01%, separator overhead: -0.40%
+</code></pre></div>
 </dd>
 </dl>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model"><code class="flex name class">
 <span>class <span class="ident">Model</span></span>
-<span>(</span><span>vocabulary: list, embedding_dim: int, num_rnn_units: int, num_samples: int, sample_size: int, num_ops_per_sample: int, num_nops_separator: int, program_ids: list)</span>
+<span>(</span><span>vocabulary: list,<br>embedding_dim: int,<br>num_rnn_units: int,<br>num_samples: int,<br>sample_size: int,<br>num_ops_per_sample: int,<br>num_nops_separator: int,<br>program_ids: list)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Keras model for program generation using RNN.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -791,15 +464,19 @@ the number of generated programs, the generation speed, and error statistics.</p
     def from_config(cls, config):
         return cls(**config)</code></pre>
 </details>
+<div class="desc"><p>Keras model for program generation using RNN.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>keras.engine.training.Model</li>
-<li>keras.engine.base_layer.Layer</li>
-<li>tensorflow.python.module.module.Module</li>
+<li>keras.src.models.model.Model</li>
+<li>keras.src.backend.tensorflow.trainer.TensorFlowTrainer</li>
+<li>keras.src.trainers.trainer.Trainer</li>
+<li>keras.src.layers.layer.Layer</li>
+<li>keras.src.backend.tensorflow.layer.TFLayer</li>
+<li>keras.src.backend.tensorflow.trackable.KerasAutoTrackable</li>
 <li>tensorflow.python.trackable.autotrackable.AutoTrackable</li>
 <li>tensorflow.python.trackable.base.Trackable</li>
-<li>keras.utils.version_utils.LayerVersionSelector</li>
-<li>keras.utils.version_utils.ModelVersionSelector</li>
+<li>keras.src.ops.operation.Operation</li>
+<li>keras.src.saving.keras_saveable.KerasSaveable</li>
 </ul>
 <h3>Static methods</h3>
 <dl>
@@ -807,27 +484,21 @@ the number of generated programs, the generation speed, and error statistics.</p
 <span>def <span class="ident">from_config</span></span>(<span>config)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Creates a layer from its config.</p>
-<p>This method is the reverse of <code>get_config</code>,
-capable of instantiating the same layer from the config
-dictionary. It does not handle layer connectivity
-(handled by Network), nor weights (handled by <code>set_weights</code>).</p>
+<div class="desc"><p>Creates an operation from its config.</p>
+<p>This method is the reverse of <code>get_config</code>, capable of instantiating the
+same operation from the config dictionary.</p>
+<p>Note: If you override this method, you might receive a serialized dtype
+config, which is a <code>dict</code>. You can deserialize it as follows:</p>
+<pre><code class="language-python">if &quot;dtype&quot; in config and isinstance(config[&quot;dtype&quot;], dict):
+    policy = dtype_policies.deserialize(config[&quot;dtype&quot;])
+</code></pre>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>config</code></strong></dt>
-<dd>A Python dictionary, typically the
-output of get_config.</dd>
+<dd>A Python dictionary, typically the output of <code>get_config</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>A layer instance.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_config(cls, config):
-    return cls(**config)</code></pre>
-</details>
+<p>An operation instance.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -836,29 +507,6 @@ def from_config(cls, config):
 <span>def <span class="ident">call</span></span>(<span>self, inputs, states=None, return_state=False, training=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calls the model on new inputs and returns the outputs as tensors.</p>
-<p>In this case <code>call()</code> just reapplies
-all ops in the graph to the new inputs
-(e.g. build a new computational graph from the provided inputs).</p>
-<p>Note: This method should not be called directly. It is only meant to be
-overridden when subclassing <code>tf.keras.Model</code>.
-To call a model on an input, always use the <code>__call__()</code> method,
-i.e. <code>model(inputs)</code>, which relies on the underlying <code>call()</code> method.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>inputs</code></strong></dt>
-<dd>Input tensor, or dict/list/tuple of input tensors.</dd>
-<dt><strong><code>training</code></strong></dt>
-<dd>Boolean or boolean scalar tensor, indicating whether to
-run the <code>Network</code> in training mode or inference mode.</dd>
-<dt><strong><code>mask</code></strong></dt>
-<dd>A mask or list of masks. A mask can be either a boolean tensor
-or None (no mask). For more details, check the guide
-<a href="https://www.tensorflow.org/guide/keras/masking_and_padding">here</a>.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>A tensor if there is a single output, or
-a list of tensors if there are more than one outputs.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -876,27 +524,12 @@ a list of tensors if there are more than one outputs.</p></div>
     else:
         return values</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model.get_config"><code class="name flex">
 <span>def <span class="ident">get_config</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the config of the <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</p>
-<p>Config is a Python dictionary (serializable) containing the
-configuration of an object, which in this case is a <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>. This allows
-the <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code> to be be reinstantiated later (without its trained weights)
-from this configuration.</p>
-<p>Note that <code>get_config()</code> does not guarantee to return a fresh copy of
-dict every time it is called. The callers should make a copy of the
-returned dict if they want to modify it.</p>
-<p>Developers of subclassed <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code> are advised to override this method,
-and continue to update the dict from <code>super(MyModel, self).get_config()</code>
-to provide the proper configuration of this <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>. The default config
-will return config dict for init parameters if they are basic types.
-Raises <code>NotImplementedError</code> when in cases where a custom
-<code>get_config()</code> implementation is required for the subclassed model.</p>
-<h2 id="returns">Returns</h2>
-<p>Python dictionary containing the configuration of this <code><a title="loda.ml.keras.program_generation_rnn.Model" href="#loda.ml.keras.program_generation_rnn.Model">Model</a></code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -911,12 +544,14 @@ Raises <code>NotImplementedError</code> when in cases where a custom
             &#34;num_nops_separator&#34;: self.num_nops_separator,
             &#34;program_ids&#34;: self.program_ids}</code></pre>
 </details>
+<div class="desc"><p>Returns the config of the object.</p>
+<p>An object config is a Python dictionary (serializable)
+containing the information needed to re-instantiate it.</p></div>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model.get_vocab_size"><code class="name flex">
 <span>def <span class="ident">get_vocab_size</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -924,49 +559,12 @@ Raises <code>NotImplementedError</code> when in cases where a custom
 <pre><code class="python">def get_vocab_size(self):
     return len(self.tokens_to_ids.get_vocabulary())</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="loda.ml.keras.program_generation_rnn.Model.summary"><code class="name flex">
-<span>def <span class="ident">summary</span></span>(<span>self, line_length=None, positions=None, print_fn=None, expand_nested=False, show_trainable=False, layer_range=None)</span>
+<span>def <span class="ident">summary</span></span>(<span>self,<br>line_length=None,<br>positions=None,<br>print_fn=None,<br>expand_nested=False,<br>show_trainable=False,<br>layer_range=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Prints a string summary of the network.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>line_length</code></strong></dt>
-<dd>Total length of printed lines
-(e.g. set this to adapt the display to different
-terminal window sizes).</dd>
-<dt><strong><code>positions</code></strong></dt>
-<dd>Relative or absolute positions of log elements
-in each line. If not provided,
-defaults to <code>[.33, .55, .67, 1.]</code>.</dd>
-<dt><strong><code>print_fn</code></strong></dt>
-<dd>Print function to use. By default, prints to <code>stdout</code>.
-If <code>stdout</code> doesn't work in your environment, change to <code>print</code>.
-It will be called on each line of the summary.
-You can set it to a custom function
-in order to capture the string summary.</dd>
-<dt><strong><code>expand_nested</code></strong></dt>
-<dd>Whether to expand the nested models.
-If not provided, defaults to <code>False</code>.</dd>
-<dt><strong><code>show_trainable</code></strong></dt>
-<dd>Whether to show if a layer is trainable.
-If not provided, defaults to <code>False</code>.</dd>
-<dt><strong><code>layer_range</code></strong></dt>
-<dd>a list or tuple of 2 strings,
-which is the starting layer name and ending layer name
-(both inclusive) indicating the range of layers to be printed
-in summary. It also accepts regex patterns instead of exact
-name. In such case, start predicate will be the first element
-it matches to <code>layer_range[0]</code> and the end predicate will be
-the last element it matches to <code>layer_range[1]</code>.
-By default <code>None</code> which considers all layers of model.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>ValueError</code></dt>
-<dd>if <code>summary()</code> is called before the model is built.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -982,6 +580,45 @@ By default <code>None</code> which considers all layers of model.</dd>
     print(&#34;Operation per sample:&#34;, self.num_ops_per_sample)
     print(&#34;Nop separators:&#34;, self.num_nops_separator)</code></pre>
 </details>
+<div class="desc"><p>Prints a string summary of the network.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>line_length</code></strong></dt>
+<dd>Total length of printed lines
+(e.g. set this to adapt the display to different
+terminal window sizes).</dd>
+<dt><strong><code>positions</code></strong></dt>
+<dd>Relative or absolute positions of log elements
+in each line. If not provided, becomes
+<code>[0.3, 0.6, 0.70, 1.]</code>. Defaults to <code>None</code>.</dd>
+<dt><strong><code>print_fn</code></strong></dt>
+<dd>Print function to use. By default, prints to <code>stdout</code>.
+If <code>stdout</code> doesn't work in your environment, change to <code>print</code>.
+It will be called on each line of the summary.
+You can set it to a custom function
+in order to capture the string summary.</dd>
+<dt><strong><code>expand_nested</code></strong></dt>
+<dd>Whether to expand the nested models.
+Defaults to <code>False</code>.</dd>
+<dt><strong><code>show_trainable</code></strong></dt>
+<dd>Whether to show if a layer is trainable.
+Defaults to <code>False</code>.</dd>
+<dt><strong><code>layer_range</code></strong></dt>
+<dd>a list or tuple of 2 strings,
+which is the starting layer name and ending layer name
+(both inclusive) indicating the range of layers to be printed
+in summary. It also accepts regex patterns instead of exact
+names. In this case, the start predicate will be
+the first element that matches <code>layer_range[0]</code>
+and the end predicate will be the last element
+that matches <code>layer_range[1]</code>.
+By default <code>None</code> considers all layers of the model.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>if <code>summary()</code> is called before the model is built.</dd>
+</dl></div>
 </dd>
 </dl>
 </dd>
@@ -989,7 +626,6 @@ By default <code>None</code> which considers all layers of model.</dd>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul>
 <li><a href="#example">Example</a></li>
@@ -1031,7 +667,7 @@ By default <code>None</code> which considers all layers of model.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>
