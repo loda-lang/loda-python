@@ -126,6 +126,27 @@ def equ(a, b):
     return 1 if a == b else 0
 
 
+def neq(a, b):
+    """Inequality."""
+    if a == None or b == None:
+        return None
+    return 1 if a != b else 0
+
+
+def leq(a, b):
+    """Less or equal."""
+    if a == None or b == None:
+        return None
+    return 1 if a <= b else 0
+
+
+def geq(a, b):
+    """Greater or equal."""
+    if a == None or b == None:
+        return None
+    return 1 if a >= b else 0
+
+
 def min(a, b):
     """Minimum."""
     if a == None or b == None:
@@ -166,6 +187,12 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return bin(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
+    elif t == Operation.Type.NEQ:
+        return neq(a, b)
+    elif t == Operation.Type.LEQ:
+        return leq(a, b)
+    elif t == Operation.Type.GEQ:
+        return geq(a, b)
     elif t == Operation.Type.MIN:
         return min(a, b)
     elif t == Operation.Type.MAX:
