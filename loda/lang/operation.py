@@ -56,7 +56,7 @@ class Operation:
         POW = 10
         GCD = 11
         BIN = 12
-        CMP = 13
+        EQU = 13
         MIN = 14
         MAX = 15
         LPB = 16

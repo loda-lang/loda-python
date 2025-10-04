@@ -119,8 +119,8 @@ def bin(n, k):
     return mul(sign, r)
 
 
-def cmp(a, b):
-    """Comparison."""
+def equ(a, b):
+    """Equality."""
     if a == None or b == None:
         return None
     return 1 if a == b else 0
@@ -164,8 +164,8 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return gcd(a, b)
     elif t == Operation.Type.BIN:
         return bin(a, b)
-    elif t == Operation.Type.CMP:
-        return cmp(a, b)
+    elif t == Operation.Type.EQU:
+        return equ(a, b)
     elif t == Operation.Type.MIN:
         return min(a, b)
     elif t == Operation.Type.MAX:
