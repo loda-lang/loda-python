@@ -212,6 +212,30 @@ def bxo(a, b):
     return a ^ b
 
 
+def dgs(a, b):
+    """Digit sum in base b."""
+    if a is None or b is None or b < 2:
+        return None
+    sign = -1 if a < 0 else 1
+    aa = abs(a)
+    r = 0
+    while aa > 0:
+        r += aa % b
+        aa //= b
+    return sign * r
+
+
+def dgr(a, b):
+    """Digital root in base b."""
+    if a is None or b is None or b < 2:
+        return None
+    if a == 0:
+        return 0
+    sign = -1 if a < 0 else 1
+    aa = abs(a)
+    return sign * (1 + ((aa - 1) % (b - 1)))
+
+
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
@@ -258,5 +282,9 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return bor(a, b)
     elif t == Operation.Type.BXO:
         return bxo(a, b)
+    elif t == Operation.Type.DGS:
+        return dgs(a, b)
+    elif t == Operation.Type.DGR:
+        return dgr(a, b)
     else:
         raise ValueError("operation type not arithmetic: {}".format(t))

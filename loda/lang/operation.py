@@ -67,11 +67,13 @@ class Operation:
         BAN = 21    # bitwise and
         BOR = 22    # bitwise or
         BXO = 23    # bitwise xor
-        LPB = 24    # loop begin
-        LPE = 25    # loop end
-        CLR = 26    # clear
-        SEQ = 27    # sequence
-        DBG = 28    # debug
+        DGS = 24    # digit sum
+        DGR = 25    # digital root
+        LPB = 26    # loop begin
+        LPE = 27    # loop end
+        CLR = 28    # clear
+        SEQ = 29    # sequence
+        DBG = 30    # debug
 
     type: Type
     """Type of this operation."""
