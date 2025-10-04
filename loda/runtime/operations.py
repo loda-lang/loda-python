@@ -12,13 +12,11 @@ def add(a, b):
         return None
     return a + b
 
-
 def sub(a, b):
     """Subtraction."""
     if a == None or b == None:
         return None
     return a - b
-
 
 def trn(a, b):
     """Truncated Subtraction."""
@@ -26,13 +24,11 @@ def trn(a, b):
         return None
     return max(a - b, 0)
 
-
 def mul(a, b):
     """Multiplication."""
     if a == None or b == None:
         return None
     return a * b
-
 
 def div(a, b):
     """Division."""
@@ -40,7 +36,6 @@ def div(a, b):
         return None
     s = 1 if (a < 0) == (b < 0) else -1
     return s * (abs(a) // abs(b))
-
 
 def dif(a, b):
     """Conditional Division."""
@@ -50,7 +45,6 @@ def dif(a, b):
         return a
     d = div(a, b)
     return d if a == mul(b, d) else a
-
 
 def dir(a, b):
     """Repeated conditional division."""
@@ -64,13 +58,11 @@ def dir(a, b):
         aa = r
     return aa
 
-
 def mod(a, b):
     """Modulus (Remainder)."""
     if a == None or b == None or b == 0:
         return None
     return a - mul(b, div(a, b))
-
 
 def pow(a, b):
     """Power."""
@@ -93,13 +85,28 @@ def pow(a, b):
         else:
             return a**b
 
-
 def gcd(a, b):
     """Greatest Common Divisor."""
     if a == None or b == None:
         return None
     return math.gcd(a, b)
 
+def lex(a, b):
+    """Largest exponent: returns the largest k such that b^k divides a (C++ semantics)."""
+    if a is None or b is None:
+        return None
+    if b == 0 or abs(b) == 1:
+        return 0
+    r = 0
+    aa = abs(a)
+    bb = abs(b)
+    while True:
+        aaa = dif(aa, bb)
+        if aaa == aa:
+            break
+        aa = aaa
+        r += 1
+    return r
 
 def bin(n, k):
     """Binomial Coefficient."""
@@ -131,7 +138,6 @@ def bin(n, k):
             break
     return mul(sign, r)
 
-
 def fac(n, k):
     """Falling and rising factorial."""
     if n is None or k is None:
@@ -148,112 +154,6 @@ def fac(n, k):
         n += d
     return res
 
-
-def equ(a, b):
-    """Equality."""
-    if a == None or b == None:
-        return None
-    return 1 if a == b else 0
-
-
-def neq(a, b):
-    """Inequality."""
-    if a == None or b == None:
-        return None
-    return 1 if a != b else 0
-
-
-def leq(a, b):
-    """Less or equal."""
-    if a == None or b == None:
-        return None
-    return 1 if a <= b else 0
-
-
-def geq(a, b):
-    """Greater or equal."""
-    if a == None or b == None:
-        return None
-    return 1 if a >= b else 0
-
-
-def min(a, b):
-    """Minimum."""
-    if a == None or b == None:
-        return None
-    return a if a < b else b
-
-
-def max(a, b):
-    """Maximum."""
-    if a == None or b == None:
-        return None
-    return a if a > b else b
-
-
-def ban(a, b):
-    """Bitwise AND."""
-    if a is None or b is None:
-        return None
-    return a & b
-
-
-def bor(a, b):
-    """Bitwise OR."""
-    if a is None or b is None:
-        return None
-    return a | b
-
-
-def bxo(a, b):
-    """Bitwise XOR."""
-    if a is None or b is None:
-        return None
-    return a ^ b
-
-
-def dgs(a, b):
-    """Digit sum in base b."""
-    if a is None or b is None or b < 2:
-        return None
-    sign = -1 if a < 0 else 1
-    aa = abs(a)
-    r = 0
-    while aa > 0:
-        r += aa % b
-        aa //= b
-    return sign * r
-
-
-def dgr(a, b):
-    """Digital root in base b."""
-    if a is None or b is None or b < 2:
-        return None
-    if a == 0:
-        return 0
-    sign = -1 if a < 0 else 1
-    aa = abs(a)
-    return sign * (1 + ((aa - 1) % (b - 1)))
-
-
-def lex(a, b):
-    """Largest exponent: returns the largest k such that b^k divides a (C++ semantics)."""
-    if a is None or b is None:
-        return None
-    if b == 0 or abs(b) == 1:
-        return 0
-    r = 0
-    aa = abs(a)
-    bb = abs(b)
-    while True:
-        aaa = dif(aa, bb)
-        if aaa == aa:
-            break
-        aa = aaa
-        r += 1
-    return r
-
-
 def log(a, b):
     """Discrete logarithm: returns the integer part of log_b(a)."""
     if a is None or b is None or a < 1 or b < 2:
@@ -266,7 +166,6 @@ def log(a, b):
         m *= b
         res += 1
     return res if m == a else res - 1
-
 
 def nrt(a, b):
     """n-th root: returns the integer part of the b-th root of a."""
@@ -291,6 +190,81 @@ def nrt(a, b):
         r = m
     return r
 
+def dgs(a, b):
+    """Digit sum in base b."""
+    if a is None or b is None or b < 2:
+        return None
+    sign = -1 if a < 0 else 1
+    aa = abs(a)
+    r = 0
+    while aa > 0:
+        r += aa % b
+        aa //= b
+    return sign * r
+
+def dgr(a, b):
+    """Digital root in base b."""
+    if a is None or b is None or b < 2:
+        return None
+    if a == 0:
+        return 0
+    sign = -1 if a < 0 else 1
+    aa = abs(a)
+    return sign * (1 + ((aa - 1) % (b - 1)))
+
+def equ(a, b):
+    """Equality."""
+    if a == None or b == None:
+        return None
+    return 1 if a == b else 0
+
+def neq(a, b):
+    """Inequality."""
+    if a == None or b == None:
+        return None
+    return 1 if a != b else 0
+
+def leq(a, b):
+    """Less or equal."""
+    if a == None or b == None:
+        return None
+    return 1 if a <= b else 0
+
+def geq(a, b):
+    """Greater or equal."""
+    if a == None or b == None:
+        return None
+    return 1 if a >= b else 0
+
+def min(a, b):
+    """Minimum."""
+    if a == None or b == None:
+        return None
+    return a if a < b else b
+
+def max(a, b):
+    """Maximum."""
+    if a == None or b == None:
+        return None
+    return a if a > b else b
+
+def ban(a, b):
+    """Bitwise AND."""
+    if a is None or b is None:
+        return None
+    return a & b
+
+def bor(a, b):
+    """Bitwise OR."""
+    if a is None or b is None:
+        return None
+    return a | b
+
+def bxo(a, b):
+    """Bitwise XOR."""
+    if a is None or b is None:
+        return None
+    return a ^ b
 
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
@@ -316,16 +290,20 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return pow(a, b)
     elif t == Operation.Type.GCD:
         return gcd(a, b)
+    elif t == Operation.Type.LEX:
+        return lex(a, b)
     elif t == Operation.Type.BIN:
         return bin(a, b)
     elif t == Operation.Type.FAC:
         return fac(a, b)
-    elif t == Operation.Type.LEX:
-        return lex(a, b)
     elif t == Operation.Type.LOG:
         return log(a, b)
     elif t == Operation.Type.NRT:
         return nrt(a, b)
+    elif t == Operation.Type.DGS:
+        return dgs(a, b)
+    elif t == Operation.Type.DGR:
+        return dgr(a, b)
     elif t == Operation.Type.EQU:
         return equ(a, b)
     elif t == Operation.Type.NEQ:
@@ -344,9 +322,5 @@ def exec_arithmetic(t: Operation.Type, a, b):
         return bor(a, b)
     elif t == Operation.Type.BXO:
         return bxo(a, b)
-    elif t == Operation.Type.DGS:
-        return dgs(a, b)
-    elif t == Operation.Type.DGR:
-        return dgr(a, b)
     else:
         raise ValueError("operation type not arithmetic: {}".format(t))
