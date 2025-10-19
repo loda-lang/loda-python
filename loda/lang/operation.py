@@ -77,6 +77,9 @@ class Operation:
         CLR = 31    # clear
         SEQ = 32    # sequence
         DBG = 33    # debug
+        FIL = 34    # fill
+        ROL = 35    # rotate left
+        ROR = 36    # rotate right
 
     type: Type
     """Type of this operation."""

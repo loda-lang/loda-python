@@ -2,7 +2,7 @@
 
 from loda.lang import Operand, Operation, Program
 from loda.oeis import ProgramCache
-from .operations import exec_arithmetic
+from .operations import exec_arithmetic, clr, fil, rol, ror
 
 
 class Interpreter:
@@ -159,6 +159,33 @@ class Interpreter:
                 self.__set(op.target, seq_result, mem_tmp, op)
                 steps += seq_steps
 
+            elif op.type == Operation.Type.CLR:
+                # clear memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                clr(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.FIL:
+                # fill memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                fil(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.ROL:
+                # rotate left memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                rol(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.ROR:
+                # rotate right memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                ror(mem_tmp, start, length)
+
             else:
                 # arithmetic operation
                 target = self.__get(op.target, mem_tmp)
@@ -211,6 +238,12 @@ class Interpreter:
             self.__raise(
                 "overflow in {}; last operation: {}".format(op, last))
         mem[index] = v
+
+    def __check_max_memory(self, length, last_op):
+        """Check if memory range length exceeds the maximum allowed."""
+        if abs(length) > self.__max_memory and self.__max_memory >= 0:
+            self.__raise(
+                "maximum memory exceeded: {}; last operation: {}".format(abs(length), last_op))
 
     def __raise(self, msg: str) -> None:
         raise ValueError(msg)
