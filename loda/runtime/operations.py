@@ -266,6 +266,54 @@ def bxo(a, b):
         return None
     return a ^ b
 
+def get_range(start, length):
+    """Get the memory range [first, second) based on start and length.
+    
+    If length is positive, the range is [start, start+length).
+    If length is negative, the range is [start+length+1, start+1).
+    If length is zero, the range is [start, start) (empty range).
+    """
+    if length > 0:
+        return (start, start + length)
+    elif length < 0:
+        return (start + length + 1, start + 1)
+    else:
+        return (start, start)
+
+def clr(mem, start, length):
+    """Clear memory range. Sets memory cells in the range to 0."""
+    first, second = get_range(start, length)
+    keys_to_delete = [k for k in mem.keys() if first <= k < second]
+    for k in keys_to_delete:
+        del mem[k]
+
+def fil(mem, start, length):
+    """Fill memory range. Sets all cells in range to the value at start."""
+    value = mem.get(start, 0)
+    first, second = get_range(start, length)
+    for i in range(first, second):
+        mem[i] = value
+
+def rol(mem, start, length):
+    """Rotate left memory range. Shifts all values left by one position, wrapping around."""
+    if length == 0:
+        return
+    first, second = get_range(start, length)
+    leftmost = mem.get(first, 0)
+    for i in range(first, second - 1):
+        mem[i] = mem.get(i + 1, 0)
+    mem[second - 1] = leftmost
+
+def ror(mem, start, length):
+    """Rotate right memory range. Shifts all values right by one position, wrapping around."""
+    if length == 0:
+        return
+    first, second = get_range(start, length)
+    rightmost = mem.get(second - 1, 0)
+    for i in range(second - 1, first, -1):
+        mem[i] = mem.get(i - 1, 0)
+    mem[first] = rightmost
+
 def exec_arithmetic(t: Operation.Type, a, b):
     """Execute an arithmetic operation."""
     if t == Operation.Type.MOV:
