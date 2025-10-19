@@ -163,6 +163,7 @@ class Interpreter:
                 # clear memory range
                 length = self.__get(op.source, mem_tmp)
                 start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
                 clr(mem_tmp, start, length)
 
             elif op.type == Operation.Type.FIL:

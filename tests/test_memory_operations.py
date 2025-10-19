@@ -148,6 +148,17 @@ fil $1,20000
             self.interpreter.run(program, mem)
         self.assertIn("maximum memory exceeded", str(context.exception).lower())
 
+    def test_max_memory_limit_clr(self):
+        """Test that memory range limit is enforced for clr operation"""
+        program = Program("""
+mov $1,100
+clr $1,20000
+""")
+        mem = {0: 0}
+        with self.assertRaises(ValueError) as context:
+            self.interpreter.run(program, mem)
+        self.assertIn("maximum memory exceeded", str(context.exception).lower())
+
     def test_max_memory_limit_rol(self):
         """Test that memory range limit is enforced for rol operation"""
         program = Program("""

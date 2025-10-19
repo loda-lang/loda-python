@@ -271,11 +271,14 @@ def get_range(start, length):
     
     If length is positive, the range is [start, start+length).
     If length is negative, the range is [start+length+1, start+1).
+    If length is zero, the range is [start, start) (empty range).
     """
     if length > 0:
         return (start, start + length)
-    else:
+    elif length < 0:
         return (start + length + 1, start + 1)
+    else:
+        return (start, start)
 
 def clr(mem, start, length):
     """Clear memory range. Sets memory cells in the range to 0."""
