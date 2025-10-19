@@ -149,6 +149,23 @@ el.replaceWith(d);
 </details>
 <div class="desc"><p>Bitwise XOR.</p></div>
 </dd>
+<dt id="loda.runtime.operations.clr"><code class="name flex">
+<span>def <span class="ident">clr</span></span>(<span>mem, start, length)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clr(mem, start, length):
+    &#34;&#34;&#34;Clear memory range. Sets memory cells in the range to 0.&#34;&#34;&#34;
+    first, second = get_range(start, length)
+    keys_to_delete = [k for k in mem.keys() if first &lt;= k &lt; second]
+    for k in keys_to_delete:
+        del mem[k]</code></pre>
+</details>
+<div class="desc"><p>Clear memory range. Sets memory cells in the range to 0.</p></div>
+</dd>
 <dt id="loda.runtime.operations.dgr"><code class="name flex">
 <span>def <span class="ident">dgr</span></span>(<span>a, b)</span>
 </code></dt>
@@ -360,6 +377,23 @@ el.replaceWith(d);
 </details>
 <div class="desc"><p>Falling and rising factorial.</p></div>
 </dd>
+<dt id="loda.runtime.operations.fil"><code class="name flex">
+<span>def <span class="ident">fil</span></span>(<span>mem, start, length)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fil(mem, start, length):
+    &#34;&#34;&#34;Fill memory range. Sets all cells in range to the value at start.&#34;&#34;&#34;
+    value = mem.get(start, 0)
+    first, second = get_range(start, length)
+    for i in range(first, second):
+        mem[i] = value</code></pre>
+</details>
+<div class="desc"><p>Fill memory range. Sets all cells in range to the value at start.</p></div>
+</dd>
 <dt id="loda.runtime.operations.gcd"><code class="name flex">
 <span>def <span class="ident">gcd</span></span>(<span>a, b)</span>
 </code></dt>
@@ -391,6 +425,33 @@ el.replaceWith(d);
     return 1 if a &gt;= b else 0</code></pre>
 </details>
 <div class="desc"><p>Greater or equal.</p></div>
+</dd>
+<dt id="loda.runtime.operations.get_range"><code class="name flex">
+<span>def <span class="ident">get_range</span></span>(<span>start, length)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_range(start, length):
+    &#34;&#34;&#34;Get the memory range [first, second) based on start and length.
+    
+    If length is positive, the range is [start, start+length).
+    If length is negative, the range is [start+length+1, start+1).
+    If length is zero, the range is [start, start) (empty range).
+    &#34;&#34;&#34;
+    if length &gt; 0:
+        return (start, start + length)
+    elif length &lt; 0:
+        return (start + length + 1, start + 1)
+    else:
+        return (start, start)</code></pre>
+</details>
+<div class="desc"><p>Get the memory range [first, second) based on start and length.</p>
+<p>If length is positive, the range is [start, start+length).
+If length is negative, the range is [start+length+1, start+1).
+If length is zero, the range is [start, start) (empty range).</p></div>
 </dd>
 <dt id="loda.runtime.operations.leq"><code class="name flex">
 <span>def <span class="ident">leq</span></span>(<span>a, b)</span>
@@ -602,6 +663,46 @@ el.replaceWith(d);
 </details>
 <div class="desc"><p>Power.</p></div>
 </dd>
+<dt id="loda.runtime.operations.rol"><code class="name flex">
+<span>def <span class="ident">rol</span></span>(<span>mem, start, length)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rol(mem, start, length):
+    &#34;&#34;&#34;Rotate left memory range. Shifts all values left by one position, wrapping around.&#34;&#34;&#34;
+    if length == 0:
+        return
+    first, second = get_range(start, length)
+    leftmost = mem.get(first, 0)
+    for i in range(first, second - 1):
+        mem[i] = mem.get(i + 1, 0)
+    mem[second - 1] = leftmost</code></pre>
+</details>
+<div class="desc"><p>Rotate left memory range. Shifts all values left by one position, wrapping around.</p></div>
+</dd>
+<dt id="loda.runtime.operations.ror"><code class="name flex">
+<span>def <span class="ident">ror</span></span>(<span>mem, start, length)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ror(mem, start, length):
+    &#34;&#34;&#34;Rotate right memory range. Shifts all values right by one position, wrapping around.&#34;&#34;&#34;
+    if length == 0:
+        return
+    first, second = get_range(start, length)
+    rightmost = mem.get(second - 1, 0)
+    for i in range(second - 1, first, -1):
+        mem[i] = mem.get(i - 1, 0)
+    mem[first] = rightmost</code></pre>
+</details>
+<div class="desc"><p>Rotate right memory range. Shifts all values right by one position, wrapping around.</p></div>
+</dd>
 <dt id="loda.runtime.operations.sub"><code class="name flex">
 <span>def <span class="ident">sub</span></span>(<span>a, b)</span>
 </code></dt>
@@ -656,6 +757,7 @@ el.replaceWith(d);
 <li><code><a title="loda.runtime.operations.bin" href="#loda.runtime.operations.bin">bin</a></code></li>
 <li><code><a title="loda.runtime.operations.bor" href="#loda.runtime.operations.bor">bor</a></code></li>
 <li><code><a title="loda.runtime.operations.bxo" href="#loda.runtime.operations.bxo">bxo</a></code></li>
+<li><code><a title="loda.runtime.operations.clr" href="#loda.runtime.operations.clr">clr</a></code></li>
 <li><code><a title="loda.runtime.operations.dgr" href="#loda.runtime.operations.dgr">dgr</a></code></li>
 <li><code><a title="loda.runtime.operations.dgs" href="#loda.runtime.operations.dgs">dgs</a></code></li>
 <li><code><a title="loda.runtime.operations.dif" href="#loda.runtime.operations.dif">dif</a></code></li>
@@ -664,8 +766,10 @@ el.replaceWith(d);
 <li><code><a title="loda.runtime.operations.equ" href="#loda.runtime.operations.equ">equ</a></code></li>
 <li><code><a title="loda.runtime.operations.exec_arithmetic" href="#loda.runtime.operations.exec_arithmetic">exec_arithmetic</a></code></li>
 <li><code><a title="loda.runtime.operations.fac" href="#loda.runtime.operations.fac">fac</a></code></li>
+<li><code><a title="loda.runtime.operations.fil" href="#loda.runtime.operations.fil">fil</a></code></li>
 <li><code><a title="loda.runtime.operations.gcd" href="#loda.runtime.operations.gcd">gcd</a></code></li>
 <li><code><a title="loda.runtime.operations.geq" href="#loda.runtime.operations.geq">geq</a></code></li>
+<li><code><a title="loda.runtime.operations.get_range" href="#loda.runtime.operations.get_range">get_range</a></code></li>
 <li><code><a title="loda.runtime.operations.leq" href="#loda.runtime.operations.leq">leq</a></code></li>
 <li><code><a title="loda.runtime.operations.lex" href="#loda.runtime.operations.lex">lex</a></code></li>
 <li><code><a title="loda.runtime.operations.log" href="#loda.runtime.operations.log">log</a></code></li>
@@ -676,6 +780,8 @@ el.replaceWith(d);
 <li><code><a title="loda.runtime.operations.neq" href="#loda.runtime.operations.neq">neq</a></code></li>
 <li><code><a title="loda.runtime.operations.nrt" href="#loda.runtime.operations.nrt">nrt</a></code></li>
 <li><code><a title="loda.runtime.operations.pow" href="#loda.runtime.operations.pow">pow</a></code></li>
+<li><code><a title="loda.runtime.operations.rol" href="#loda.runtime.operations.rol">rol</a></code></li>
+<li><code><a title="loda.runtime.operations.ror" href="#loda.runtime.operations.ror">ror</a></code></li>
 <li><code><a title="loda.runtime.operations.sub" href="#loda.runtime.operations.sub">sub</a></code></li>
 <li><code><a title="loda.runtime.operations.trn" href="#loda.runtime.operations.trn">trn</a></code></li>
 </ul>

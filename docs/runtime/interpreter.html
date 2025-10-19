@@ -210,6 +210,34 @@ el.replaceWith(d);
                 self.__set(op.target, seq_result, mem_tmp, op)
                 steps += seq_steps
 
+            elif op.type == Operation.Type.CLR:
+                # clear memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                clr(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.FIL:
+                # fill memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                fil(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.ROL:
+                # rotate left memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                rol(mem_tmp, start, length)
+
+            elif op.type == Operation.Type.ROR:
+                # rotate right memory range
+                length = self.__get(op.source, mem_tmp)
+                start = self.__get(op.target, mem_tmp, get_address=True)
+                self.__check_max_memory(length, op)
+                ror(mem_tmp, start, length)
+
             else:
                 # arithmetic operation
                 target = self.__get(op.target, mem_tmp)
@@ -262,6 +290,12 @@ el.replaceWith(d);
             self.__raise(
                 &#34;overflow in {}; last operation: {}&#34;.format(op, last))
         mem[index] = v
+
+    def __check_max_memory(self, length, last_op):
+        &#34;&#34;&#34;Check if memory range length exceeds the maximum allowed.&#34;&#34;&#34;
+        if abs(length) &gt; self.__max_memory and self.__max_memory &gt;= 0:
+            self.__raise(
+                &#34;maximum memory exceeded: {}; last operation: {}&#34;.format(abs(length), last_op))
 
     def __raise(self, msg: str) -&gt; None:
         raise ValueError(msg)</code></pre>
