@@ -75,8 +75,11 @@ class Operation:
         LPB = 29    # loop begin
         LPE = 30    # loop end
         CLR = 31    # clear
-        SEQ = 32    # sequence
-        DBG = 33    # debug
+        FIL = 32    # fill
+        ROL = 33    # rotate left
+        ROR = 34    # rotate right
+        SEQ = 35    # sequence
+        DBG = 36    # debug
 
     type: Type
     """Type of this operation."""
