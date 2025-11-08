@@ -4,10 +4,8 @@ This Python package contains an implementation of the [LODA Language](https://lo
 an assembly language and computational model for finding integer sequence programs.
 
 This Python package allows you to read and write LODA programs, to evaluate
-them to integer sequences, to search for matches in the
-[OEIS](https://www.oeis.org/) database,
-and to use machine learning tools from [Tensorflow](https://www.tensorflow.org/)
-to find new integer sequence programs.
+them to integer sequences, and to search for matches in the
+[OEIS](https://www.oeis.org/) database.
 
 ## Getting Started
 

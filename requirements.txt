@@ -2,5 +2,3 @@ argparse
 nose2
 parameterized
 requests
-tensorflow; sys_platform != 'darwin'
-tensorflow-macos; sys_platform == 'darwin'
