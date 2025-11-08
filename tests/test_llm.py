@@ -97,6 +97,20 @@ class TestLodaLLM(unittest.TestCase):
         clean_code = preprocessor.clean_loda_code(dirty_code)
         expected = "mov $1,$0\npow $1,2\nmov $0,$1"
         self.assertEqual(clean_code, expected)
+        
+        # Test inline comment removal
+        code_with_inline_comments = (
+            "; Header comment\n"
+            "add $0,1\n"
+            "sub $0,2 ; inline comment here\n"
+            "mul $1,3   ; another inline comment\n"
+            "; Full line comment\n"
+            "div $2,4\n"
+        )
+        
+        clean_inline = preprocessor.clean_loda_code(code_with_inline_comments)
+        expected_inline = "add $0,1\nsub $0,2\nmul $1,3\ndiv $2,4"
+        self.assertEqual(clean_inline, expected_inline)
     
     def test_training_example_creation(self):
         """Test TrainingExample creation."""

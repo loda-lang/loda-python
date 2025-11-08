@@ -106,14 +106,22 @@ class DataPreprocessor:
         code_lines = []
         
         for line in lines:
-            # Skip comment lines
+            # Skip comment lines (lines that start with ;)
             if line.strip().startswith(';'):
                 continue
             # Skip empty lines
             if not line.strip():
                 continue
-            # Add the code line
-            code_lines.append(line.strip())
+            
+            # Remove inline comments (everything after ; on the same line)
+            if ';' in line:
+                code_part = line.split(';')[0].strip()
+            else:
+                code_part = line.strip()
+            
+            # Only add non-empty code lines
+            if code_part:
+                code_lines.append(code_part)
         
         return '\n'.join(code_lines)
     
