@@ -1,26 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
-from loda.ml.keras.program_generation_rnn import *
 
 from loda.oeis import ProgramCache
 from loda.ml import util
 from tests.helpers import PROGRAMS_TEST_DIR
-
-
-#class ProgramGenerationRNNTests(TestCase):
-#
-#    def setUp(self):
-#        self.program_cache = ProgramCache(PROGRAMS_TEST_DIR)
-#
-#    def test_model(self):
-#        model = train_model(self.program_cache)
-#        model.save("test_model")
-#        loaded = load_model("test_model")
-#        loaded.summary()
-#        generator = Generator(loaded, num_lanes=10)
-#        for _ in range(10):
-#            generator()
 
 
 class UtilTests(TestCase):

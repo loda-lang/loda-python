@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Python implementation of LODA - an assembly language designed for integer sequences. The project enables reading, writing, evaluating, and generating LODA programs using machine learning techniques to discover new integer sequence programs.
+This is a Python implementation of LODA - an assembly language designed for integer sequences. The project enables reading, writing, evaluating LODA programs and searching for matches in the OEIS database.
 
 ## Core Concepts
 
@@ -14,10 +14,6 @@ This is a Python implementation of LODA - an assembly language designed for inte
   - Indirect memory: `$$1` (value at location pointed to by $1)
 - **Operations**: `mov`, `add`, `sub`, `mul`, `div`, `dif`, `mod`, `pow`, `gcd`, `bin`, `cmp`, `min`, `max`, `lpb`, `lpe`
 - **Loops**: `lpb $n` starts loop, `lpe` ends loop (counter-based termination)
-
-### Token Encoding for ML
-Each operation becomes 3 tokens: `[operation_type, target_operand, source_operand]`
-Example: `mov $1,5` → `["mov", "$1", "5"]`
 
 ## Source Code Structure
 
@@ -36,9 +32,8 @@ Example: `mov $1,5` → `["mov", "$1", "5"]`
 - **`program_cache.py`**: `ProgramCache` manages filesystem loading/caching
 - **`prefix_index.py`**: `PrefixIndex` enables sequence matching by prefix patterns
 
-### Machine Learning (`loda/ml/`)
+### Utilities (`loda/ml/`)
 - **`util.py`**: Token conversion utilities (program ↔ tokens, merging)
-- **`keras/program_generation_rnn.py`**: RNN model for program generation using TensorFlow
 
 ### Mining (`loda/mine/`)
 - **`miner.py`**: `Miner` searches for programs matching OEIS sequences
@@ -66,15 +61,6 @@ elif operand.type == OperandType.DIRECT:
     value = memory[operand.value]
 elif operand.type == OperandType.INDIRECT:
     value = memory[memory[operand.value]]
-```
-
-### When working with ML tokens:
-```python
-# Convert programs to tokens for ML
-from loda.ml.util import program_to_tokens, tokens_to_program
-
-tokens = program_to_tokens(program)
-reconstructed = tokens_to_program(tokens)
 ```
 
 ### When working with sequences:
@@ -112,11 +98,11 @@ program = program_cache.get_program(sequence_id)
 
 ### Token Conversion Pattern:
 ```python
-# ML workflow
-tokens = program_to_tokens(program)
-# Process with ML model
-new_tokens = model.generate(tokens)
-new_program = tokens_to_program(new_tokens)
+# Token conversion utilities
+from loda.ml.util import program_to_tokens, tokens_to_program
+
+tokens, vocab = program_to_tokens(program)
+reconstructed = tokens_to_program(tokens)
 ```
 
 ## Testing Conventions
@@ -138,13 +124,11 @@ Always set appropriate limits:
 
 - Programs: `A######.asm` format (OEIS sequence numbers)
 - B-files: `b######.txt` format for sequence terms
-- Models: Use descriptive names with hyperparameters
 - Use relative paths from project root
 
 ## Integration Points
 
 - OEIS database integration via sequence IDs
-- TensorFlow/Keras for neural networks
 - File system caching for performance
 - CSV parsing for test data
 
