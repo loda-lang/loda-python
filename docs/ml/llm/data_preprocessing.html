@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>loda.ml.llm.data_preprocessing API documentation</title>
+<meta name="description" content="Data preprocessing utilities for LLM training on OEIS sequences and LODA programs …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>loda.ml.llm.data_preprocessing</code></h1>
+</header>
+<section id="section-intro">
+<p>Data preprocessing utilities for LLM training on OEIS sequences and LODA programs.</p>
+<p>This module handles:
+1. Extracting sequence descriptions from LODA program comments
+2. Pairing natural language descriptions with LODA code
+3. Creating training datasets for sequence-to-sequence models
+4. Tokenization and data formatting for transformer models</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.ml.llm.data_preprocessing.create_dataset"><code class="name flex">
+<span>def <span class="ident">create_dataset</span></span>(<span>programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_dataset(programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True):
+    &#34;&#34;&#34;
+    Convenience function to create and save a training dataset.
+    
+    Args:
+        programs_dir: Path to OEIS programs directory
+        output_file: Path to save the dataset
+        max_examples: Maximum number of examples (-1 for all)
+        augment: Whether to augment with description variations
+    &#34;&#34;&#34;
+    preprocessor = DataPreprocessor(programs_dir)
+    examples = preprocessor.create_training_examples(max_examples)
+    
+    if augment:
+        examples = preprocessor.augment_descriptions(examples)
+    
+    preprocessor.save_dataset(examples, output_file)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Convenience function to create and save a training dataset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>programs_dir</code></strong></dt>
+<dd>Path to OEIS programs directory</dd>
+<dt><strong><code>output_file</code></strong></dt>
+<dd>Path to save the dataset</dd>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of examples (-1 for all)</dd>
+<dt><strong><code>augment</code></strong></dt>
+<dd>Whether to augment with description variations</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor"><code class="flex name class">
+<span>class <span class="ident">DataPreprocessor</span></span>
+<span>(</span><span>programs_dir: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DataPreprocessor:
+    &#34;&#34;&#34;Handles preprocessing of OEIS programs for LLM training.&#34;&#34;&#34;
+    
+    def __init__(self, programs_dir: str):
+        &#34;&#34;&#34;Initialize with path to OEIS programs directory.&#34;&#34;&#34;
+        self.programs_dir = programs_dir
+        self.program_cache = ProgramCache(programs_dir)
+        
+    def extract_description_from_program(self, program_text: str) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Extract the natural language description from a LODA program.
+        
+        LODA programs typically start with comments like:
+        ; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
+        
+        Args:
+            program_text: The full LODA program as text
+            
+        Returns:
+            The description string or None if no description found
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        
+        for line in lines:
+            # Look for OEIS description lines (start with ; A######:)
+            match = re.match(r&#39;;\s*A\d{6}:\s*(.+)&#39;, line)
+            if match:
+                description = match.group(1).strip()
+                # Clean up common artifacts
+                description = description.rstrip(&#39;.&#39;)
+                # Remove mathematical notation that might be confusing
+                # Keep it simple for initial training
+                return description
+                
+        return None
+    
+    def extract_terms_from_program(self, program_text: str) -&gt; Optional[List[int]]:
+        &#34;&#34;&#34;
+        Extract the sequence terms from a LODA program comment.
+        
+        Args:
+            program_text: The full LODA program as text
+            
+        Returns:
+            List of sequence terms or None if not found
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        
+        for line in lines:
+            # Look for lines with comma-separated numbers (sequence terms)
+            if line.startswith(&#39;;&#39;) and &#39;,&#39; in line:
+                # Extract numbers from the line
+                numbers_str = line[1:].strip()  # Remove the &#39;;&#39;
+                # Skip if it looks like it contains non-numeric content
+                if &#39;:&#39; in numbers_str or any(c.isalpha() for c in numbers_str):
+                    continue
+                    
+                try:
+                    terms = [int(x.strip()) for x in numbers_str.split(&#39;,&#39;) if x.strip()]
+                    if len(terms) &gt;= 5:  # Reasonable number of terms
+                        return terms
+                except ValueError:
+                    continue
+                    
+        return None
+    
+    def clean_loda_code(self, program_text: str) -&gt; str:
+        &#34;&#34;&#34;
+        Clean LODA code by removing comments and normalizing format.
+        
+        Args:
+            program_text: Raw LODA program text
+            
+        Returns:
+            Cleaned LODA code suitable for training
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        code_lines = []
+        
+        for line in lines:
+            # Skip comment lines
+            if line.strip().startswith(&#39;;&#39;):
+                continue
+            # Skip empty lines
+            if not line.strip():
+                continue
+            # Add the code line
+            code_lines.append(line.strip())
+        
+        return &#39;\n&#39;.join(code_lines)
+    
+    def create_training_examples(self, max_examples: int = -1) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Create training examples from all available LODA programs.
+        
+        Args:
+            max_examples: Maximum number of examples to create (-1 for all)
+            
+        Returns:
+            List of TrainingExample objects
+        &#34;&#34;&#34;
+        examples = []
+        program_ids = self.program_cache.all_ids()
+        
+        if max_examples &gt; 0:
+            program_ids = program_ids[:max_examples]
+        
+        print(f&#34;Processing {len(program_ids)} programs...&#34;)
+        
+        for i, program_id in enumerate(program_ids):
+            if i % 1000 == 0:
+                print(f&#34;Processed {i}/{len(program_ids)} programs&#34;)
+                
+            try:
+                # Read the program file
+                program_path = self.program_cache._get_path(program_id)
+                if not os.path.exists(program_path):
+                    continue
+                    
+                with open(program_path, &#39;r&#39;) as f:
+                    program_text = f.read()
+                
+                # Extract description
+                description = self.extract_description_from_program(program_text)
+                if not description:
+                    continue
+                
+                # Extract terms (optional)
+                terms = self.extract_terms_from_program(program_text)
+                
+                # Clean the LODA code
+                clean_code = self.clean_loda_code(program_text)
+                if not clean_code:
+                    continue
+                
+                # Validate that the code parses correctly
+                try:
+                    Program.parse(clean_code)
+                except Exception:
+                    continue  # Skip programs that don&#39;t parse
+                
+                example = TrainingExample(
+                    sequence_id=program_id,
+                    description=description,
+                    loda_code=clean_code,
+                    terms=terms
+                )
+                examples.append(example)
+                
+            except Exception as e:
+                print(f&#34;Error processing {program_id}: {e}&#34;)
+                continue
+        
+        print(f&#34;Created {len(examples)} training examples&#34;)
+        return examples
+    
+    def augment_descriptions(self, examples: List[TrainingExample]) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Augment training examples with variations of descriptions.
+        
+        This can help make the model more robust to different phrasings.
+        
+        Args:
+            examples: List of original training examples
+            
+        Returns:
+            Augmented list with additional variations
+        &#34;&#34;&#34;
+        augmented = list(examples)  # Start with originals
+        
+        for example in examples:
+            desc = example.description
+            
+            # Create variations
+            variations = []
+            
+            # Add &#34;sequence of&#34; prefix if not present
+            if not desc.lower().startswith((&#39;sequence&#39;, &#39;the sequence&#39;)):
+                variations.append(f&#34;Sequence of {desc.lower()}&#34;)
+            
+            # Add &#34;Generate&#34; prefix
+            variations.append(f&#34;Generate {desc.lower()}&#34;)
+            
+            # Add &#34;Compute&#34; prefix
+            variations.append(f&#34;Compute {desc.lower()}&#34;)
+            
+            # Remove mathematical symbols for simpler versions
+            simple_desc = re.sub(r&#39;[()=+\-*/^]&#39;, &#39; &#39;, desc)
+            simple_desc = re.sub(r&#39;\s+&#39;, &#39; &#39;, simple_desc).strip()
+            if simple_desc != desc and simple_desc:
+                variations.append(simple_desc)
+            
+            # Create new examples for each variation
+            for variation in variations:
+                augmented_example = TrainingExample(
+                    sequence_id=example.sequence_id + &#34;_aug&#34;,
+                    description=variation,
+                    loda_code=example.loda_code,
+                    terms=example.terms
+                )
+                augmented.append(augmented_example)
+        
+        return augmented
+    
+    def save_dataset(self, examples: List[TrainingExample], output_file: str):
+        &#34;&#34;&#34;
+        Save training examples to a file for later use.
+        
+        Args:
+            examples: List of training examples
+            output_file: Path to output file
+        &#34;&#34;&#34;
+        import json
+        
+        data = []
+        for example in examples:
+            data.append({
+                &#39;sequence_id&#39;: example.sequence_id,
+                &#39;description&#39;: example.description,
+                &#39;loda_code&#39;: example.loda_code,
+                &#39;terms&#39;: example.terms
+            })
+        
+        with open(output_file, &#39;w&#39;) as f:
+            json.dump(data, f, indent=2)
+        
+        print(f&#34;Saved {len(examples)} examples to {output_file}&#34;)
+    
+    def load_dataset(self, input_file: str) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Load training examples from a file.
+        
+        Args:
+            input_file: Path to input file
+            
+        Returns:
+            List of TrainingExample objects
+        &#34;&#34;&#34;
+        import json
+        
+        with open(input_file, &#39;r&#39;) as f:
+            data = json.load(f)
+        
+        examples = []
+        for item in data:
+            example = TrainingExample(
+                sequence_id=item[&#39;sequence_id&#39;],
+                description=item[&#39;description&#39;],
+                loda_code=item[&#39;loda_code&#39;],
+                terms=item.get(&#39;terms&#39;)
+            )
+            examples.append(example)
+        
+        print(f&#34;Loaded {len(examples)} examples from {input_file}&#34;)
+        return examples</code></pre>
+</details>
+<div class="desc"><p>Handles preprocessing of OEIS programs for LLM training.</p>
+<p>Initialize with path to OEIS programs directory.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions"><code class="name flex">
+<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def augment_descriptions(self, examples: List[TrainingExample]) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Augment training examples with variations of descriptions.
+    
+    This can help make the model more robust to different phrasings.
+    
+    Args:
+        examples: List of original training examples
+        
+    Returns:
+        Augmented list with additional variations
+    &#34;&#34;&#34;
+    augmented = list(examples)  # Start with originals
+    
+    for example in examples:
+        desc = example.description
+        
+        # Create variations
+        variations = []
+        
+        # Add &#34;sequence of&#34; prefix if not present
+        if not desc.lower().startswith((&#39;sequence&#39;, &#39;the sequence&#39;)):
+            variations.append(f&#34;Sequence of {desc.lower()}&#34;)
+        
+        # Add &#34;Generate&#34; prefix
+        variations.append(f&#34;Generate {desc.lower()}&#34;)
+        
+        # Add &#34;Compute&#34; prefix
+        variations.append(f&#34;Compute {desc.lower()}&#34;)
+        
+        # Remove mathematical symbols for simpler versions
+        simple_desc = re.sub(r&#39;[()=+\-*/^]&#39;, &#39; &#39;, desc)
+        simple_desc = re.sub(r&#39;\s+&#39;, &#39; &#39;, simple_desc).strip()
+        if simple_desc != desc and simple_desc:
+            variations.append(simple_desc)
+        
+        # Create new examples for each variation
+        for variation in variations:
+            augmented_example = TrainingExample(
+                sequence_id=example.sequence_id + &#34;_aug&#34;,
+                description=variation,
+                loda_code=example.loda_code,
+                terms=example.terms
+            )
+            augmented.append(augmented_example)
+    
+    return augmented</code></pre>
+</details>
+<div class="desc"><p>Augment training examples with variations of descriptions.</p>
+<p>This can help make the model more robust to different phrasings.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>examples</code></strong></dt>
+<dd>List of original training examples</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Augmented list with additional variations</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code"><code class="name flex">
+<span>def <span class="ident">clean_loda_code</span></span>(<span>self, program_text: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clean_loda_code(self, program_text: str) -&gt; str:
+    &#34;&#34;&#34;
+    Clean LODA code by removing comments and normalizing format.
+    
+    Args:
+        program_text: Raw LODA program text
+        
+    Returns:
+        Cleaned LODA code suitable for training
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    code_lines = []
+    
+    for line in lines:
+        # Skip comment lines
+        if line.strip().startswith(&#39;;&#39;):
+            continue
+        # Skip empty lines
+        if not line.strip():
+            continue
+        # Add the code line
+        code_lines.append(line.strip())
+    
+    return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Clean LODA code by removing comments and normalizing format.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>Raw LODA program text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Cleaned LODA code suitable for training</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples"><code class="name flex">
+<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_training_examples(self, max_examples: int = -1) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Create training examples from all available LODA programs.
+    
+    Args:
+        max_examples: Maximum number of examples to create (-1 for all)
+        
+    Returns:
+        List of TrainingExample objects
+    &#34;&#34;&#34;
+    examples = []
+    program_ids = self.program_cache.all_ids()
+    
+    if max_examples &gt; 0:
+        program_ids = program_ids[:max_examples]
+    
+    print(f&#34;Processing {len(program_ids)} programs...&#34;)
+    
+    for i, program_id in enumerate(program_ids):
+        if i % 1000 == 0:
+            print(f&#34;Processed {i}/{len(program_ids)} programs&#34;)
+            
+        try:
+            # Read the program file
+            program_path = self.program_cache._get_path(program_id)
+            if not os.path.exists(program_path):
+                continue
+                
+            with open(program_path, &#39;r&#39;) as f:
+                program_text = f.read()
+            
+            # Extract description
+            description = self.extract_description_from_program(program_text)
+            if not description:
+                continue
+            
+            # Extract terms (optional)
+            terms = self.extract_terms_from_program(program_text)
+            
+            # Clean the LODA code
+            clean_code = self.clean_loda_code(program_text)
+            if not clean_code:
+                continue
+            
+            # Validate that the code parses correctly
+            try:
+                Program.parse(clean_code)
+            except Exception:
+                continue  # Skip programs that don&#39;t parse
+            
+            example = TrainingExample(
+                sequence_id=program_id,
+                description=description,
+                loda_code=clean_code,
+                terms=terms
+            )
+            examples.append(example)
+            
+        except Exception as e:
+            print(f&#34;Error processing {program_id}: {e}&#34;)
+            continue
+    
+    print(f&#34;Created {len(examples)} training examples&#34;)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Create training examples from all available LODA programs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of examples to create (-1 for all)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of TrainingExample objects</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program"><code class="name flex">
+<span>def <span class="ident">extract_description_from_program</span></span>(<span>self, program_text: str) ‑> str | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_description_from_program(self, program_text: str) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+    Extract the natural language description from a LODA program.
+    
+    LODA programs typically start with comments like:
+    ; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
+    
+    Args:
+        program_text: The full LODA program as text
+        
+    Returns:
+        The description string or None if no description found
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    
+    for line in lines:
+        # Look for OEIS description lines (start with ; A######:)
+        match = re.match(r&#39;;\s*A\d{6}:\s*(.+)&#39;, line)
+        if match:
+            description = match.group(1).strip()
+            # Clean up common artifacts
+            description = description.rstrip(&#39;.&#39;)
+            # Remove mathematical notation that might be confusing
+            # Keep it simple for initial training
+            return description
+            
+    return None</code></pre>
+</details>
+<div class="desc"><p>Extract the natural language description from a LODA program.</p>
+<p>LODA programs typically start with comments like:
+; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>The full LODA program as text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The description string or None if no description found</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program"><code class="name flex">
+<span>def <span class="ident">extract_terms_from_program</span></span>(<span>self, program_text: str) ‑> List[int] | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_terms_from_program(self, program_text: str) -&gt; Optional[List[int]]:
+    &#34;&#34;&#34;
+    Extract the sequence terms from a LODA program comment.
+    
+    Args:
+        program_text: The full LODA program as text
+        
+    Returns:
+        List of sequence terms or None if not found
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    
+    for line in lines:
+        # Look for lines with comma-separated numbers (sequence terms)
+        if line.startswith(&#39;;&#39;) and &#39;,&#39; in line:
+            # Extract numbers from the line
+            numbers_str = line[1:].strip()  # Remove the &#39;;&#39;
+            # Skip if it looks like it contains non-numeric content
+            if &#39;:&#39; in numbers_str or any(c.isalpha() for c in numbers_str):
+                continue
+                
+            try:
+                terms = [int(x.strip()) for x in numbers_str.split(&#39;,&#39;) if x.strip()]
+                if len(terms) &gt;= 5:  # Reasonable number of terms
+                    return terms
+            except ValueError:
+                continue
+                
+    return None</code></pre>
+</details>
+<div class="desc"><p>Extract the sequence terms from a LODA program comment.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>The full LODA program as text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of sequence terms or None if not found</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset"><code class="name flex">
+<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_dataset(self, input_file: str) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Load training examples from a file.
+    
+    Args:
+        input_file: Path to input file
+        
+    Returns:
+        List of TrainingExample objects
+    &#34;&#34;&#34;
+    import json
+    
+    with open(input_file, &#39;r&#39;) as f:
+        data = json.load(f)
+    
+    examples = []
+    for item in data:
+        example = TrainingExample(
+            sequence_id=item[&#39;sequence_id&#39;],
+            description=item[&#39;description&#39;],
+            loda_code=item[&#39;loda_code&#39;],
+            terms=item.get(&#39;terms&#39;)
+        )
+        examples.append(example)
+    
+    print(f&#34;Loaded {len(examples)} examples from {input_file}&#34;)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Load training examples from a file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_file</code></strong></dt>
+<dd>Path to input file</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of TrainingExample objects</p></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset"><code class="name flex">
+<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_dataset(self, examples: List[TrainingExample], output_file: str):
+    &#34;&#34;&#34;
+    Save training examples to a file for later use.
+    
+    Args:
+        examples: List of training examples
+        output_file: Path to output file
+    &#34;&#34;&#34;
+    import json
+    
+    data = []
+    for example in examples:
+        data.append({
+            &#39;sequence_id&#39;: example.sequence_id,
+            &#39;description&#39;: example.description,
+            &#39;loda_code&#39;: example.loda_code,
+            &#39;terms&#39;: example.terms
+        })
+    
+    with open(output_file, &#39;w&#39;) as f:
+        json.dump(data, f, indent=2)
+    
+    print(f&#34;Saved {len(examples)} examples to {output_file}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Save training examples to a file for later use.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>examples</code></strong></dt>
+<dd>List of training examples</dd>
+<dt><strong><code>output_file</code></strong></dt>
+<dd>Path to output file</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.TrainingExample"><code class="flex name class">
+<span>class <span class="ident">TrainingExample</span></span>
+<span>(</span><span>sequence_id: str,<br>description: str,<br>loda_code: str,<br>terms: List[int] | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class TrainingExample:
+    &#34;&#34;&#34;A single training example pairing natural language with LODA code.&#34;&#34;&#34;
+    sequence_id: str
+    description: str
+    loda_code: str
+    terms: Optional[List[int]] = None</code></pre>
+</details>
+<div class="desc"><p>A single training example pairing natural language with LODA code.</p></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="loda.ml.llm.data_preprocessing.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.data_preprocessing.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.ml.llm.data_preprocessing.create_dataset" href="#loda.ml.llm.data_preprocessing.create_dataset">create_dataset</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor" href="#loda.ml.llm.data_preprocessing.DataPreprocessor">DataPreprocessor</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset">load_dataset</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset">save_dataset</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.description" href="#loda.ml.llm.data_preprocessing.TrainingExample.description">description</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.loda_code" href="#loda.ml.llm.data_preprocessing.TrainingExample.loda_code">loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.sequence_id" href="#loda.ml.llm.data_preprocessing.TrainingExample.sequence_id">sequence_id</a></code></li>
+<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.terms" href="#loda.ml.llm.data_preprocessing.TrainingExample.terms">terms</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

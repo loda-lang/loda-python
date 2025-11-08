@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>loda.ml.llm.trainer API documentation</title>
+<meta name="description" content="Training script for the LODA LLM (Large Language Model) …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>loda.ml.llm.trainer</code></h1>
+</header>
+<section id="section-intro">
+<p>Training script for the LODA LLM (Large Language Model).</p>
+<p>This script handles the complete training pipeline:
+1. Load and preprocess training data
+2. Set up the model and training loop
+3. Train the model with proper validation
+4. Save the trained model</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.ml.llm.trainer.train_loda_llm"><code class="name flex">
+<span>def <span class="ident">train_loda_llm</span></span>(<span>programs_dir: str,<br>output_dir: str = 'loda_llm_model',<br>model_name: str = 't5-small',<br>max_examples: int = -1,<br>val_split: float = 0.1,<br>batch_size: int = 8,<br>learning_rate: float = 5e-05,<br>num_epochs: int = 3)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train_loda_llm(programs_dir: str,
+                   output_dir: str = &#34;loda_llm_model&#34;,
+                   model_name: str = &#34;t5-small&#34;,
+                   max_examples: int = -1,
+                   val_split: float = 0.1,
+                   batch_size: int = 8,
+                   learning_rate: float = 5e-5,
+                   num_epochs: int = 3):
+    &#34;&#34;&#34;
+    Main training function.
+    
+    Args:
+        programs_dir: Directory containing OEIS programs
+        output_dir: Directory to save the trained model
+        model_name: Base T5 model to use
+        max_examples: Maximum number of training examples (-1 for all)
+        val_split: Fraction of data to use for validation
+        batch_size: Training batch size
+        learning_rate: Learning rate
+        num_epochs: Number of training epochs
+    &#34;&#34;&#34;
+    print(&#34;Preparing training data...&#34;)
+    
+    # Create training examples
+    preprocessor = DataPreprocessor(programs_dir)
+    examples = preprocessor.create_training_examples(max_examples)
+    
+    if len(examples) == 0:
+        print(&#34;No training examples found!&#34;)
+        return None
+    
+    # Augment examples
+    print(&#34;Augmenting training examples...&#34;)
+    examples = preprocessor.augment_descriptions(examples)
+    
+    # Split into train/validation
+    if val_split &gt; 0:
+        split_idx = int(len(examples) * (1 - val_split))
+        train_examples = examples[:split_idx]
+        val_examples = examples[split_idx:]
+    else:
+        train_examples = examples
+        val_examples = None
+    
+    print(f&#34;Training examples: {len(train_examples)}&#34;)
+    if val_examples:
+        print(f&#34;Validation examples: {len(val_examples)}&#34;)
+    
+    # Create model
+    print(f&#34;Creating model based on {model_name}...&#34;)
+    model = LodaT5Model(model_name)
+    
+    # Create datasets
+    train_dataset = LodaDataset(train_examples, model)
+    val_dataset = LodaDataset(val_examples, model) if val_examples else None
+    
+    # Create trainer
+    trainer = LodaTrainer(
+        model=model,
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
+        learning_rate=learning_rate,
+        batch_size=batch_size,
+        num_epochs=num_epochs,
+        save_dir=output_dir
+    )
+    
+    # Train the model
+    trained_model = trainer.train()
+    
+    # Save final model
+    trained_model.save_model(output_dir)
+    print(f&#34;Final model saved to {output_dir}&#34;)
+    
+    return trained_model</code></pre>
+</details>
+<div class="desc"><p>Main training function.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>programs_dir</code></strong></dt>
+<dd>Directory containing OEIS programs</dd>
+<dt><strong><code>output_dir</code></strong></dt>
+<dd>Directory to save the trained model</dd>
+<dt><strong><code>model_name</code></strong></dt>
+<dd>Base T5 model to use</dd>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of training examples (-1 for all)</dd>
+<dt><strong><code>val_split</code></strong></dt>
+<dd>Fraction of data to use for validation</dd>
+<dt><strong><code>batch_size</code></strong></dt>
+<dd>Training batch size</dd>
+<dt><strong><code>learning_rate</code></strong></dt>
+<dd>Learning rate</dd>
+<dt><strong><code>num_epochs</code></strong></dt>
+<dd>Number of training epochs</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="loda.ml.llm.trainer.LodaDataset"><code class="flex name class">
+<span>class <span class="ident">LodaDataset</span></span>
+<span>(</span><span>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 512)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaDataset(Dataset):
+    &#34;&#34;&#34;PyTorch dataset for LODA training examples.&#34;&#34;&#34;
+    
+    def __init__(self, examples: List[TrainingExample], model: LodaT5Model, max_length: int = 512):
+        &#34;&#34;&#34;
+        Initialize the dataset.
+        
+        Args:
+            examples: List of training examples
+            model: LodaT5Model instance for tokenization
+            max_length: Maximum sequence length
+        &#34;&#34;&#34;
+        self.examples = examples
+        self.model = model
+        self.max_length = max_length
+    
+    def __len__(self):
+        return len(self.examples)
+    
+    def __getitem__(self, idx):
+        example = self.examples[idx]
+        
+        # Prepare input (description)
+        input_encoding = self.model.prepare_input([example.description])
+        
+        # Prepare target (LODA code)
+        target_encoding = self.model.prepare_target([example.loda_code])
+        
+        return {
+            &#39;input_ids&#39;: input_encoding[&#39;input_ids&#39;].squeeze(),
+            &#39;attention_mask&#39;: input_encoding[&#39;attention_mask&#39;].squeeze(),
+            &#39;labels&#39;: target_encoding[&#39;input_ids&#39;].squeeze(),
+            &#39;decoder_attention_mask&#39;: target_encoding[&#39;attention_mask&#39;].squeeze()
+        }</code></pre>
+</details>
+<div class="desc"><p>PyTorch dataset for LODA training examples.</p>
+<p>Initialize the dataset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>examples</code></strong></dt>
+<dd>List of training examples</dd>
+<dt><strong><code>model</code></strong></dt>
+<dd>LodaT5Model instance for tokenization</dd>
+<dt><strong><code>max_length</code></strong></dt>
+<dd>Maximum sequence length</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.utils.data.dataset.Dataset</li>
+<li>typing.Generic</li>
+</ul>
+</dd>
+<dt id="loda.ml.llm.trainer.LodaTrainer"><code class="flex name class">
+<span>class <span class="ident">LodaTrainer</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>train_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="#loda.ml.llm.trainer.LodaDataset">LodaDataset</a>,<br>val_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="#loda.ml.llm.trainer.LodaDataset">LodaDataset</a> | None = None,<br>learning_rate: float = 5e-05,<br>batch_size: int = 8,<br>num_epochs: int = 3,<br>warmup_steps: int = 500,<br>save_dir: str = 'loda_llm_model')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaTrainer:
+    &#34;&#34;&#34;Trainer class for LODA LLM.&#34;&#34;&#34;
+    
+    def __init__(self, 
+                 model: LodaT5Model,
+                 train_dataset: LodaDataset,
+                 val_dataset: Optional[LodaDataset] = None,
+                 learning_rate: float = 5e-5,
+                 batch_size: int = 8,
+                 num_epochs: int = 3,
+                 warmup_steps: int = 500,
+                 save_dir: str = &#34;loda_llm_model&#34;):
+        &#34;&#34;&#34;
+        Initialize the trainer.
+        
+        Args:
+            model: LodaT5Model to train
+            train_dataset: Training dataset
+            val_dataset: Validation dataset (optional)
+            learning_rate: Learning rate
+            batch_size: Batch size
+            num_epochs: Number of training epochs
+            warmup_steps: Number of warmup steps for learning rate schedule
+            save_dir: Directory to save the model
+        &#34;&#34;&#34;
+        self.model = model
+        self.train_dataset = train_dataset
+        self.val_dataset = val_dataset
+        self.learning_rate = learning_rate
+        self.batch_size = batch_size
+        self.num_epochs = num_epochs
+        self.warmup_steps = warmup_steps
+        self.save_dir = save_dir
+        
+        # Set up device
+        self.device = torch.device(&#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39;)
+        self.model.model.to(self.device)
+        
+        # Set up data loaders
+        self.train_loader = DataLoader(
+            train_dataset, 
+            batch_size=batch_size, 
+            shuffle=True,
+            collate_fn=self._collate_fn
+        )
+        
+        if val_dataset:
+            self.val_loader = DataLoader(
+                val_dataset, 
+                batch_size=batch_size, 
+                shuffle=False,
+                collate_fn=self._collate_fn
+            )
+        
+        # Set up optimizer
+        self.optimizer = AdamW(
+            self.model.model.parameters(),
+            lr=learning_rate,
+            weight_decay=0.01
+        )
+        
+        # Set up learning rate scheduler
+        total_steps = len(self.train_loader) * num_epochs
+        self.scheduler = get_linear_schedule_with_warmup(
+            self.optimizer,
+            num_warmup_steps=warmup_steps,
+            num_training_steps=total_steps
+        )
+    
+    def _collate_fn(self, batch):
+        &#34;&#34;&#34;Collate function for DataLoader.&#34;&#34;&#34;
+        # Pad sequences to the same length
+        input_ids = [item[&#39;input_ids&#39;] for item in batch]
+        attention_masks = [item[&#39;attention_mask&#39;] for item in batch]
+        labels = [item[&#39;labels&#39;] for item in batch]
+        decoder_attention_masks = [item[&#39;decoder_attention_mask&#39;] for item in batch]
+        
+        # Pad input sequences
+        max_input_len = max(len(seq) for seq in input_ids)
+        padded_input_ids = []
+        padded_attention_masks = []
+        
+        for i in range(len(input_ids)):
+            seq_len = len(input_ids[i])
+            pad_len = max_input_len - seq_len
+            
+            padded_input_ids.append(
+                torch.cat([input_ids[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+            padded_attention_masks.append(
+                torch.cat([attention_masks[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+        
+        # Pad target sequences
+        max_target_len = max(len(seq) for seq in labels)
+        padded_labels = []
+        padded_decoder_masks = []
+        
+        for i in range(len(labels)):
+            seq_len = len(labels[i])
+            pad_len = max_target_len - seq_len
+            
+            # For labels, use -100 for padding (ignored in loss calculation)
+            padded_labels.append(
+                torch.cat([labels[i], torch.full((pad_len,), -100, dtype=torch.long)])
+            )
+            padded_decoder_masks.append(
+                torch.cat([decoder_attention_masks[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+        
+        return {
+            &#39;input_ids&#39;: torch.stack(padded_input_ids),
+            &#39;attention_mask&#39;: torch.stack(padded_attention_masks),
+            &#39;labels&#39;: torch.stack(padded_labels),
+            &#39;decoder_attention_mask&#39;: torch.stack(padded_decoder_masks)
+        }
+    
+    def train_epoch(self):
+        &#34;&#34;&#34;Train for one epoch.&#34;&#34;&#34;
+        self.model.model.train()
+        total_loss = 0
+        
+        progress_bar = tqdm(self.train_loader, desc=&#34;Training&#34;)
+        
+        for batch in progress_bar:
+            # Move to device
+            batch = {k: v.to(self.device) for k, v in batch.items()}
+            
+            # Forward pass
+            outputs = self.model.forward(
+                input_ids=batch[&#39;input_ids&#39;],
+                attention_mask=batch[&#39;attention_mask&#39;],
+                labels=batch[&#39;labels&#39;]
+            )
+            
+            loss = outputs.loss
+            total_loss += loss.item()
+            
+            # Backward pass
+            loss.backward()
+            
+            # Clip gradients
+            torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 1.0)
+            
+            # Update parameters
+            self.optimizer.step()
+            self.scheduler.step()
+            self.optimizer.zero_grad()
+            
+            # Update progress bar
+            progress_bar.set_postfix({&#39;loss&#39;: loss.item()})
+        
+        return total_loss / len(self.train_loader)
+    
+    def validate(self):
+        &#34;&#34;&#34;Validate the model.&#34;&#34;&#34;
+        if not self.val_dataset:
+            return None
+        
+        self.model.model.eval()
+        total_loss = 0
+        
+        with torch.no_grad():
+            progress_bar = tqdm(self.val_loader, desc=&#34;Validation&#34;)
+            
+            for batch in progress_bar:
+                # Move to device
+                batch = {k: v.to(self.device) for k, v in batch.items()}
+                
+                # Forward pass
+                outputs = self.model.forward(
+                    input_ids=batch[&#39;input_ids&#39;],
+                    attention_mask=batch[&#39;attention_mask&#39;],
+                    labels=batch[&#39;labels&#39;]
+                )
+                
+                loss = outputs.loss
+                total_loss += loss.item()
+                
+                progress_bar.set_postfix({&#39;val_loss&#39;: loss.item()})
+        
+        return total_loss / len(self.val_loader)
+    
+    def train(self):
+        &#34;&#34;&#34;Train the model.&#34;&#34;&#34;
+        print(f&#34;Training on device: {self.device}&#34;)
+        print(f&#34;Training examples: {len(self.train_dataset)}&#34;)
+        if self.val_dataset:
+            print(f&#34;Validation examples: {len(self.val_dataset)}&#34;)
+        
+        best_val_loss = float(&#39;inf&#39;)
+        
+        for epoch in range(self.num_epochs):
+            print(f&#34;\nEpoch {epoch + 1}/{self.num_epochs}&#34;)
+            
+            # Train
+            train_loss = self.train_epoch()
+            print(f&#34;Training loss: {train_loss:.4f}&#34;)
+            
+            # Validate
+            val_loss = self.validate()
+            if val_loss is not None:
+                print(f&#34;Validation loss: {val_loss:.4f}&#34;)
+                
+                # Save best model
+                if val_loss &lt; best_val_loss:
+                    best_val_loss = val_loss
+                    self.save_model(f&#34;{self.save_dir}_best&#34;)
+                    print(&#34;Saved best model&#34;)
+            
+            # Save checkpoint
+            self.save_model(f&#34;{self.save_dir}_epoch_{epoch + 1}&#34;)
+        
+        print(&#34;\nTraining completed!&#34;)
+        return self.model
+    
+    def save_model(self, path: str):
+        &#34;&#34;&#34;Save the model.&#34;&#34;&#34;
+        self.model.save_model(path)</code></pre>
+</details>
+<div class="desc"><p>Trainer class for LODA LLM.</p>
+<p>Initialize the trainer.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>LodaT5Model to train</dd>
+<dt><strong><code>train_dataset</code></strong></dt>
+<dd>Training dataset</dd>
+<dt><strong><code>val_dataset</code></strong></dt>
+<dd>Validation dataset (optional)</dd>
+<dt><strong><code>learning_rate</code></strong></dt>
+<dd>Learning rate</dd>
+<dt><strong><code>batch_size</code></strong></dt>
+<dd>Batch size</dd>
+<dt><strong><code>num_epochs</code></strong></dt>
+<dd>Number of training epochs</dd>
+<dt><strong><code>warmup_steps</code></strong></dt>
+<dd>Number of warmup steps for learning rate schedule</dd>
+<dt><strong><code>save_dir</code></strong></dt>
+<dd>Directory to save the model</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.trainer.LodaTrainer.save_model"><code class="name flex">
+<span>def <span class="ident">save_model</span></span>(<span>self, path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_model(self, path: str):
+    &#34;&#34;&#34;Save the model.&#34;&#34;&#34;
+    self.model.save_model(path)</code></pre>
+</details>
+<div class="desc"><p>Save the model.</p></div>
+</dd>
+<dt id="loda.ml.llm.trainer.LodaTrainer.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(self):
+    &#34;&#34;&#34;Train the model.&#34;&#34;&#34;
+    print(f&#34;Training on device: {self.device}&#34;)
+    print(f&#34;Training examples: {len(self.train_dataset)}&#34;)
+    if self.val_dataset:
+        print(f&#34;Validation examples: {len(self.val_dataset)}&#34;)
+    
+    best_val_loss = float(&#39;inf&#39;)
+    
+    for epoch in range(self.num_epochs):
+        print(f&#34;\nEpoch {epoch + 1}/{self.num_epochs}&#34;)
+        
+        # Train
+        train_loss = self.train_epoch()
+        print(f&#34;Training loss: {train_loss:.4f}&#34;)
+        
+        # Validate
+        val_loss = self.validate()
+        if val_loss is not None:
+            print(f&#34;Validation loss: {val_loss:.4f}&#34;)
+            
+            # Save best model
+            if val_loss &lt; best_val_loss:
+                best_val_loss = val_loss
+                self.save_model(f&#34;{self.save_dir}_best&#34;)
+                print(&#34;Saved best model&#34;)
+        
+        # Save checkpoint
+        self.save_model(f&#34;{self.save_dir}_epoch_{epoch + 1}&#34;)
+    
+    print(&#34;\nTraining completed!&#34;)
+    return self.model</code></pre>
+</details>
+<div class="desc"><p>Train the model.</p></div>
+</dd>
+<dt id="loda.ml.llm.trainer.LodaTrainer.train_epoch"><code class="name flex">
+<span>def <span class="ident">train_epoch</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train_epoch(self):
+    &#34;&#34;&#34;Train for one epoch.&#34;&#34;&#34;
+    self.model.model.train()
+    total_loss = 0
+    
+    progress_bar = tqdm(self.train_loader, desc=&#34;Training&#34;)
+    
+    for batch in progress_bar:
+        # Move to device
+        batch = {k: v.to(self.device) for k, v in batch.items()}
+        
+        # Forward pass
+        outputs = self.model.forward(
+            input_ids=batch[&#39;input_ids&#39;],
+            attention_mask=batch[&#39;attention_mask&#39;],
+            labels=batch[&#39;labels&#39;]
+        )
+        
+        loss = outputs.loss
+        total_loss += loss.item()
+        
+        # Backward pass
+        loss.backward()
+        
+        # Clip gradients
+        torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 1.0)
+        
+        # Update parameters
+        self.optimizer.step()
+        self.scheduler.step()
+        self.optimizer.zero_grad()
+        
+        # Update progress bar
+        progress_bar.set_postfix({&#39;loss&#39;: loss.item()})
+    
+    return total_loss / len(self.train_loader)</code></pre>
+</details>
+<div class="desc"><p>Train for one epoch.</p></div>
+</dd>
+<dt id="loda.ml.llm.trainer.LodaTrainer.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self):
+    &#34;&#34;&#34;Validate the model.&#34;&#34;&#34;
+    if not self.val_dataset:
+        return None
+    
+    self.model.model.eval()
+    total_loss = 0
+    
+    with torch.no_grad():
+        progress_bar = tqdm(self.val_loader, desc=&#34;Validation&#34;)
+        
+        for batch in progress_bar:
+            # Move to device
+            batch = {k: v.to(self.device) for k, v in batch.items()}
+            
+            # Forward pass
+            outputs = self.model.forward(
+                input_ids=batch[&#39;input_ids&#39;],
+                attention_mask=batch[&#39;attention_mask&#39;],
+                labels=batch[&#39;labels&#39;]
+            )
+            
+            loss = outputs.loss
+            total_loss += loss.item()
+            
+            progress_bar.set_postfix({&#39;val_loss&#39;: loss.item()})
+    
+    return total_loss / len(self.val_loader)</code></pre>
+</details>
+<div class="desc"><p>Validate the model.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.ml.llm.trainer.train_loda_llm" href="#loda.ml.llm.trainer.train_loda_llm">train_loda_llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.ml.llm.trainer.LodaDataset" href="#loda.ml.llm.trainer.LodaDataset">LodaDataset</a></code></h4>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.trainer.LodaTrainer" href="#loda.ml.llm.trainer.LodaTrainer">LodaTrainer</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.trainer.LodaTrainer.save_model" href="#loda.ml.llm.trainer.LodaTrainer.save_model">save_model</a></code></li>
+<li><code><a title="loda.ml.llm.trainer.LodaTrainer.train" href="#loda.ml.llm.trainer.LodaTrainer.train">train</a></code></li>
+<li><code><a title="loda.ml.llm.trainer.LodaTrainer.train_epoch" href="#loda.ml.llm.trainer.LodaTrainer.train_epoch">train_epoch</a></code></li>
+<li><code><a title="loda.ml.llm.trainer.LodaTrainer.validate" href="#loda.ml.llm.trainer.LodaTrainer.validate">validate</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>loda.ml.llm.inference API documentation</title>
+<meta name="description" content="Inference and evaluation utilities for the LODA LLM …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>loda.ml.llm.inference</code></h1>
+</header>
+<section id="section-intro">
+<p>Inference and evaluation utilities for the LODA LLM.</p>
+<p>This module provides:
+1. Text-to-LODA code generation
+2. Model evaluation metrics
+3. Program validation and testing
+4. Utilities for interactive usage</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.ml.llm.inference.evaluate_model"><code class="name flex">
+<span>def <span class="ident">evaluate_model</span></span>(<span>model_path: str, test_data_path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate_model(model_path: str, test_data_path: str):
+    &#34;&#34;&#34;
+    Evaluate a trained model on test data.
+    
+    Args:
+        model_path: Path to the saved model
+        test_data_path: Path to test data JSON file
+    &#34;&#34;&#34;
+    # Load model
+    print(&#34;Loading model...&#34;)
+    model = LodaT5Model.load_model(model_path)
+    evaluator = LodaEvaluator(model)
+    
+    # Load test data
+    print(&#34;Loading test data...&#34;)
+    with open(test_data_path, &#39;r&#39;) as f:
+        test_data = json.load(f)
+    
+    test_examples = []
+    for item in test_data:
+        example = TrainingExample(
+            sequence_id=item[&#39;sequence_id&#39;],
+            description=item[&#39;description&#39;],
+            loda_code=item[&#39;loda_code&#39;],
+            terms=item.get(&#39;terms&#39;)
+        )
+        test_examples.append(example)
+    
+    # Evaluate
+    metrics, results = evaluator.evaluate_examples(test_examples)
+    evaluator.print_evaluation_report(metrics, results)
+    
+    return metrics, results</code></pre>
+</details>
+<div class="desc"><p>Evaluate a trained model on test data.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model_path</code></strong></dt>
+<dd>Path to the saved model</dd>
+<dt><strong><code>test_data_path</code></strong></dt>
+<dd>Path to test data JSON file</dd>
+</dl></div>
+</dd>
+<dt id="loda.ml.llm.inference.load_model_for_inference"><code class="name flex">
+<span>def <span class="ident">load_model_for_inference</span></span>(<span>model_path: str) ‑> <a title="loda.ml.llm.inference.LodaGenerator" href="#loda.ml.llm.inference.LodaGenerator">LodaGenerator</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_model_for_inference(model_path: str) -&gt; LodaGenerator:
+    &#34;&#34;&#34;
+    Load a trained model for inference.
+    
+    Args:
+        model_path: Path to the saved model directory
+        
+    Returns:
+        LodaGenerator instance ready for inference
+    &#34;&#34;&#34;
+    model = LodaT5Model.load_model(model_path)
+    return LodaGenerator(model)</code></pre>
+</details>
+<div class="desc"><p>Load a trained model for inference.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model_path</code></strong></dt>
+<dd>Path to the saved model directory</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>LodaGenerator instance ready for inference</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="loda.ml.llm.inference.GenerationResult"><code class="flex name class">
+<span>class <span class="ident">GenerationResult</span></span>
+<span>(</span><span>description: str,<br>generated_code: str,<br>is_valid: bool,<br>error_message: str | None = None,<br>generated_sequence: List[int] | None = None,<br>generation_time: float = 0.0)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class GenerationResult:
+    &#34;&#34;&#34;Result of code generation.&#34;&#34;&#34;
+    description: str
+    generated_code: str
+    is_valid: bool
+    error_message: Optional[str] = None
+    generated_sequence: Optional[List[int]] = None
+    generation_time: float = 0.0</code></pre>
+</details>
+<div class="desc"><p>Result of code generation.</p></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="loda.ml.llm.inference.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.inference.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.inference.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.inference.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.inference.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.inference.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.inference.LodaEvaluator"><code class="flex name class">
+<span>class <span class="ident">LodaEvaluator</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaEvaluator:
+    &#34;&#34;&#34;Evaluator for assessing model performance.&#34;&#34;&#34;
+    
+    def __init__(self, model: LodaT5Model):
+        &#34;&#34;&#34;
+        Initialize the evaluator.
+        
+        Args:
+            model: Trained LodaT5Model to evaluate
+        &#34;&#34;&#34;
+        self.model = model
+        self.generator = LodaGenerator(model)
+    
+    def evaluate_examples(self, test_examples: List[TrainingExample]) -&gt; Dict[str, float]:
+        &#34;&#34;&#34;
+        Evaluate the model on test examples.
+        
+        Args:
+            test_examples: List of test examples
+            
+        Returns:
+            Dictionary with evaluation metrics
+        &#34;&#34;&#34;
+        print(f&#34;Evaluating on {len(test_examples)} examples...&#34;)
+        
+        total_examples = len(test_examples)
+        valid_programs = 0
+        exact_matches = 0
+        sequence_matches = 0
+        total_generation_time = 0
+        
+        results = []
+        
+        for i, example in enumerate(test_examples):
+            if i % 10 == 0:
+                print(f&#34;Progress: {i}/{total_examples}&#34;)
+            
+            # Generate code
+            generation_results = self.generator.generate(example.description, num_samples=1)
+            
+            if generation_results:
+                result = generation_results[0]
+                results.append(result)
+                
+                total_generation_time += result.generation_time
+                
+                if result.is_valid:
+                    valid_programs += 1
+                    
+                    # Check for exact match
+                    if self._normalize_code(result.generated_code) == self._normalize_code(example.loda_code):
+                        exact_matches += 1
+                    
+                    # Check for sequence match (if we have expected terms)
+                    if (example.terms and result.generated_sequence and 
+                        len(result.generated_sequence) &gt;= 3 and
+                        result.generated_sequence[:3] == example.terms[:3]):
+                        sequence_matches += 1
+        
+        # Calculate metrics
+        metrics = {
+            &#39;total_examples&#39;: total_examples,
+            &#39;valid_program_rate&#39;: valid_programs / total_examples if total_examples &gt; 0 else 0,
+            &#39;exact_match_rate&#39;: exact_matches / total_examples if total_examples &gt; 0 else 0,
+            &#39;sequence_match_rate&#39;: sequence_matches / total_examples if total_examples &gt; 0 else 0,
+            &#39;avg_generation_time&#39;: total_generation_time / total_examples if total_examples &gt; 0 else 0,
+            &#39;valid_programs&#39;: valid_programs,
+            &#39;exact_matches&#39;: exact_matches,
+            &#39;sequence_matches&#39;: sequence_matches
+        }
+        
+        return metrics, results
+    
+    def _normalize_code(self, code: str) -&gt; str:
+        &#34;&#34;&#34;Normalize code for comparison.&#34;&#34;&#34;
+        # Remove extra whitespace and normalize format
+        lines = []
+        for line in code.strip().split(&#39;\n&#39;):
+            line = line.strip()
+            if line:
+                lines.append(line)
+        return &#39;\n&#39;.join(lines)
+    
+    def print_evaluation_report(self, metrics: Dict[str, float], results: List[GenerationResult]):
+        &#34;&#34;&#34;Print a detailed evaluation report.&#34;&#34;&#34;
+        print(&#34;\n&#34; + &#34;=&#34;*60)
+        print(&#34;LODA LLM EVALUATION REPORT&#34;)
+        print(&#34;=&#34;*60)
+        
+        print(f&#34;Total Examples: {metrics[&#39;total_examples&#39;]}&#34;)
+        print(f&#34;Valid Programs: {metrics[&#39;valid_programs&#39;]} ({metrics[&#39;valid_program_rate&#39;]:.1%})&#34;)
+        print(f&#34;Exact Matches: {metrics[&#39;exact_matches&#39;]} ({metrics[&#39;exact_match_rate&#39;]:.1%})&#34;)
+        print(f&#34;Sequence Matches: {metrics[&#39;sequence_matches&#39;]} ({metrics[&#39;sequence_match_rate&#39;]:.1%})&#34;)
+        print(f&#34;Avg Generation Time: {metrics[&#39;avg_generation_time&#39;]:.2f}s&#34;)
+        
+        # Show some example results
+        print(&#34;\n&#34; + &#34;-&#34;*60)
+        print(&#34;SAMPLE RESULTS&#34;)
+        print(&#34;-&#34;*60)
+        
+        # Show successful examples
+        successful = [r for r in results if r.is_valid]
+        if successful:
+            print(&#34;\nSuccessful generations:&#34;)
+            for i, result in enumerate(successful[:3]):  # Show first 3
+                print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+                print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)
+                if result.generated_sequence:
+                    print(f&#34;   Sequence: {result.generated_sequence}&#34;)
+        
+        # Show failed examples
+        failed = [r for r in results if not r.is_valid]
+        if failed:
+            print(f&#34;\nFailed generations ({len(failed)} total):&#34;)
+            for i, result in enumerate(failed[:3]):  # Show first 3
+                print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+                print(f&#34;   Error: {result.error_message}&#34;)
+                print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Evaluator for assessing model performance.</p>
+<p>Initialize the evaluator.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>Trained LodaT5Model to evaluate</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.inference.LodaEvaluator.evaluate_examples"><code class="name flex">
+<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate_examples(self, test_examples: List[TrainingExample]) -&gt; Dict[str, float]:
+    &#34;&#34;&#34;
+    Evaluate the model on test examples.
+    
+    Args:
+        test_examples: List of test examples
+        
+    Returns:
+        Dictionary with evaluation metrics
+    &#34;&#34;&#34;
+    print(f&#34;Evaluating on {len(test_examples)} examples...&#34;)
+    
+    total_examples = len(test_examples)
+    valid_programs = 0
+    exact_matches = 0
+    sequence_matches = 0
+    total_generation_time = 0
+    
+    results = []
+    
+    for i, example in enumerate(test_examples):
+        if i % 10 == 0:
+            print(f&#34;Progress: {i}/{total_examples}&#34;)
+        
+        # Generate code
+        generation_results = self.generator.generate(example.description, num_samples=1)
+        
+        if generation_results:
+            result = generation_results[0]
+            results.append(result)
+            
+            total_generation_time += result.generation_time
+            
+            if result.is_valid:
+                valid_programs += 1
+                
+                # Check for exact match
+                if self._normalize_code(result.generated_code) == self._normalize_code(example.loda_code):
+                    exact_matches += 1
+                
+                # Check for sequence match (if we have expected terms)
+                if (example.terms and result.generated_sequence and 
+                    len(result.generated_sequence) &gt;= 3 and
+                    result.generated_sequence[:3] == example.terms[:3]):
+                    sequence_matches += 1
+    
+    # Calculate metrics
+    metrics = {
+        &#39;total_examples&#39;: total_examples,
+        &#39;valid_program_rate&#39;: valid_programs / total_examples if total_examples &gt; 0 else 0,
+        &#39;exact_match_rate&#39;: exact_matches / total_examples if total_examples &gt; 0 else 0,
+        &#39;sequence_match_rate&#39;: sequence_matches / total_examples if total_examples &gt; 0 else 0,
+        &#39;avg_generation_time&#39;: total_generation_time / total_examples if total_examples &gt; 0 else 0,
+        &#39;valid_programs&#39;: valid_programs,
+        &#39;exact_matches&#39;: exact_matches,
+        &#39;sequence_matches&#39;: sequence_matches
+    }
+    
+    return metrics, results</code></pre>
+</details>
+<div class="desc"><p>Evaluate the model on test examples.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>test_examples</code></strong></dt>
+<dd>List of test examples</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with evaluation metrics</p></div>
+</dd>
+<dt id="loda.ml.llm.inference.LodaEvaluator.print_evaluation_report"><code class="name flex">
+<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print_evaluation_report(self, metrics: Dict[str, float], results: List[GenerationResult]):
+    &#34;&#34;&#34;Print a detailed evaluation report.&#34;&#34;&#34;
+    print(&#34;\n&#34; + &#34;=&#34;*60)
+    print(&#34;LODA LLM EVALUATION REPORT&#34;)
+    print(&#34;=&#34;*60)
+    
+    print(f&#34;Total Examples: {metrics[&#39;total_examples&#39;]}&#34;)
+    print(f&#34;Valid Programs: {metrics[&#39;valid_programs&#39;]} ({metrics[&#39;valid_program_rate&#39;]:.1%})&#34;)
+    print(f&#34;Exact Matches: {metrics[&#39;exact_matches&#39;]} ({metrics[&#39;exact_match_rate&#39;]:.1%})&#34;)
+    print(f&#34;Sequence Matches: {metrics[&#39;sequence_matches&#39;]} ({metrics[&#39;sequence_match_rate&#39;]:.1%})&#34;)
+    print(f&#34;Avg Generation Time: {metrics[&#39;avg_generation_time&#39;]:.2f}s&#34;)
+    
+    # Show some example results
+    print(&#34;\n&#34; + &#34;-&#34;*60)
+    print(&#34;SAMPLE RESULTS&#34;)
+    print(&#34;-&#34;*60)
+    
+    # Show successful examples
+    successful = [r for r in results if r.is_valid]
+    if successful:
+        print(&#34;\nSuccessful generations:&#34;)
+        for i, result in enumerate(successful[:3]):  # Show first 3
+            print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+            print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)
+            if result.generated_sequence:
+                print(f&#34;   Sequence: {result.generated_sequence}&#34;)
+    
+    # Show failed examples
+    failed = [r for r in results if not r.is_valid]
+    if failed:
+        print(f&#34;\nFailed generations ({len(failed)} total):&#34;)
+        for i, result in enumerate(failed[:3]):  # Show first 3
+            print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+            print(f&#34;   Error: {result.error_message}&#34;)
+            print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Print a detailed evaluation report.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.inference.LodaGenerator"><code class="flex name class">
+<span>class <span class="ident">LodaGenerator</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaGenerator:
+    &#34;&#34;&#34;Generator class for creating LODA code from natural language.&#34;&#34;&#34;
+    
+    def __init__(self, model: LodaT5Model, max_length: int = 256, num_beams: int = 4):
+        &#34;&#34;&#34;
+        Initialize the generator.
+        
+        Args:
+            model: Trained LodaT5Model
+            max_length: Maximum length of generated code
+            num_beams: Number of beams for beam search
+        &#34;&#34;&#34;
+        self.model = model
+        self.max_length = max_length
+        self.num_beams = num_beams
+    
+    def generate(self, description: str, num_samples: int = 1) -&gt; List[GenerationResult]:
+        &#34;&#34;&#34;
+        Generate LODA code from a natural language description.
+        
+        Args:
+            description: Natural language description of the sequence
+            num_samples: Number of code samples to generate
+            
+        Returns:
+            List of GenerationResult objects
+        &#34;&#34;&#34;
+        start_time = time.time()
+        
+        # Generate multiple samples
+        descriptions = [description] * num_samples
+        generated_codes = self.model.generate(
+            descriptions, 
+            max_length=self.max_length,
+            num_beams=self.num_beams
+        )
+        
+        generation_time = time.time() - start_time
+        
+        results = []
+        for code in generated_codes:
+            result = self._validate_and_evaluate_code(description, code)
+            result.generation_time = generation_time / num_samples
+            results.append(result)
+        
+        return results
+    
+    def _validate_and_evaluate_code(self, description: str, code: str) -&gt; GenerationResult:
+        &#34;&#34;&#34;
+        Validate and evaluate generated LODA code.
+        
+        Args:
+            description: Original description
+            code: Generated LODA code
+            
+        Returns:
+            GenerationResult with validation info
+        &#34;&#34;&#34;
+        result = GenerationResult(
+            description=description,
+            generated_code=code,
+            is_valid=False
+        )
+        
+        try:
+            # Try to parse the program
+            program = Program.parse(code)
+            
+            # Try to evaluate it for a few terms
+            interpreter = Interpreter(max_memory=100, max_stack=10, max_steps=10000)
+            evaluator = Evaluator(program, interpreter)
+            
+            sequence_terms = []
+            for i in range(10):  # Generate first 10 terms
+                try:
+                    term = evaluator(i)
+                    sequence_terms.append(term)
+                except Exception:
+                    break  # Stop if evaluation fails
+            
+            if len(sequence_terms) &gt;= 3:  # At least 3 terms generated
+                result.is_valid = True
+                result.generated_sequence = sequence_terms
+            else:
+                result.error_message = &#34;Could not generate sufficient sequence terms&#34;
+        
+        except Exception as e:
+            result.error_message = f&#34;Program validation failed: {str(e)}&#34;
+        
+        return result
+    
+    def generate_interactive(self):
+        &#34;&#34;&#34;Interactive mode for generating LODA code.&#34;&#34;&#34;
+        print(&#34;LODA Code Generator - Interactive Mode&#34;)
+        print(&#34;Enter natural language descriptions to generate LODA code.&#34;)
+        print(&#34;Type &#39;quit&#39; to exit.\n&#34;)
+        
+        while True:
+            try:
+                description = input(&#34;Description: &#34;).strip()
+                
+                if description.lower() in [&#39;quit&#39;, &#39;exit&#39;, &#39;q&#39;]:
+                    print(&#34;Goodbye!&#34;)
+                    break
+                
+                if not description:
+                    continue
+                
+                print(&#34;Generating code...&#34;)
+                results = self.generate(description, num_samples=1)
+                
+                for i, result in enumerate(results):
+                    print(f&#34;\n--- Result {i+1} ---&#34;)
+                    print(f&#34;Generated in {result.generation_time:.2f}s&#34;)
+                    print(f&#34;Valid: {result.is_valid}&#34;)
+                    
+                    if result.error_message:
+                        print(f&#34;Error: {result.error_message}&#34;)
+                    
+                    print(&#34;Generated LODA code:&#34;)
+                    print(result.generated_code)
+                    
+                    if result.generated_sequence:
+                        print(f&#34;Sequence terms: {result.generated_sequence}&#34;)
+                    
+                    print(&#34;-&#34; * 50)
+            
+            except KeyboardInterrupt:
+                print(&#34;\nGoodbye!&#34;)
+                break
+            except Exception as e:
+                print(f&#34;Error: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Generator class for creating LODA code from natural language.</p>
+<p>Initialize the generator.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>Trained LodaT5Model</dd>
+<dt><strong><code>max_length</code></strong></dt>
+<dd>Maximum length of generated code</dd>
+<dt><strong><code>num_beams</code></strong></dt>
+<dd>Number of beams for beam search</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.inference.LodaGenerator.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate(self, description: str, num_samples: int = 1) -&gt; List[GenerationResult]:
+    &#34;&#34;&#34;
+    Generate LODA code from a natural language description.
+    
+    Args:
+        description: Natural language description of the sequence
+        num_samples: Number of code samples to generate
+        
+    Returns:
+        List of GenerationResult objects
+    &#34;&#34;&#34;
+    start_time = time.time()
+    
+    # Generate multiple samples
+    descriptions = [description] * num_samples
+    generated_codes = self.model.generate(
+        descriptions, 
+        max_length=self.max_length,
+        num_beams=self.num_beams
+    )
+    
+    generation_time = time.time() - start_time
+    
+    results = []
+    for code in generated_codes:
+        result = self._validate_and_evaluate_code(description, code)
+        result.generation_time = generation_time / num_samples
+        results.append(result)
+    
+    return results</code></pre>
+</details>
+<div class="desc"><p>Generate LODA code from a natural language description.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>description</code></strong></dt>
+<dd>Natural language description of the sequence</dd>
+<dt><strong><code>num_samples</code></strong></dt>
+<dd>Number of code samples to generate</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of GenerationResult objects</p></div>
+</dd>
+<dt id="loda.ml.llm.inference.LodaGenerator.generate_interactive"><code class="name flex">
+<span>def <span class="ident">generate_interactive</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_interactive(self):
+    &#34;&#34;&#34;Interactive mode for generating LODA code.&#34;&#34;&#34;
+    print(&#34;LODA Code Generator - Interactive Mode&#34;)
+    print(&#34;Enter natural language descriptions to generate LODA code.&#34;)
+    print(&#34;Type &#39;quit&#39; to exit.\n&#34;)
+    
+    while True:
+        try:
+            description = input(&#34;Description: &#34;).strip()
+            
+            if description.lower() in [&#39;quit&#39;, &#39;exit&#39;, &#39;q&#39;]:
+                print(&#34;Goodbye!&#34;)
+                break
+            
+            if not description:
+                continue
+            
+            print(&#34;Generating code...&#34;)
+            results = self.generate(description, num_samples=1)
+            
+            for i, result in enumerate(results):
+                print(f&#34;\n--- Result {i+1} ---&#34;)
+                print(f&#34;Generated in {result.generation_time:.2f}s&#34;)
+                print(f&#34;Valid: {result.is_valid}&#34;)
+                
+                if result.error_message:
+                    print(f&#34;Error: {result.error_message}&#34;)
+                
+                print(&#34;Generated LODA code:&#34;)
+                print(result.generated_code)
+                
+                if result.generated_sequence:
+                    print(f&#34;Sequence terms: {result.generated_sequence}&#34;)
+                
+                print(&#34;-&#34; * 50)
+        
+        except KeyboardInterrupt:
+            print(&#34;\nGoodbye!&#34;)
+            break
+        except Exception as e:
+            print(f&#34;Error: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Interactive mode for generating LODA code.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.ml.llm.inference.evaluate_model" href="#loda.ml.llm.inference.evaluate_model">evaluate_model</a></code></li>
+<li><code><a title="loda.ml.llm.inference.load_model_for_inference" href="#loda.ml.llm.inference.load_model_for_inference">load_model_for_inference</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a></code></h4>
+<ul class="two-column">
+<li><code><a title="loda.ml.llm.inference.GenerationResult.description" href="#loda.ml.llm.inference.GenerationResult.description">description</a></code></li>
+<li><code><a title="loda.ml.llm.inference.GenerationResult.error_message" href="#loda.ml.llm.inference.GenerationResult.error_message">error_message</a></code></li>
+<li><code><a title="loda.ml.llm.inference.GenerationResult.generated_code" href="#loda.ml.llm.inference.GenerationResult.generated_code">generated_code</a></code></li>
+<li><code><a title="loda.ml.llm.inference.GenerationResult.generated_sequence" href="#loda.ml.llm.inference.GenerationResult.generated_sequence">generated_sequence</a></code></li>
+<li><code><a title="loda.ml.llm.inference.GenerationResult.generation_time" href="#loda.ml.llm.inference.GenerationResult.generation_time">generation_time</a></code></li>
+<li><code><a title="loda.ml.llm.inference.GenerationResult.is_valid" href="#loda.ml.llm.inference.GenerationResult.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.inference.LodaEvaluator" href="#loda.ml.llm.inference.LodaEvaluator">LodaEvaluator</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.inference.LodaEvaluator.evaluate_examples" href="#loda.ml.llm.inference.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
+<li><code><a title="loda.ml.llm.inference.LodaEvaluator.print_evaluation_report" href="#loda.ml.llm.inference.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.inference.LodaGenerator" href="#loda.ml.llm.inference.LodaGenerator">LodaGenerator</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.inference.LodaGenerator.generate" href="#loda.ml.llm.inference.LodaGenerator.generate">generate</a></code></li>
+<li><code><a title="loda.ml.llm.inference.LodaGenerator.generate_interactive" href="#loda.ml.llm.inference.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

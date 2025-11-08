@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>loda.ml.llm.model API documentation</title>
+<meta name="description" content="Transformer-based model for natural language to LODA code generation …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>loda.ml.llm.model</code></h1>
+</header>
+<section id="section-intro">
+<p>Transformer-based model for natural language to LODA code generation.</p>
+<p>This module implements an encoder-decoder transformer architecture using Hugging Face
+transformers, specifically designed for sequence-to-sequence tasks like converting
+natural language descriptions to LODA assembly code.</p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.ml.llm.model.create_model"><code class="name flex">
+<span>def <span class="ident">create_model</span></span>(<span>model_name: str = 't5-small') ‑> <a title="loda.ml.llm.model.LodaT5Model" href="#loda.ml.llm.model.LodaT5Model">LodaT5Model</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_model(model_name: str = &#34;t5-small&#34;) -&gt; LodaT5Model:
+    &#34;&#34;&#34;
+    Create a new LodaT5Model.
+    
+    Args:
+        model_name: Base T5 model to use
+        
+    Returns:
+        New LodaT5Model instance
+    &#34;&#34;&#34;
+    return LodaT5Model(model_name)</code></pre>
+</details>
+<div class="desc"><p>Create a new LodaT5Model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model_name</code></strong></dt>
+<dd>Base T5 model to use</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>New LodaT5Model instance</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="loda.ml.llm.model.LodaT5Model"><code class="flex name class">
+<span>class <span class="ident">LodaT5Model</span></span>
+<span>(</span><span>model_name: str = 't5-small', loda_vocab_size: int | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaT5Model(nn.Module):
+    &#34;&#34;&#34;
+    T5-based model for natural language to LODA code generation.
+    &#34;&#34;&#34;
+    
+    def __init__(self, model_name: str = &#34;t5-small&#34;, loda_vocab_size: Optional[int] = None):
+        &#34;&#34;&#34;
+        Initialize the model.
+        
+        Args:
+            model_name: Base T5 model to use
+            loda_vocab_size: Size of LODA vocabulary (if extending tokenizer)
+        &#34;&#34;&#34;
+        super().__init__()
+        
+        # Load base T5 model and tokenizer
+        self.text_tokenizer = T5Tokenizer.from_pretrained(model_name)
+        self.model = T5ForConditionalGeneration.from_pretrained(model_name)
+        
+        # Initialize LODA tokenizer
+        self.loda_tokenizer = LodaTokenizer()
+        
+        # If we need to extend the vocabulary
+        if loda_vocab_size and loda_vocab_size &gt; self.loda_tokenizer.vocab_size:
+            # Could extend vocabulary here if needed
+            pass
+    
+    def prepare_input(self, descriptions: List[str]) -&gt; Dict[str, torch.Tensor]:
+        &#34;&#34;&#34;
+        Prepare natural language descriptions for input.
+        
+        Args:
+            descriptions: List of natural language descriptions
+            
+        Returns:
+            Dictionary with input tensors
+        &#34;&#34;&#34;
+        # Add task prefix for T5
+        prefixed_descriptions = [f&#34;translate to loda: {desc}&#34; for desc in descriptions]
+        
+        # Tokenize with T5 tokenizer
+        encoded = self.text_tokenizer(
+            prefixed_descriptions,
+            padding=True,
+            truncation=True,
+            max_length=512,
+            return_tensors=&#34;pt&#34;
+        )
+        
+        return encoded
+    
+    def prepare_target(self, loda_codes: List[str]) -&gt; Dict[str, torch.Tensor]:
+        &#34;&#34;&#34;
+        Prepare LODA codes as targets.
+        
+        Args:
+            loda_codes: List of LODA assembly codes
+            
+        Returns:
+            Dictionary with target tensors
+        &#34;&#34;&#34;
+        # For T5, we need to encode targets using the text tokenizer as well
+        # We&#39;ll create a custom format that represents LODA code
+        
+        # Convert LODA to a text representation that T5 can understand
+        text_loda_codes = []
+        for code in loda_codes:
+            # Convert LODA code to a more text-like format
+            text_code = self.loda_to_text_format(code)
+            text_loda_codes.append(text_code)
+        
+        encoded = self.text_tokenizer(
+            text_loda_codes,
+            padding=True,
+            truncation=True,
+            max_length=256,
+            return_tensors=&#34;pt&#34;
+        )
+        
+        return encoded
+    
+    def loda_to_text_format(self, code: str) -&gt; str:
+        &#34;&#34;&#34;
+        Convert LODA code to a text format suitable for T5.
+        
+        This creates a more natural language representation of LODA code.
+        
+        Args:
+            code: LODA assembly code
+            
+        Returns:
+            Text representation of the code
+        &#34;&#34;&#34;
+        lines = code.strip().split(&#39;\n&#39;)
+        text_parts = []
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Parse the line and convert to text
+            parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+            if len(parts) &gt;= 3:
+                op, target, source = parts[0], parts[1], parts[2]
+                text_parts.append(f&#34;{op} {target} {source}&#34;)
+            elif len(parts) &gt;= 2:
+                op, target = parts[0], parts[1]
+                text_parts.append(f&#34;{op} {target}&#34;)
+            else:
+                text_parts.append(line)
+        
+        return &#34; | &#34;.join(text_parts)
+    
+    def text_format_to_loda(self, text_code: str) -&gt; str:
+        &#34;&#34;&#34;
+        Convert text format back to LODA code.
+        
+        Args:
+            text_code: Text representation of LODA code
+            
+        Returns:
+            LODA assembly code
+        &#34;&#34;&#34;
+        parts = text_code.split(&#34; | &#34;)
+        loda_lines = []
+        
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            
+            tokens = part.split()
+            if len(tokens) &gt;= 3:
+                op, target, source = tokens[0], tokens[1], tokens[2]
+                loda_lines.append(f&#34;{op} {target},{source}&#34;)
+            elif len(tokens) &gt;= 2:
+                op, target = tokens[0], tokens[1]
+                loda_lines.append(f&#34;{op} {target}&#34;)
+            else:
+                loda_lines.append(part)
+        
+        return &#39;\n&#39;.join(loda_lines)
+    
+    def forward(self, input_ids, attention_mask, labels=None):
+        &#34;&#34;&#34;
+        Forward pass of the model.
+        
+        Args:
+            input_ids: Input token IDs
+            attention_mask: Attention mask
+            labels: Target labels (for training)
+            
+        Returns:
+            Model outputs
+        &#34;&#34;&#34;
+        return self.model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            labels=labels
+        )
+    
+    def generate(self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) -&gt; List[str]:
+        &#34;&#34;&#34;
+        Generate LODA code from natural language descriptions.
+        
+        Args:
+            descriptions: List of natural language descriptions
+            max_length: Maximum length of generated sequences
+            num_beams: Number of beams for beam search
+            
+        Returns:
+            List of generated LODA codes
+        &#34;&#34;&#34;
+        # Prepare input
+        inputs = self.prepare_input(descriptions)
+        
+        # Generate with the model
+        with torch.no_grad():
+            generated_ids = self.model.generate(
+                input_ids=inputs[&#39;input_ids&#39;],
+                attention_mask=inputs[&#39;attention_mask&#39;],
+                max_length=max_length,
+                num_beams=num_beams,
+                early_stopping=True,
+                do_sample=False
+            )
+        
+        # Decode generated sequences
+        generated_texts = self.text_tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+        
+        # Convert from text format back to LODA
+        loda_codes = [self.text_format_to_loda(text) for text in generated_texts]
+        
+        return loda_codes
+    
+    def save_model(self, save_path: str):
+        &#34;&#34;&#34;
+        Save the model and tokenizers.
+        
+        Args:
+            save_path: Directory to save the model
+        &#34;&#34;&#34;
+        os.makedirs(save_path, exist_ok=True)
+        
+        # Save T5 model and tokenizer
+        self.model.save_pretrained(save_path)
+        self.text_tokenizer.save_pretrained(save_path)
+        
+        # Save LODA tokenizer
+        loda_tokenizer_path = os.path.join(save_path, &#34;loda_tokenizer.json&#34;)
+        with open(loda_tokenizer_path, &#39;w&#39;) as f:
+            json.dump({
+                &#39;vocab&#39;: self.loda_tokenizer.vocab,
+                &#39;reverse_vocab&#39;: {str(k): v for k, v in self.loda_tokenizer.reverse_vocab.items()}
+            }, f, indent=2)
+    
+    @classmethod
+    def load_model(cls, load_path: str):
+        &#34;&#34;&#34;
+        Load a saved model.
+        
+        Args:
+            load_path: Directory containing the saved model
+            
+        Returns:
+            Loaded LodaT5Model instance
+        &#34;&#34;&#34;
+        # Load T5 model and tokenizer
+        model = T5ForConditionalGeneration.from_pretrained(load_path)
+        text_tokenizer = T5Tokenizer.from_pretrained(load_path)
+        
+        # Create model instance
+        loda_model = cls()
+        loda_model.model = model
+        loda_model.text_tokenizer = text_tokenizer
+        
+        # Load LODA tokenizer if it exists
+        loda_tokenizer_path = os.path.join(load_path, &#34;loda_tokenizer.json&#34;)
+        if os.path.exists(loda_tokenizer_path):
+            with open(loda_tokenizer_path, &#39;r&#39;) as f:
+                tokenizer_data = json.load(f)
+            
+            loda_model.loda_tokenizer.vocab = tokenizer_data[&#39;vocab&#39;]
+            loda_model.loda_tokenizer.reverse_vocab = {
+                int(k): v for k, v in tokenizer_data[&#39;reverse_vocab&#39;].items()
+            }
+        
+        return loda_model</code></pre>
+</details>
+<div class="desc"><p>T5-based model for natural language to LODA code generation.</p>
+<p>Initialize the model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model_name</code></strong></dt>
+<dd>Base T5 model to use</dd>
+<dt><strong><code>loda_vocab_size</code></strong></dt>
+<dd>Size of LODA vocabulary (if extending tokenizer)</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.nn.modules.module.Module</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="loda.ml.llm.model.LodaT5Model.load_model"><code class="name flex">
+<span>def <span class="ident">load_model</span></span>(<span>load_path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load a saved model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>load_path</code></strong></dt>
+<dd>Directory containing the saved model</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Loaded LodaT5Model instance</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.model.LodaT5Model.forward"><code class="name flex">
+<span>def <span class="ident">forward</span></span>(<span>self, input_ids, attention_mask, labels=None) ‑> Callable[..., Any]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def forward(self, input_ids, attention_mask, labels=None):
+    &#34;&#34;&#34;
+    Forward pass of the model.
+    
+    Args:
+        input_ids: Input token IDs
+        attention_mask: Attention mask
+        labels: Target labels (for training)
+        
+    Returns:
+        Model outputs
+    &#34;&#34;&#34;
+    return self.model(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        labels=labels
+    )</code></pre>
+</details>
+<div class="desc"><p>Forward pass of the model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_ids</code></strong></dt>
+<dd>Input token IDs</dd>
+<dt><strong><code>attention_mask</code></strong></dt>
+<dd>Attention mask</dd>
+<dt><strong><code>labels</code></strong></dt>
+<dd>Target labels (for training)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Model outputs</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) ‑> List[str]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate(self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) -&gt; List[str]:
+    &#34;&#34;&#34;
+    Generate LODA code from natural language descriptions.
+    
+    Args:
+        descriptions: List of natural language descriptions
+        max_length: Maximum length of generated sequences
+        num_beams: Number of beams for beam search
+        
+    Returns:
+        List of generated LODA codes
+    &#34;&#34;&#34;
+    # Prepare input
+    inputs = self.prepare_input(descriptions)
+    
+    # Generate with the model
+    with torch.no_grad():
+        generated_ids = self.model.generate(
+            input_ids=inputs[&#39;input_ids&#39;],
+            attention_mask=inputs[&#39;attention_mask&#39;],
+            max_length=max_length,
+            num_beams=num_beams,
+            early_stopping=True,
+            do_sample=False
+        )
+    
+    # Decode generated sequences
+    generated_texts = self.text_tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+    
+    # Convert from text format back to LODA
+    loda_codes = [self.text_format_to_loda(text) for text in generated_texts]
+    
+    return loda_codes</code></pre>
+</details>
+<div class="desc"><p>Generate LODA code from natural language descriptions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>descriptions</code></strong></dt>
+<dd>List of natural language descriptions</dd>
+<dt><strong><code>max_length</code></strong></dt>
+<dd>Maximum length of generated sequences</dd>
+<dt><strong><code>num_beams</code></strong></dt>
+<dd>Number of beams for beam search</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of generated LODA codes</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.loda_to_text_format"><code class="name flex">
+<span>def <span class="ident">loda_to_text_format</span></span>(<span>self, code: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loda_to_text_format(self, code: str) -&gt; str:
+    &#34;&#34;&#34;
+    Convert LODA code to a text format suitable for T5.
+    
+    This creates a more natural language representation of LODA code.
+    
+    Args:
+        code: LODA assembly code
+        
+    Returns:
+        Text representation of the code
+    &#34;&#34;&#34;
+    lines = code.strip().split(&#39;\n&#39;)
+    text_parts = []
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        
+        # Parse the line and convert to text
+        parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+        if len(parts) &gt;= 3:
+            op, target, source = parts[0], parts[1], parts[2]
+            text_parts.append(f&#34;{op} {target} {source}&#34;)
+        elif len(parts) &gt;= 2:
+            op, target = parts[0], parts[1]
+            text_parts.append(f&#34;{op} {target}&#34;)
+        else:
+            text_parts.append(line)
+    
+    return &#34; | &#34;.join(text_parts)</code></pre>
+</details>
+<div class="desc"><p>Convert LODA code to a text format suitable for T5.</p>
+<p>This creates a more natural language representation of LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Text representation of the code</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.prepare_input"><code class="name flex">
+<span>def <span class="ident">prepare_input</span></span>(<span>self, descriptions: List[str]) ‑> Dict[str, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare_input(self, descriptions: List[str]) -&gt; Dict[str, torch.Tensor]:
+    &#34;&#34;&#34;
+    Prepare natural language descriptions for input.
+    
+    Args:
+        descriptions: List of natural language descriptions
+        
+    Returns:
+        Dictionary with input tensors
+    &#34;&#34;&#34;
+    # Add task prefix for T5
+    prefixed_descriptions = [f&#34;translate to loda: {desc}&#34; for desc in descriptions]
+    
+    # Tokenize with T5 tokenizer
+    encoded = self.text_tokenizer(
+        prefixed_descriptions,
+        padding=True,
+        truncation=True,
+        max_length=512,
+        return_tensors=&#34;pt&#34;
+    )
+    
+    return encoded</code></pre>
+</details>
+<div class="desc"><p>Prepare natural language descriptions for input.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>descriptions</code></strong></dt>
+<dd>List of natural language descriptions</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with input tensors</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.prepare_target"><code class="name flex">
+<span>def <span class="ident">prepare_target</span></span>(<span>self, loda_codes: List[str]) ‑> Dict[str, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare_target(self, loda_codes: List[str]) -&gt; Dict[str, torch.Tensor]:
+    &#34;&#34;&#34;
+    Prepare LODA codes as targets.
+    
+    Args:
+        loda_codes: List of LODA assembly codes
+        
+    Returns:
+        Dictionary with target tensors
+    &#34;&#34;&#34;
+    # For T5, we need to encode targets using the text tokenizer as well
+    # We&#39;ll create a custom format that represents LODA code
+    
+    # Convert LODA to a text representation that T5 can understand
+    text_loda_codes = []
+    for code in loda_codes:
+        # Convert LODA code to a more text-like format
+        text_code = self.loda_to_text_format(code)
+        text_loda_codes.append(text_code)
+    
+    encoded = self.text_tokenizer(
+        text_loda_codes,
+        padding=True,
+        truncation=True,
+        max_length=256,
+        return_tensors=&#34;pt&#34;
+    )
+    
+    return encoded</code></pre>
+</details>
+<div class="desc"><p>Prepare LODA codes as targets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>loda_codes</code></strong></dt>
+<dd>List of LODA assembly codes</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with target tensors</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.save_model"><code class="name flex">
+<span>def <span class="ident">save_model</span></span>(<span>self, save_path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_model(self, save_path: str):
+    &#34;&#34;&#34;
+    Save the model and tokenizers.
+    
+    Args:
+        save_path: Directory to save the model
+    &#34;&#34;&#34;
+    os.makedirs(save_path, exist_ok=True)
+    
+    # Save T5 model and tokenizer
+    self.model.save_pretrained(save_path)
+    self.text_tokenizer.save_pretrained(save_path)
+    
+    # Save LODA tokenizer
+    loda_tokenizer_path = os.path.join(save_path, &#34;loda_tokenizer.json&#34;)
+    with open(loda_tokenizer_path, &#39;w&#39;) as f:
+        json.dump({
+            &#39;vocab&#39;: self.loda_tokenizer.vocab,
+            &#39;reverse_vocab&#39;: {str(k): v for k, v in self.loda_tokenizer.reverse_vocab.items()}
+        }, f, indent=2)</code></pre>
+</details>
+<div class="desc"><p>Save the model and tokenizers.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>Directory to save the model</dd>
+</dl></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaT5Model.text_format_to_loda"><code class="name flex">
+<span>def <span class="ident">text_format_to_loda</span></span>(<span>self, text_code: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def text_format_to_loda(self, text_code: str) -&gt; str:
+    &#34;&#34;&#34;
+    Convert text format back to LODA code.
+    
+    Args:
+        text_code: Text representation of LODA code
+        
+    Returns:
+        LODA assembly code
+    &#34;&#34;&#34;
+    parts = text_code.split(&#34; | &#34;)
+    loda_lines = []
+    
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        
+        tokens = part.split()
+        if len(tokens) &gt;= 3:
+            op, target, source = tokens[0], tokens[1], tokens[2]
+            loda_lines.append(f&#34;{op} {target},{source}&#34;)
+        elif len(tokens) &gt;= 2:
+            op, target = tokens[0], tokens[1]
+            loda_lines.append(f&#34;{op} {target}&#34;)
+        else:
+            loda_lines.append(part)
+    
+    return &#39;\n&#39;.join(loda_lines)</code></pre>
+</details>
+<div class="desc"><p>Convert text format back to LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text_code</code></strong></dt>
+<dd>Text representation of LODA code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>LODA assembly code</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.model.LodaTokenizer"><code class="flex name class">
+<span>class <span class="ident">LodaTokenizer</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaTokenizer:
+    &#34;&#34;&#34;Custom tokenizer for LODA assembly language.&#34;&#34;&#34;
+    
+    def __init__(self):
+        &#34;&#34;&#34;Initialize LODA tokenizer with vocabulary.&#34;&#34;&#34;
+        # LODA operations
+        self.operations = [
+            &#39;mov&#39;, &#39;add&#39;, &#39;sub&#39;, &#39;mul&#39;, &#39;div&#39;, &#39;dif&#39;, &#39;mod&#39;, &#39;pow&#39;, &#39;gcd&#39;, &#39;bin&#39;,
+            &#39;cmp&#39;, &#39;min&#39;, &#39;max&#39;, &#39;lpb&#39;, &#39;lpe&#39;, &#39;nop&#39;, &#39;cal&#39;, &#39;seq&#39;, &#39;trn&#39;, &#39;clr&#39;
+        ]
+        
+        # Common operand patterns
+        self.operand_patterns = [
+            # Direct memory references
+            &#39;$0&#39;, &#39;$1&#39;, &#39;$2&#39;, &#39;$3&#39;, &#39;$4&#39;, &#39;$5&#39;, &#39;$6&#39;, &#39;$7&#39;, &#39;$8&#39;, &#39;$9&#39;, &#39;$10&#39;,
+            # Indirect memory references  
+            &#39;$$1&#39;, &#39;$$2&#39;, &#39;$$3&#39;, &#39;$$4&#39;, &#39;$$5&#39;,
+            # Common constants
+            &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;, &#39;10&#39;, &#39;-1&#39;
+        ]
+        
+        # Special tokens
+        self.special_tokens = [&#39;&lt;pad&gt;&#39;, &#39;&lt;unk&gt;&#39;, &#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;mask&gt;&#39;]
+        
+        # Build vocabulary
+        self.vocab = {}
+        self.reverse_vocab = {}
+        
+        # Add special tokens first
+        for i, token in enumerate(self.special_tokens):
+            self.vocab[token] = i
+            self.reverse_vocab[i] = token
+        
+        # Add operations
+        for token in self.operations:
+            idx = len(self.vocab)
+            self.vocab[token] = idx
+            self.reverse_vocab[idx] = token
+        
+        # Add operand patterns
+        for token in self.operand_patterns:
+            idx = len(self.vocab)
+            self.vocab[token] = idx
+            self.reverse_vocab[idx] = token
+        
+        self.vocab_size = len(self.vocab)
+        self.pad_token_id = self.vocab[&#39;&lt;pad&gt;&#39;]
+        self.unk_token_id = self.vocab[&#39;&lt;unk&gt;&#39;]
+        self.bos_token_id = self.vocab[&#39;&lt;s&gt;&#39;]
+        self.eos_token_id = self.vocab[&#39;&lt;/s&gt;&#39;]
+    
+    def tokenize_loda_code(self, code: str) -&gt; List[str]:
+        &#34;&#34;&#34;
+        Tokenize LODA assembly code.
+        
+        Args:
+            code: LODA assembly code as string
+            
+        Returns:
+            List of tokens
+        &#34;&#34;&#34;
+        lines = code.strip().split(&#39;\n&#39;)
+        tokens = [&#39;&lt;s&gt;&#39;]  # Start token
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Split on whitespace and comma
+            parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+            
+            for part in parts:
+                part = part.strip()
+                if part in self.vocab:
+                    tokens.append(part)
+                else:
+                    # Try to handle unknown operands
+                    if part.startswith(&#39;$&#39;) and part[1:].isdigit():
+                        # Direct memory reference
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    elif part.startswith(&#39;$$&#39;) and part[2:].isdigit():
+                        # Indirect memory reference
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    elif part.lstrip(&#39;-&#39;).isdigit():
+                        # Numeric constant
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+        
+        tokens.append(&#39;&lt;/s&gt;&#39;)  # End token
+        return tokens
+    
+    def encode_loda_code(self, code: str) -&gt; List[int]:
+        &#34;&#34;&#34;
+        Encode LODA code to token IDs.
+        
+        Args:
+            code: LODA assembly code
+            
+        Returns:
+            List of token IDs
+        &#34;&#34;&#34;
+        tokens = self.tokenize_loda_code(code)
+        return [self.vocab.get(token, self.unk_token_id) for token in tokens]
+    
+    def decode_loda_code(self, token_ids: List[int]) -&gt; str:
+        &#34;&#34;&#34;
+        Decode token IDs back to LODA code.
+        
+        Args:
+            token_ids: List of token IDs
+            
+        Returns:
+            LODA assembly code as string
+        &#34;&#34;&#34;
+        tokens = [self.reverse_vocab.get(id, &#39;&lt;unk&gt;&#39;) for id in token_ids]
+        
+        # Filter out special tokens
+        filtered_tokens = []
+        for token in tokens:
+            if token in [&#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;pad&gt;&#39;]:
+                continue
+            if token == &#39;&lt;unk&gt;&#39;:
+                continue
+            filtered_tokens.append(token)
+        
+        # Reconstruct LODA code
+        code_lines = []
+        i = 0
+        
+        while i &lt; len(filtered_tokens):
+            if i + 2 &lt; len(filtered_tokens):
+                # Try to form operation: op target source
+                op = filtered_tokens[i]
+                if op in self.operations and i + 2 &lt; len(filtered_tokens):
+                    target = filtered_tokens[i + 1]
+                    source = filtered_tokens[i + 2]
+                    code_lines.append(f&#34;{op} {target},{source}&#34;)
+                    i += 3
+                elif op in self.operations and i + 1 &lt; len(filtered_tokens):
+                    # Single operand operation
+                    target = filtered_tokens[i + 1]
+                    code_lines.append(f&#34;{op} {target}&#34;)
+                    i += 2
+                else:
+                    i += 1
+            else:
+                i += 1
+        
+        return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Custom tokenizer for LODA assembly language.</p>
+<p>Initialize LODA tokenizer with vocabulary.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.model.LodaTokenizer.decode_loda_code"><code class="name flex">
+<span>def <span class="ident">decode_loda_code</span></span>(<span>self, token_ids: List[int]) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decode_loda_code(self, token_ids: List[int]) -&gt; str:
+    &#34;&#34;&#34;
+    Decode token IDs back to LODA code.
+    
+    Args:
+        token_ids: List of token IDs
+        
+    Returns:
+        LODA assembly code as string
+    &#34;&#34;&#34;
+    tokens = [self.reverse_vocab.get(id, &#39;&lt;unk&gt;&#39;) for id in token_ids]
+    
+    # Filter out special tokens
+    filtered_tokens = []
+    for token in tokens:
+        if token in [&#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;pad&gt;&#39;]:
+            continue
+        if token == &#39;&lt;unk&gt;&#39;:
+            continue
+        filtered_tokens.append(token)
+    
+    # Reconstruct LODA code
+    code_lines = []
+    i = 0
+    
+    while i &lt; len(filtered_tokens):
+        if i + 2 &lt; len(filtered_tokens):
+            # Try to form operation: op target source
+            op = filtered_tokens[i]
+            if op in self.operations and i + 2 &lt; len(filtered_tokens):
+                target = filtered_tokens[i + 1]
+                source = filtered_tokens[i + 2]
+                code_lines.append(f&#34;{op} {target},{source}&#34;)
+                i += 3
+            elif op in self.operations and i + 1 &lt; len(filtered_tokens):
+                # Single operand operation
+                target = filtered_tokens[i + 1]
+                code_lines.append(f&#34;{op} {target}&#34;)
+                i += 2
+            else:
+                i += 1
+        else:
+            i += 1
+    
+    return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Decode token IDs back to LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>token_ids</code></strong></dt>
+<dd>List of token IDs</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>LODA assembly code as string</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaTokenizer.encode_loda_code"><code class="name flex">
+<span>def <span class="ident">encode_loda_code</span></span>(<span>self, code: str) ‑> List[int]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def encode_loda_code(self, code: str) -&gt; List[int]:
+    &#34;&#34;&#34;
+    Encode LODA code to token IDs.
+    
+    Args:
+        code: LODA assembly code
+        
+    Returns:
+        List of token IDs
+    &#34;&#34;&#34;
+    tokens = self.tokenize_loda_code(code)
+    return [self.vocab.get(token, self.unk_token_id) for token in tokens]</code></pre>
+</details>
+<div class="desc"><p>Encode LODA code to token IDs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of token IDs</p></div>
+</dd>
+<dt id="loda.ml.llm.model.LodaTokenizer.tokenize_loda_code"><code class="name flex">
+<span>def <span class="ident">tokenize_loda_code</span></span>(<span>self, code: str) ‑> List[str]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tokenize_loda_code(self, code: str) -&gt; List[str]:
+    &#34;&#34;&#34;
+    Tokenize LODA assembly code.
+    
+    Args:
+        code: LODA assembly code as string
+        
+    Returns:
+        List of tokens
+    &#34;&#34;&#34;
+    lines = code.strip().split(&#39;\n&#39;)
+    tokens = [&#39;&lt;s&gt;&#39;]  # Start token
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        
+        # Split on whitespace and comma
+        parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+        
+        for part in parts:
+            part = part.strip()
+            if part in self.vocab:
+                tokens.append(part)
+            else:
+                # Try to handle unknown operands
+                if part.startswith(&#39;$&#39;) and part[1:].isdigit():
+                    # Direct memory reference
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                elif part.startswith(&#39;$$&#39;) and part[2:].isdigit():
+                    # Indirect memory reference
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                elif part.lstrip(&#39;-&#39;).isdigit():
+                    # Numeric constant
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                else:
+                    tokens.append(&#39;&lt;unk&gt;&#39;)
+    
+    tokens.append(&#39;&lt;/s&gt;&#39;)  # End token
+    return tokens</code></pre>
+</details>
+<div class="desc"><p>Tokenize LODA assembly code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code as string</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of tokens</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder"><code class="flex name class">
+<span>class <span class="ident">T5Tokenizer</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call"><code class="name flex">
+<span>def <span class="ident">call</span></span>(<span>self, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def call(self, *args, **kwargs):
+    pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.ml.llm.model.create_model" href="#loda.ml.llm.model.create_model">create_model</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.ml.llm.model.LodaT5Model" href="#loda.ml.llm.model.LodaT5Model">LodaT5Model</a></code></h4>
+<ul class="two-column">
+<li><code><a title="loda.ml.llm.model.LodaT5Model.forward" href="#loda.ml.llm.model.LodaT5Model.forward">forward</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.generate" href="#loda.ml.llm.model.LodaT5Model.generate">generate</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.load_model" href="#loda.ml.llm.model.LodaT5Model.load_model">load_model</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.loda_to_text_format" href="#loda.ml.llm.model.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.prepare_input" href="#loda.ml.llm.model.LodaT5Model.prepare_input">prepare_input</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.prepare_target" href="#loda.ml.llm.model.LodaT5Model.prepare_target">prepare_target</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.save_model" href="#loda.ml.llm.model.LodaT5Model.save_model">save_model</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaT5Model.text_format_to_loda" href="#loda.ml.llm.model.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.model.LodaTokenizer" href="#loda.ml.llm.model.LodaTokenizer">LodaTokenizer</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.model.LodaTokenizer.decode_loda_code" href="#loda.ml.llm.model.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaTokenizer.encode_loda_code" href="#loda.ml.llm.model.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.model.LodaTokenizer.tokenize_loda_code" href="#loda.ml.llm.model.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder" href="#loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder">_LazyModule.__getattr__.<locals>.Placeholder</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call" href="#loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call">call</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

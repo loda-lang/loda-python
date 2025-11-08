@@ -1,0 +1,2940 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>loda.ml.llm API documentation</title>
+<meta name="description" content="Large Language Model (LLM) implementation for natural language to LODA code generation …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>loda.ml.llm</code></h1>
+</header>
+<section id="section-intro">
+<p>Large Language Model (LLM) implementation for natural language to LODA code generation.</p>
+<p>This module provides functionality to train transformer-based models that can understand
+natural language descriptions of integer sequences (like OEIS sequences) and generate
+corresponding LODA assembly programs.</p>
+<p>Key components:
+- Data preprocessing for OEIS sequence descriptions and LODA programs
+- Transformer-based encoder-decoder architecture
+- Training pipeline with proper tokenization
+- Inference utilities for code generation
+- Evaluation metrics for generated programs</p>
+<p>Example usage:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from loda.ml.llm import LodaT5Model, LodaGenerator, train_loda_llm
+&gt;&gt;&gt; 
+&gt;&gt;&gt; # Train a model
+&gt;&gt;&gt; model = train_loda_llm(&quot;programs/oeis&quot;, &quot;trained_model&quot;)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; # Generate code
+&gt;&gt;&gt; generator = LodaGenerator(model)
+&gt;&gt;&gt; results = generator.generate(&quot;Fibonacci numbers&quot;)
+&gt;&gt;&gt; print(results[0].generated_code)
+</code></pre>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="loda.ml.llm.data_preprocessing" href="data_preprocessing.html">loda.ml.llm.data_preprocessing</a></code></dt>
+<dd>
+<div class="desc"><p>Data preprocessing utilities for LLM training on OEIS sequences and LODA programs …</p></div>
+</dd>
+<dt><code class="name"><a title="loda.ml.llm.inference" href="inference.html">loda.ml.llm.inference</a></code></dt>
+<dd>
+<div class="desc"><p>Inference and evaluation utilities for the LODA LLM …</p></div>
+</dd>
+<dt><code class="name"><a title="loda.ml.llm.model" href="model.html">loda.ml.llm.model</a></code></dt>
+<dd>
+<div class="desc"><p>Transformer-based model for natural language to LODA code generation …</p></div>
+</dd>
+<dt><code class="name"><a title="loda.ml.llm.trainer" href="trainer.html">loda.ml.llm.trainer</a></code></dt>
+<dd>
+<div class="desc"><p>Training script for the LODA LLM (Large Language Model) …</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="loda.ml.llm.create_dataset"><code class="name flex">
+<span>def <span class="ident">create_dataset</span></span>(<span>programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_dataset(programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True):
+    &#34;&#34;&#34;
+    Convenience function to create and save a training dataset.
+    
+    Args:
+        programs_dir: Path to OEIS programs directory
+        output_file: Path to save the dataset
+        max_examples: Maximum number of examples (-1 for all)
+        augment: Whether to augment with description variations
+    &#34;&#34;&#34;
+    preprocessor = DataPreprocessor(programs_dir)
+    examples = preprocessor.create_training_examples(max_examples)
+    
+    if augment:
+        examples = preprocessor.augment_descriptions(examples)
+    
+    preprocessor.save_dataset(examples, output_file)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Convenience function to create and save a training dataset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>programs_dir</code></strong></dt>
+<dd>Path to OEIS programs directory</dd>
+<dt><strong><code>output_file</code></strong></dt>
+<dd>Path to save the dataset</dd>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of examples (-1 for all)</dd>
+<dt><strong><code>augment</code></strong></dt>
+<dd>Whether to augment with description variations</dd>
+</dl></div>
+</dd>
+<dt id="loda.ml.llm.train_loda_llm"><code class="name flex">
+<span>def <span class="ident">train_loda_llm</span></span>(<span>programs_dir: str,<br>output_dir: str = 'loda_llm_model',<br>model_name: str = 't5-small',<br>max_examples: int = -1,<br>val_split: float = 0.1,<br>batch_size: int = 8,<br>learning_rate: float = 5e-05,<br>num_epochs: int = 3)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train_loda_llm(programs_dir: str,
+                   output_dir: str = &#34;loda_llm_model&#34;,
+                   model_name: str = &#34;t5-small&#34;,
+                   max_examples: int = -1,
+                   val_split: float = 0.1,
+                   batch_size: int = 8,
+                   learning_rate: float = 5e-5,
+                   num_epochs: int = 3):
+    &#34;&#34;&#34;
+    Main training function.
+    
+    Args:
+        programs_dir: Directory containing OEIS programs
+        output_dir: Directory to save the trained model
+        model_name: Base T5 model to use
+        max_examples: Maximum number of training examples (-1 for all)
+        val_split: Fraction of data to use for validation
+        batch_size: Training batch size
+        learning_rate: Learning rate
+        num_epochs: Number of training epochs
+    &#34;&#34;&#34;
+    print(&#34;Preparing training data...&#34;)
+    
+    # Create training examples
+    preprocessor = DataPreprocessor(programs_dir)
+    examples = preprocessor.create_training_examples(max_examples)
+    
+    if len(examples) == 0:
+        print(&#34;No training examples found!&#34;)
+        return None
+    
+    # Augment examples
+    print(&#34;Augmenting training examples...&#34;)
+    examples = preprocessor.augment_descriptions(examples)
+    
+    # Split into train/validation
+    if val_split &gt; 0:
+        split_idx = int(len(examples) * (1 - val_split))
+        train_examples = examples[:split_idx]
+        val_examples = examples[split_idx:]
+    else:
+        train_examples = examples
+        val_examples = None
+    
+    print(f&#34;Training examples: {len(train_examples)}&#34;)
+    if val_examples:
+        print(f&#34;Validation examples: {len(val_examples)}&#34;)
+    
+    # Create model
+    print(f&#34;Creating model based on {model_name}...&#34;)
+    model = LodaT5Model(model_name)
+    
+    # Create datasets
+    train_dataset = LodaDataset(train_examples, model)
+    val_dataset = LodaDataset(val_examples, model) if val_examples else None
+    
+    # Create trainer
+    trainer = LodaTrainer(
+        model=model,
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
+        learning_rate=learning_rate,
+        batch_size=batch_size,
+        num_epochs=num_epochs,
+        save_dir=output_dir
+    )
+    
+    # Train the model
+    trained_model = trainer.train()
+    
+    # Save final model
+    trained_model.save_model(output_dir)
+    print(f&#34;Final model saved to {output_dir}&#34;)
+    
+    return trained_model</code></pre>
+</details>
+<div class="desc"><p>Main training function.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>programs_dir</code></strong></dt>
+<dd>Directory containing OEIS programs</dd>
+<dt><strong><code>output_dir</code></strong></dt>
+<dd>Directory to save the trained model</dd>
+<dt><strong><code>model_name</code></strong></dt>
+<dd>Base T5 model to use</dd>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of training examples (-1 for all)</dd>
+<dt><strong><code>val_split</code></strong></dt>
+<dd>Fraction of data to use for validation</dd>
+<dt><strong><code>batch_size</code></strong></dt>
+<dd>Training batch size</dd>
+<dt><strong><code>learning_rate</code></strong></dt>
+<dd>Learning rate</dd>
+<dt><strong><code>num_epochs</code></strong></dt>
+<dd>Number of training epochs</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="loda.ml.llm.DataPreprocessor"><code class="flex name class">
+<span>class <span class="ident">DataPreprocessor</span></span>
+<span>(</span><span>programs_dir: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DataPreprocessor:
+    &#34;&#34;&#34;Handles preprocessing of OEIS programs for LLM training.&#34;&#34;&#34;
+    
+    def __init__(self, programs_dir: str):
+        &#34;&#34;&#34;Initialize with path to OEIS programs directory.&#34;&#34;&#34;
+        self.programs_dir = programs_dir
+        self.program_cache = ProgramCache(programs_dir)
+        
+    def extract_description_from_program(self, program_text: str) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Extract the natural language description from a LODA program.
+        
+        LODA programs typically start with comments like:
+        ; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
+        
+        Args:
+            program_text: The full LODA program as text
+            
+        Returns:
+            The description string or None if no description found
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        
+        for line in lines:
+            # Look for OEIS description lines (start with ; A######:)
+            match = re.match(r&#39;;\s*A\d{6}:\s*(.+)&#39;, line)
+            if match:
+                description = match.group(1).strip()
+                # Clean up common artifacts
+                description = description.rstrip(&#39;.&#39;)
+                # Remove mathematical notation that might be confusing
+                # Keep it simple for initial training
+                return description
+                
+        return None
+    
+    def extract_terms_from_program(self, program_text: str) -&gt; Optional[List[int]]:
+        &#34;&#34;&#34;
+        Extract the sequence terms from a LODA program comment.
+        
+        Args:
+            program_text: The full LODA program as text
+            
+        Returns:
+            List of sequence terms or None if not found
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        
+        for line in lines:
+            # Look for lines with comma-separated numbers (sequence terms)
+            if line.startswith(&#39;;&#39;) and &#39;,&#39; in line:
+                # Extract numbers from the line
+                numbers_str = line[1:].strip()  # Remove the &#39;;&#39;
+                # Skip if it looks like it contains non-numeric content
+                if &#39;:&#39; in numbers_str or any(c.isalpha() for c in numbers_str):
+                    continue
+                    
+                try:
+                    terms = [int(x.strip()) for x in numbers_str.split(&#39;,&#39;) if x.strip()]
+                    if len(terms) &gt;= 5:  # Reasonable number of terms
+                        return terms
+                except ValueError:
+                    continue
+                    
+        return None
+    
+    def clean_loda_code(self, program_text: str) -&gt; str:
+        &#34;&#34;&#34;
+        Clean LODA code by removing comments and normalizing format.
+        
+        Args:
+            program_text: Raw LODA program text
+            
+        Returns:
+            Cleaned LODA code suitable for training
+        &#34;&#34;&#34;
+        lines = program_text.strip().split(&#39;\n&#39;)
+        code_lines = []
+        
+        for line in lines:
+            # Skip comment lines
+            if line.strip().startswith(&#39;;&#39;):
+                continue
+            # Skip empty lines
+            if not line.strip():
+                continue
+            # Add the code line
+            code_lines.append(line.strip())
+        
+        return &#39;\n&#39;.join(code_lines)
+    
+    def create_training_examples(self, max_examples: int = -1) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Create training examples from all available LODA programs.
+        
+        Args:
+            max_examples: Maximum number of examples to create (-1 for all)
+            
+        Returns:
+            List of TrainingExample objects
+        &#34;&#34;&#34;
+        examples = []
+        program_ids = self.program_cache.all_ids()
+        
+        if max_examples &gt; 0:
+            program_ids = program_ids[:max_examples]
+        
+        print(f&#34;Processing {len(program_ids)} programs...&#34;)
+        
+        for i, program_id in enumerate(program_ids):
+            if i % 1000 == 0:
+                print(f&#34;Processed {i}/{len(program_ids)} programs&#34;)
+                
+            try:
+                # Read the program file
+                program_path = self.program_cache._get_path(program_id)
+                if not os.path.exists(program_path):
+                    continue
+                    
+                with open(program_path, &#39;r&#39;) as f:
+                    program_text = f.read()
+                
+                # Extract description
+                description = self.extract_description_from_program(program_text)
+                if not description:
+                    continue
+                
+                # Extract terms (optional)
+                terms = self.extract_terms_from_program(program_text)
+                
+                # Clean the LODA code
+                clean_code = self.clean_loda_code(program_text)
+                if not clean_code:
+                    continue
+                
+                # Validate that the code parses correctly
+                try:
+                    Program.parse(clean_code)
+                except Exception:
+                    continue  # Skip programs that don&#39;t parse
+                
+                example = TrainingExample(
+                    sequence_id=program_id,
+                    description=description,
+                    loda_code=clean_code,
+                    terms=terms
+                )
+                examples.append(example)
+                
+            except Exception as e:
+                print(f&#34;Error processing {program_id}: {e}&#34;)
+                continue
+        
+        print(f&#34;Created {len(examples)} training examples&#34;)
+        return examples
+    
+    def augment_descriptions(self, examples: List[TrainingExample]) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Augment training examples with variations of descriptions.
+        
+        This can help make the model more robust to different phrasings.
+        
+        Args:
+            examples: List of original training examples
+            
+        Returns:
+            Augmented list with additional variations
+        &#34;&#34;&#34;
+        augmented = list(examples)  # Start with originals
+        
+        for example in examples:
+            desc = example.description
+            
+            # Create variations
+            variations = []
+            
+            # Add &#34;sequence of&#34; prefix if not present
+            if not desc.lower().startswith((&#39;sequence&#39;, &#39;the sequence&#39;)):
+                variations.append(f&#34;Sequence of {desc.lower()}&#34;)
+            
+            # Add &#34;Generate&#34; prefix
+            variations.append(f&#34;Generate {desc.lower()}&#34;)
+            
+            # Add &#34;Compute&#34; prefix
+            variations.append(f&#34;Compute {desc.lower()}&#34;)
+            
+            # Remove mathematical symbols for simpler versions
+            simple_desc = re.sub(r&#39;[()=+\-*/^]&#39;, &#39; &#39;, desc)
+            simple_desc = re.sub(r&#39;\s+&#39;, &#39; &#39;, simple_desc).strip()
+            if simple_desc != desc and simple_desc:
+                variations.append(simple_desc)
+            
+            # Create new examples for each variation
+            for variation in variations:
+                augmented_example = TrainingExample(
+                    sequence_id=example.sequence_id + &#34;_aug&#34;,
+                    description=variation,
+                    loda_code=example.loda_code,
+                    terms=example.terms
+                )
+                augmented.append(augmented_example)
+        
+        return augmented
+    
+    def save_dataset(self, examples: List[TrainingExample], output_file: str):
+        &#34;&#34;&#34;
+        Save training examples to a file for later use.
+        
+        Args:
+            examples: List of training examples
+            output_file: Path to output file
+        &#34;&#34;&#34;
+        import json
+        
+        data = []
+        for example in examples:
+            data.append({
+                &#39;sequence_id&#39;: example.sequence_id,
+                &#39;description&#39;: example.description,
+                &#39;loda_code&#39;: example.loda_code,
+                &#39;terms&#39;: example.terms
+            })
+        
+        with open(output_file, &#39;w&#39;) as f:
+            json.dump(data, f, indent=2)
+        
+        print(f&#34;Saved {len(examples)} examples to {output_file}&#34;)
+    
+    def load_dataset(self, input_file: str) -&gt; List[TrainingExample]:
+        &#34;&#34;&#34;
+        Load training examples from a file.
+        
+        Args:
+            input_file: Path to input file
+            
+        Returns:
+            List of TrainingExample objects
+        &#34;&#34;&#34;
+        import json
+        
+        with open(input_file, &#39;r&#39;) as f:
+            data = json.load(f)
+        
+        examples = []
+        for item in data:
+            example = TrainingExample(
+                sequence_id=item[&#39;sequence_id&#39;],
+                description=item[&#39;description&#39;],
+                loda_code=item[&#39;loda_code&#39;],
+                terms=item.get(&#39;terms&#39;)
+            )
+            examples.append(example)
+        
+        print(f&#34;Loaded {len(examples)} examples from {input_file}&#34;)
+        return examples</code></pre>
+</details>
+<div class="desc"><p>Handles preprocessing of OEIS programs for LLM training.</p>
+<p>Initialize with path to OEIS programs directory.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.DataPreprocessor.augment_descriptions"><code class="name flex">
+<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def augment_descriptions(self, examples: List[TrainingExample]) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Augment training examples with variations of descriptions.
+    
+    This can help make the model more robust to different phrasings.
+    
+    Args:
+        examples: List of original training examples
+        
+    Returns:
+        Augmented list with additional variations
+    &#34;&#34;&#34;
+    augmented = list(examples)  # Start with originals
+    
+    for example in examples:
+        desc = example.description
+        
+        # Create variations
+        variations = []
+        
+        # Add &#34;sequence of&#34; prefix if not present
+        if not desc.lower().startswith((&#39;sequence&#39;, &#39;the sequence&#39;)):
+            variations.append(f&#34;Sequence of {desc.lower()}&#34;)
+        
+        # Add &#34;Generate&#34; prefix
+        variations.append(f&#34;Generate {desc.lower()}&#34;)
+        
+        # Add &#34;Compute&#34; prefix
+        variations.append(f&#34;Compute {desc.lower()}&#34;)
+        
+        # Remove mathematical symbols for simpler versions
+        simple_desc = re.sub(r&#39;[()=+\-*/^]&#39;, &#39; &#39;, desc)
+        simple_desc = re.sub(r&#39;\s+&#39;, &#39; &#39;, simple_desc).strip()
+        if simple_desc != desc and simple_desc:
+            variations.append(simple_desc)
+        
+        # Create new examples for each variation
+        for variation in variations:
+            augmented_example = TrainingExample(
+                sequence_id=example.sequence_id + &#34;_aug&#34;,
+                description=variation,
+                loda_code=example.loda_code,
+                terms=example.terms
+            )
+            augmented.append(augmented_example)
+    
+    return augmented</code></pre>
+</details>
+<div class="desc"><p>Augment training examples with variations of descriptions.</p>
+<p>This can help make the model more robust to different phrasings.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>examples</code></strong></dt>
+<dd>List of original training examples</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Augmented list with additional variations</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.clean_loda_code"><code class="name flex">
+<span>def <span class="ident">clean_loda_code</span></span>(<span>self, program_text: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clean_loda_code(self, program_text: str) -&gt; str:
+    &#34;&#34;&#34;
+    Clean LODA code by removing comments and normalizing format.
+    
+    Args:
+        program_text: Raw LODA program text
+        
+    Returns:
+        Cleaned LODA code suitable for training
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    code_lines = []
+    
+    for line in lines:
+        # Skip comment lines
+        if line.strip().startswith(&#39;;&#39;):
+            continue
+        # Skip empty lines
+        if not line.strip():
+            continue
+        # Add the code line
+        code_lines.append(line.strip())
+    
+    return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Clean LODA code by removing comments and normalizing format.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>Raw LODA program text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Cleaned LODA code suitable for training</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.create_training_examples"><code class="name flex">
+<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_training_examples(self, max_examples: int = -1) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Create training examples from all available LODA programs.
+    
+    Args:
+        max_examples: Maximum number of examples to create (-1 for all)
+        
+    Returns:
+        List of TrainingExample objects
+    &#34;&#34;&#34;
+    examples = []
+    program_ids = self.program_cache.all_ids()
+    
+    if max_examples &gt; 0:
+        program_ids = program_ids[:max_examples]
+    
+    print(f&#34;Processing {len(program_ids)} programs...&#34;)
+    
+    for i, program_id in enumerate(program_ids):
+        if i % 1000 == 0:
+            print(f&#34;Processed {i}/{len(program_ids)} programs&#34;)
+            
+        try:
+            # Read the program file
+            program_path = self.program_cache._get_path(program_id)
+            if not os.path.exists(program_path):
+                continue
+                
+            with open(program_path, &#39;r&#39;) as f:
+                program_text = f.read()
+            
+            # Extract description
+            description = self.extract_description_from_program(program_text)
+            if not description:
+                continue
+            
+            # Extract terms (optional)
+            terms = self.extract_terms_from_program(program_text)
+            
+            # Clean the LODA code
+            clean_code = self.clean_loda_code(program_text)
+            if not clean_code:
+                continue
+            
+            # Validate that the code parses correctly
+            try:
+                Program.parse(clean_code)
+            except Exception:
+                continue  # Skip programs that don&#39;t parse
+            
+            example = TrainingExample(
+                sequence_id=program_id,
+                description=description,
+                loda_code=clean_code,
+                terms=terms
+            )
+            examples.append(example)
+            
+        except Exception as e:
+            print(f&#34;Error processing {program_id}: {e}&#34;)
+            continue
+    
+    print(f&#34;Created {len(examples)} training examples&#34;)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Create training examples from all available LODA programs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>max_examples</code></strong></dt>
+<dd>Maximum number of examples to create (-1 for all)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of TrainingExample objects</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.extract_description_from_program"><code class="name flex">
+<span>def <span class="ident">extract_description_from_program</span></span>(<span>self, program_text: str) ‑> str | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_description_from_program(self, program_text: str) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+    Extract the natural language description from a LODA program.
+    
+    LODA programs typically start with comments like:
+    ; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
+    
+    Args:
+        program_text: The full LODA program as text
+        
+    Returns:
+        The description string or None if no description found
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    
+    for line in lines:
+        # Look for OEIS description lines (start with ; A######:)
+        match = re.match(r&#39;;\s*A\d{6}:\s*(.+)&#39;, line)
+        if match:
+            description = match.group(1).strip()
+            # Clean up common artifacts
+            description = description.rstrip(&#39;.&#39;)
+            # Remove mathematical notation that might be confusing
+            # Keep it simple for initial training
+            return description
+            
+    return None</code></pre>
+</details>
+<div class="desc"><p>Extract the natural language description from a LODA program.</p>
+<p>LODA programs typically start with comments like:
+; A000045: Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>The full LODA program as text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The description string or None if no description found</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.extract_terms_from_program"><code class="name flex">
+<span>def <span class="ident">extract_terms_from_program</span></span>(<span>self, program_text: str) ‑> List[int] | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_terms_from_program(self, program_text: str) -&gt; Optional[List[int]]:
+    &#34;&#34;&#34;
+    Extract the sequence terms from a LODA program comment.
+    
+    Args:
+        program_text: The full LODA program as text
+        
+    Returns:
+        List of sequence terms or None if not found
+    &#34;&#34;&#34;
+    lines = program_text.strip().split(&#39;\n&#39;)
+    
+    for line in lines:
+        # Look for lines with comma-separated numbers (sequence terms)
+        if line.startswith(&#39;;&#39;) and &#39;,&#39; in line:
+            # Extract numbers from the line
+            numbers_str = line[1:].strip()  # Remove the &#39;;&#39;
+            # Skip if it looks like it contains non-numeric content
+            if &#39;:&#39; in numbers_str or any(c.isalpha() for c in numbers_str):
+                continue
+                
+            try:
+                terms = [int(x.strip()) for x in numbers_str.split(&#39;,&#39;) if x.strip()]
+                if len(terms) &gt;= 5:  # Reasonable number of terms
+                    return terms
+            except ValueError:
+                continue
+                
+    return None</code></pre>
+</details>
+<div class="desc"><p>Extract the sequence terms from a LODA program comment.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>program_text</code></strong></dt>
+<dd>The full LODA program as text</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of sequence terms or None if not found</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.load_dataset"><code class="name flex">
+<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_dataset(self, input_file: str) -&gt; List[TrainingExample]:
+    &#34;&#34;&#34;
+    Load training examples from a file.
+    
+    Args:
+        input_file: Path to input file
+        
+    Returns:
+        List of TrainingExample objects
+    &#34;&#34;&#34;
+    import json
+    
+    with open(input_file, &#39;r&#39;) as f:
+        data = json.load(f)
+    
+    examples = []
+    for item in data:
+        example = TrainingExample(
+            sequence_id=item[&#39;sequence_id&#39;],
+            description=item[&#39;description&#39;],
+            loda_code=item[&#39;loda_code&#39;],
+            terms=item.get(&#39;terms&#39;)
+        )
+        examples.append(example)
+    
+    print(f&#34;Loaded {len(examples)} examples from {input_file}&#34;)
+    return examples</code></pre>
+</details>
+<div class="desc"><p>Load training examples from a file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_file</code></strong></dt>
+<dd>Path to input file</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of TrainingExample objects</p></div>
+</dd>
+<dt id="loda.ml.llm.DataPreprocessor.save_dataset"><code class="name flex">
+<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_dataset(self, examples: List[TrainingExample], output_file: str):
+    &#34;&#34;&#34;
+    Save training examples to a file for later use.
+    
+    Args:
+        examples: List of training examples
+        output_file: Path to output file
+    &#34;&#34;&#34;
+    import json
+    
+    data = []
+    for example in examples:
+        data.append({
+            &#39;sequence_id&#39;: example.sequence_id,
+            &#39;description&#39;: example.description,
+            &#39;loda_code&#39;: example.loda_code,
+            &#39;terms&#39;: example.terms
+        })
+    
+    with open(output_file, &#39;w&#39;) as f:
+        json.dump(data, f, indent=2)
+    
+    print(f&#34;Saved {len(examples)} examples to {output_file}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Save training examples to a file for later use.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>examples</code></strong></dt>
+<dd>List of training examples</dd>
+<dt><strong><code>output_file</code></strong></dt>
+<dd>Path to output file</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.GenerationResult"><code class="flex name class">
+<span>class <span class="ident">GenerationResult</span></span>
+<span>(</span><span>description: str,<br>generated_code: str,<br>is_valid: bool,<br>error_message: str | None = None,<br>generated_sequence: List[int] | None = None,<br>generation_time: float = 0.0)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class GenerationResult:
+    &#34;&#34;&#34;Result of code generation.&#34;&#34;&#34;
+    description: str
+    generated_code: str
+    is_valid: bool
+    error_message: Optional[str] = None
+    generated_sequence: Optional[List[int]] = None
+    generation_time: float = 0.0</code></pre>
+</details>
+<div class="desc"><p>Result of code generation.</p></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="loda.ml.llm.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.LodaEvaluator"><code class="flex name class">
+<span>class <span class="ident">LodaEvaluator</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaEvaluator:
+    &#34;&#34;&#34;Evaluator for assessing model performance.&#34;&#34;&#34;
+    
+    def __init__(self, model: LodaT5Model):
+        &#34;&#34;&#34;
+        Initialize the evaluator.
+        
+        Args:
+            model: Trained LodaT5Model to evaluate
+        &#34;&#34;&#34;
+        self.model = model
+        self.generator = LodaGenerator(model)
+    
+    def evaluate_examples(self, test_examples: List[TrainingExample]) -&gt; Dict[str, float]:
+        &#34;&#34;&#34;
+        Evaluate the model on test examples.
+        
+        Args:
+            test_examples: List of test examples
+            
+        Returns:
+            Dictionary with evaluation metrics
+        &#34;&#34;&#34;
+        print(f&#34;Evaluating on {len(test_examples)} examples...&#34;)
+        
+        total_examples = len(test_examples)
+        valid_programs = 0
+        exact_matches = 0
+        sequence_matches = 0
+        total_generation_time = 0
+        
+        results = []
+        
+        for i, example in enumerate(test_examples):
+            if i % 10 == 0:
+                print(f&#34;Progress: {i}/{total_examples}&#34;)
+            
+            # Generate code
+            generation_results = self.generator.generate(example.description, num_samples=1)
+            
+            if generation_results:
+                result = generation_results[0]
+                results.append(result)
+                
+                total_generation_time += result.generation_time
+                
+                if result.is_valid:
+                    valid_programs += 1
+                    
+                    # Check for exact match
+                    if self._normalize_code(result.generated_code) == self._normalize_code(example.loda_code):
+                        exact_matches += 1
+                    
+                    # Check for sequence match (if we have expected terms)
+                    if (example.terms and result.generated_sequence and 
+                        len(result.generated_sequence) &gt;= 3 and
+                        result.generated_sequence[:3] == example.terms[:3]):
+                        sequence_matches += 1
+        
+        # Calculate metrics
+        metrics = {
+            &#39;total_examples&#39;: total_examples,
+            &#39;valid_program_rate&#39;: valid_programs / total_examples if total_examples &gt; 0 else 0,
+            &#39;exact_match_rate&#39;: exact_matches / total_examples if total_examples &gt; 0 else 0,
+            &#39;sequence_match_rate&#39;: sequence_matches / total_examples if total_examples &gt; 0 else 0,
+            &#39;avg_generation_time&#39;: total_generation_time / total_examples if total_examples &gt; 0 else 0,
+            &#39;valid_programs&#39;: valid_programs,
+            &#39;exact_matches&#39;: exact_matches,
+            &#39;sequence_matches&#39;: sequence_matches
+        }
+        
+        return metrics, results
+    
+    def _normalize_code(self, code: str) -&gt; str:
+        &#34;&#34;&#34;Normalize code for comparison.&#34;&#34;&#34;
+        # Remove extra whitespace and normalize format
+        lines = []
+        for line in code.strip().split(&#39;\n&#39;):
+            line = line.strip()
+            if line:
+                lines.append(line)
+        return &#39;\n&#39;.join(lines)
+    
+    def print_evaluation_report(self, metrics: Dict[str, float], results: List[GenerationResult]):
+        &#34;&#34;&#34;Print a detailed evaluation report.&#34;&#34;&#34;
+        print(&#34;\n&#34; + &#34;=&#34;*60)
+        print(&#34;LODA LLM EVALUATION REPORT&#34;)
+        print(&#34;=&#34;*60)
+        
+        print(f&#34;Total Examples: {metrics[&#39;total_examples&#39;]}&#34;)
+        print(f&#34;Valid Programs: {metrics[&#39;valid_programs&#39;]} ({metrics[&#39;valid_program_rate&#39;]:.1%})&#34;)
+        print(f&#34;Exact Matches: {metrics[&#39;exact_matches&#39;]} ({metrics[&#39;exact_match_rate&#39;]:.1%})&#34;)
+        print(f&#34;Sequence Matches: {metrics[&#39;sequence_matches&#39;]} ({metrics[&#39;sequence_match_rate&#39;]:.1%})&#34;)
+        print(f&#34;Avg Generation Time: {metrics[&#39;avg_generation_time&#39;]:.2f}s&#34;)
+        
+        # Show some example results
+        print(&#34;\n&#34; + &#34;-&#34;*60)
+        print(&#34;SAMPLE RESULTS&#34;)
+        print(&#34;-&#34;*60)
+        
+        # Show successful examples
+        successful = [r for r in results if r.is_valid]
+        if successful:
+            print(&#34;\nSuccessful generations:&#34;)
+            for i, result in enumerate(successful[:3]):  # Show first 3
+                print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+                print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)
+                if result.generated_sequence:
+                    print(f&#34;   Sequence: {result.generated_sequence}&#34;)
+        
+        # Show failed examples
+        failed = [r for r in results if not r.is_valid]
+        if failed:
+            print(f&#34;\nFailed generations ({len(failed)} total):&#34;)
+            for i, result in enumerate(failed[:3]):  # Show first 3
+                print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+                print(f&#34;   Error: {result.error_message}&#34;)
+                print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Evaluator for assessing model performance.</p>
+<p>Initialize the evaluator.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>Trained LodaT5Model to evaluate</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaEvaluator.evaluate_examples"><code class="name flex">
+<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate_examples(self, test_examples: List[TrainingExample]) -&gt; Dict[str, float]:
+    &#34;&#34;&#34;
+    Evaluate the model on test examples.
+    
+    Args:
+        test_examples: List of test examples
+        
+    Returns:
+        Dictionary with evaluation metrics
+    &#34;&#34;&#34;
+    print(f&#34;Evaluating on {len(test_examples)} examples...&#34;)
+    
+    total_examples = len(test_examples)
+    valid_programs = 0
+    exact_matches = 0
+    sequence_matches = 0
+    total_generation_time = 0
+    
+    results = []
+    
+    for i, example in enumerate(test_examples):
+        if i % 10 == 0:
+            print(f&#34;Progress: {i}/{total_examples}&#34;)
+        
+        # Generate code
+        generation_results = self.generator.generate(example.description, num_samples=1)
+        
+        if generation_results:
+            result = generation_results[0]
+            results.append(result)
+            
+            total_generation_time += result.generation_time
+            
+            if result.is_valid:
+                valid_programs += 1
+                
+                # Check for exact match
+                if self._normalize_code(result.generated_code) == self._normalize_code(example.loda_code):
+                    exact_matches += 1
+                
+                # Check for sequence match (if we have expected terms)
+                if (example.terms and result.generated_sequence and 
+                    len(result.generated_sequence) &gt;= 3 and
+                    result.generated_sequence[:3] == example.terms[:3]):
+                    sequence_matches += 1
+    
+    # Calculate metrics
+    metrics = {
+        &#39;total_examples&#39;: total_examples,
+        &#39;valid_program_rate&#39;: valid_programs / total_examples if total_examples &gt; 0 else 0,
+        &#39;exact_match_rate&#39;: exact_matches / total_examples if total_examples &gt; 0 else 0,
+        &#39;sequence_match_rate&#39;: sequence_matches / total_examples if total_examples &gt; 0 else 0,
+        &#39;avg_generation_time&#39;: total_generation_time / total_examples if total_examples &gt; 0 else 0,
+        &#39;valid_programs&#39;: valid_programs,
+        &#39;exact_matches&#39;: exact_matches,
+        &#39;sequence_matches&#39;: sequence_matches
+    }
+    
+    return metrics, results</code></pre>
+</details>
+<div class="desc"><p>Evaluate the model on test examples.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>test_examples</code></strong></dt>
+<dd>List of test examples</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with evaluation metrics</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaEvaluator.print_evaluation_report"><code class="name flex">
+<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.ml.llm.inference.GenerationResult" href="inference.html#loda.ml.llm.inference.GenerationResult">GenerationResult</a>])</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print_evaluation_report(self, metrics: Dict[str, float], results: List[GenerationResult]):
+    &#34;&#34;&#34;Print a detailed evaluation report.&#34;&#34;&#34;
+    print(&#34;\n&#34; + &#34;=&#34;*60)
+    print(&#34;LODA LLM EVALUATION REPORT&#34;)
+    print(&#34;=&#34;*60)
+    
+    print(f&#34;Total Examples: {metrics[&#39;total_examples&#39;]}&#34;)
+    print(f&#34;Valid Programs: {metrics[&#39;valid_programs&#39;]} ({metrics[&#39;valid_program_rate&#39;]:.1%})&#34;)
+    print(f&#34;Exact Matches: {metrics[&#39;exact_matches&#39;]} ({metrics[&#39;exact_match_rate&#39;]:.1%})&#34;)
+    print(f&#34;Sequence Matches: {metrics[&#39;sequence_matches&#39;]} ({metrics[&#39;sequence_match_rate&#39;]:.1%})&#34;)
+    print(f&#34;Avg Generation Time: {metrics[&#39;avg_generation_time&#39;]:.2f}s&#34;)
+    
+    # Show some example results
+    print(&#34;\n&#34; + &#34;-&#34;*60)
+    print(&#34;SAMPLE RESULTS&#34;)
+    print(&#34;-&#34;*60)
+    
+    # Show successful examples
+    successful = [r for r in results if r.is_valid]
+    if successful:
+        print(&#34;\nSuccessful generations:&#34;)
+        for i, result in enumerate(successful[:3]):  # Show first 3
+            print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+            print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)
+            if result.generated_sequence:
+                print(f&#34;   Sequence: {result.generated_sequence}&#34;)
+    
+    # Show failed examples
+    failed = [r for r in results if not r.is_valid]
+    if failed:
+        print(f&#34;\nFailed generations ({len(failed)} total):&#34;)
+        for i, result in enumerate(failed[:3]):  # Show first 3
+            print(f&#34;\n{i+1}. Description: {result.description}&#34;)
+            print(f&#34;   Error: {result.error_message}&#34;)
+            print(f&#34;   Generated: {result.generated_code.replace(chr(10), &#39;; &#39;)}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Print a detailed evaluation report.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.LodaGenerator"><code class="flex name class">
+<span>class <span class="ident">LodaGenerator</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaGenerator:
+    &#34;&#34;&#34;Generator class for creating LODA code from natural language.&#34;&#34;&#34;
+    
+    def __init__(self, model: LodaT5Model, max_length: int = 256, num_beams: int = 4):
+        &#34;&#34;&#34;
+        Initialize the generator.
+        
+        Args:
+            model: Trained LodaT5Model
+            max_length: Maximum length of generated code
+            num_beams: Number of beams for beam search
+        &#34;&#34;&#34;
+        self.model = model
+        self.max_length = max_length
+        self.num_beams = num_beams
+    
+    def generate(self, description: str, num_samples: int = 1) -&gt; List[GenerationResult]:
+        &#34;&#34;&#34;
+        Generate LODA code from a natural language description.
+        
+        Args:
+            description: Natural language description of the sequence
+            num_samples: Number of code samples to generate
+            
+        Returns:
+            List of GenerationResult objects
+        &#34;&#34;&#34;
+        start_time = time.time()
+        
+        # Generate multiple samples
+        descriptions = [description] * num_samples
+        generated_codes = self.model.generate(
+            descriptions, 
+            max_length=self.max_length,
+            num_beams=self.num_beams
+        )
+        
+        generation_time = time.time() - start_time
+        
+        results = []
+        for code in generated_codes:
+            result = self._validate_and_evaluate_code(description, code)
+            result.generation_time = generation_time / num_samples
+            results.append(result)
+        
+        return results
+    
+    def _validate_and_evaluate_code(self, description: str, code: str) -&gt; GenerationResult:
+        &#34;&#34;&#34;
+        Validate and evaluate generated LODA code.
+        
+        Args:
+            description: Original description
+            code: Generated LODA code
+            
+        Returns:
+            GenerationResult with validation info
+        &#34;&#34;&#34;
+        result = GenerationResult(
+            description=description,
+            generated_code=code,
+            is_valid=False
+        )
+        
+        try:
+            # Try to parse the program
+            program = Program.parse(code)
+            
+            # Try to evaluate it for a few terms
+            interpreter = Interpreter(max_memory=100, max_stack=10, max_steps=10000)
+            evaluator = Evaluator(program, interpreter)
+            
+            sequence_terms = []
+            for i in range(10):  # Generate first 10 terms
+                try:
+                    term = evaluator(i)
+                    sequence_terms.append(term)
+                except Exception:
+                    break  # Stop if evaluation fails
+            
+            if len(sequence_terms) &gt;= 3:  # At least 3 terms generated
+                result.is_valid = True
+                result.generated_sequence = sequence_terms
+            else:
+                result.error_message = &#34;Could not generate sufficient sequence terms&#34;
+        
+        except Exception as e:
+            result.error_message = f&#34;Program validation failed: {str(e)}&#34;
+        
+        return result
+    
+    def generate_interactive(self):
+        &#34;&#34;&#34;Interactive mode for generating LODA code.&#34;&#34;&#34;
+        print(&#34;LODA Code Generator - Interactive Mode&#34;)
+        print(&#34;Enter natural language descriptions to generate LODA code.&#34;)
+        print(&#34;Type &#39;quit&#39; to exit.\n&#34;)
+        
+        while True:
+            try:
+                description = input(&#34;Description: &#34;).strip()
+                
+                if description.lower() in [&#39;quit&#39;, &#39;exit&#39;, &#39;q&#39;]:
+                    print(&#34;Goodbye!&#34;)
+                    break
+                
+                if not description:
+                    continue
+                
+                print(&#34;Generating code...&#34;)
+                results = self.generate(description, num_samples=1)
+                
+                for i, result in enumerate(results):
+                    print(f&#34;\n--- Result {i+1} ---&#34;)
+                    print(f&#34;Generated in {result.generation_time:.2f}s&#34;)
+                    print(f&#34;Valid: {result.is_valid}&#34;)
+                    
+                    if result.error_message:
+                        print(f&#34;Error: {result.error_message}&#34;)
+                    
+                    print(&#34;Generated LODA code:&#34;)
+                    print(result.generated_code)
+                    
+                    if result.generated_sequence:
+                        print(f&#34;Sequence terms: {result.generated_sequence}&#34;)
+                    
+                    print(&#34;-&#34; * 50)
+            
+            except KeyboardInterrupt:
+                print(&#34;\nGoodbye!&#34;)
+                break
+            except Exception as e:
+                print(f&#34;Error: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Generator class for creating LODA code from natural language.</p>
+<p>Initialize the generator.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>Trained LodaT5Model</dd>
+<dt><strong><code>max_length</code></strong></dt>
+<dd>Maximum length of generated code</dd>
+<dt><strong><code>num_beams</code></strong></dt>
+<dd>Number of beams for beam search</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaGenerator.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.ml.llm.inference.GenerationResult" href="inference.html#loda.ml.llm.inference.GenerationResult">GenerationResult</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate(self, description: str, num_samples: int = 1) -&gt; List[GenerationResult]:
+    &#34;&#34;&#34;
+    Generate LODA code from a natural language description.
+    
+    Args:
+        description: Natural language description of the sequence
+        num_samples: Number of code samples to generate
+        
+    Returns:
+        List of GenerationResult objects
+    &#34;&#34;&#34;
+    start_time = time.time()
+    
+    # Generate multiple samples
+    descriptions = [description] * num_samples
+    generated_codes = self.model.generate(
+        descriptions, 
+        max_length=self.max_length,
+        num_beams=self.num_beams
+    )
+    
+    generation_time = time.time() - start_time
+    
+    results = []
+    for code in generated_codes:
+        result = self._validate_and_evaluate_code(description, code)
+        result.generation_time = generation_time / num_samples
+        results.append(result)
+    
+    return results</code></pre>
+</details>
+<div class="desc"><p>Generate LODA code from a natural language description.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>description</code></strong></dt>
+<dd>Natural language description of the sequence</dd>
+<dt><strong><code>num_samples</code></strong></dt>
+<dd>Number of code samples to generate</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of GenerationResult objects</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaGenerator.generate_interactive"><code class="name flex">
+<span>def <span class="ident">generate_interactive</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_interactive(self):
+    &#34;&#34;&#34;Interactive mode for generating LODA code.&#34;&#34;&#34;
+    print(&#34;LODA Code Generator - Interactive Mode&#34;)
+    print(&#34;Enter natural language descriptions to generate LODA code.&#34;)
+    print(&#34;Type &#39;quit&#39; to exit.\n&#34;)
+    
+    while True:
+        try:
+            description = input(&#34;Description: &#34;).strip()
+            
+            if description.lower() in [&#39;quit&#39;, &#39;exit&#39;, &#39;q&#39;]:
+                print(&#34;Goodbye!&#34;)
+                break
+            
+            if not description:
+                continue
+            
+            print(&#34;Generating code...&#34;)
+            results = self.generate(description, num_samples=1)
+            
+            for i, result in enumerate(results):
+                print(f&#34;\n--- Result {i+1} ---&#34;)
+                print(f&#34;Generated in {result.generation_time:.2f}s&#34;)
+                print(f&#34;Valid: {result.is_valid}&#34;)
+                
+                if result.error_message:
+                    print(f&#34;Error: {result.error_message}&#34;)
+                
+                print(&#34;Generated LODA code:&#34;)
+                print(result.generated_code)
+                
+                if result.generated_sequence:
+                    print(f&#34;Sequence terms: {result.generated_sequence}&#34;)
+                
+                print(&#34;-&#34; * 50)
+        
+        except KeyboardInterrupt:
+            print(&#34;\nGoodbye!&#34;)
+            break
+        except Exception as e:
+            print(f&#34;Error: {e}&#34;)</code></pre>
+</details>
+<div class="desc"><p>Interactive mode for generating LODA code.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model"><code class="flex name class">
+<span>class <span class="ident">LodaT5Model</span></span>
+<span>(</span><span>model_name: str = 't5-small', loda_vocab_size: int | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaT5Model(nn.Module):
+    &#34;&#34;&#34;
+    T5-based model for natural language to LODA code generation.
+    &#34;&#34;&#34;
+    
+    def __init__(self, model_name: str = &#34;t5-small&#34;, loda_vocab_size: Optional[int] = None):
+        &#34;&#34;&#34;
+        Initialize the model.
+        
+        Args:
+            model_name: Base T5 model to use
+            loda_vocab_size: Size of LODA vocabulary (if extending tokenizer)
+        &#34;&#34;&#34;
+        super().__init__()
+        
+        # Load base T5 model and tokenizer
+        self.text_tokenizer = T5Tokenizer.from_pretrained(model_name)
+        self.model = T5ForConditionalGeneration.from_pretrained(model_name)
+        
+        # Initialize LODA tokenizer
+        self.loda_tokenizer = LodaTokenizer()
+        
+        # If we need to extend the vocabulary
+        if loda_vocab_size and loda_vocab_size &gt; self.loda_tokenizer.vocab_size:
+            # Could extend vocabulary here if needed
+            pass
+    
+    def prepare_input(self, descriptions: List[str]) -&gt; Dict[str, torch.Tensor]:
+        &#34;&#34;&#34;
+        Prepare natural language descriptions for input.
+        
+        Args:
+            descriptions: List of natural language descriptions
+            
+        Returns:
+            Dictionary with input tensors
+        &#34;&#34;&#34;
+        # Add task prefix for T5
+        prefixed_descriptions = [f&#34;translate to loda: {desc}&#34; for desc in descriptions]
+        
+        # Tokenize with T5 tokenizer
+        encoded = self.text_tokenizer(
+            prefixed_descriptions,
+            padding=True,
+            truncation=True,
+            max_length=512,
+            return_tensors=&#34;pt&#34;
+        )
+        
+        return encoded
+    
+    def prepare_target(self, loda_codes: List[str]) -&gt; Dict[str, torch.Tensor]:
+        &#34;&#34;&#34;
+        Prepare LODA codes as targets.
+        
+        Args:
+            loda_codes: List of LODA assembly codes
+            
+        Returns:
+            Dictionary with target tensors
+        &#34;&#34;&#34;
+        # For T5, we need to encode targets using the text tokenizer as well
+        # We&#39;ll create a custom format that represents LODA code
+        
+        # Convert LODA to a text representation that T5 can understand
+        text_loda_codes = []
+        for code in loda_codes:
+            # Convert LODA code to a more text-like format
+            text_code = self.loda_to_text_format(code)
+            text_loda_codes.append(text_code)
+        
+        encoded = self.text_tokenizer(
+            text_loda_codes,
+            padding=True,
+            truncation=True,
+            max_length=256,
+            return_tensors=&#34;pt&#34;
+        )
+        
+        return encoded
+    
+    def loda_to_text_format(self, code: str) -&gt; str:
+        &#34;&#34;&#34;
+        Convert LODA code to a text format suitable for T5.
+        
+        This creates a more natural language representation of LODA code.
+        
+        Args:
+            code: LODA assembly code
+            
+        Returns:
+            Text representation of the code
+        &#34;&#34;&#34;
+        lines = code.strip().split(&#39;\n&#39;)
+        text_parts = []
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Parse the line and convert to text
+            parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+            if len(parts) &gt;= 3:
+                op, target, source = parts[0], parts[1], parts[2]
+                text_parts.append(f&#34;{op} {target} {source}&#34;)
+            elif len(parts) &gt;= 2:
+                op, target = parts[0], parts[1]
+                text_parts.append(f&#34;{op} {target}&#34;)
+            else:
+                text_parts.append(line)
+        
+        return &#34; | &#34;.join(text_parts)
+    
+    def text_format_to_loda(self, text_code: str) -&gt; str:
+        &#34;&#34;&#34;
+        Convert text format back to LODA code.
+        
+        Args:
+            text_code: Text representation of LODA code
+            
+        Returns:
+            LODA assembly code
+        &#34;&#34;&#34;
+        parts = text_code.split(&#34; | &#34;)
+        loda_lines = []
+        
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            
+            tokens = part.split()
+            if len(tokens) &gt;= 3:
+                op, target, source = tokens[0], tokens[1], tokens[2]
+                loda_lines.append(f&#34;{op} {target},{source}&#34;)
+            elif len(tokens) &gt;= 2:
+                op, target = tokens[0], tokens[1]
+                loda_lines.append(f&#34;{op} {target}&#34;)
+            else:
+                loda_lines.append(part)
+        
+        return &#39;\n&#39;.join(loda_lines)
+    
+    def forward(self, input_ids, attention_mask, labels=None):
+        &#34;&#34;&#34;
+        Forward pass of the model.
+        
+        Args:
+            input_ids: Input token IDs
+            attention_mask: Attention mask
+            labels: Target labels (for training)
+            
+        Returns:
+            Model outputs
+        &#34;&#34;&#34;
+        return self.model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            labels=labels
+        )
+    
+    def generate(self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) -&gt; List[str]:
+        &#34;&#34;&#34;
+        Generate LODA code from natural language descriptions.
+        
+        Args:
+            descriptions: List of natural language descriptions
+            max_length: Maximum length of generated sequences
+            num_beams: Number of beams for beam search
+            
+        Returns:
+            List of generated LODA codes
+        &#34;&#34;&#34;
+        # Prepare input
+        inputs = self.prepare_input(descriptions)
+        
+        # Generate with the model
+        with torch.no_grad():
+            generated_ids = self.model.generate(
+                input_ids=inputs[&#39;input_ids&#39;],
+                attention_mask=inputs[&#39;attention_mask&#39;],
+                max_length=max_length,
+                num_beams=num_beams,
+                early_stopping=True,
+                do_sample=False
+            )
+        
+        # Decode generated sequences
+        generated_texts = self.text_tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+        
+        # Convert from text format back to LODA
+        loda_codes = [self.text_format_to_loda(text) for text in generated_texts]
+        
+        return loda_codes
+    
+    def save_model(self, save_path: str):
+        &#34;&#34;&#34;
+        Save the model and tokenizers.
+        
+        Args:
+            save_path: Directory to save the model
+        &#34;&#34;&#34;
+        os.makedirs(save_path, exist_ok=True)
+        
+        # Save T5 model and tokenizer
+        self.model.save_pretrained(save_path)
+        self.text_tokenizer.save_pretrained(save_path)
+        
+        # Save LODA tokenizer
+        loda_tokenizer_path = os.path.join(save_path, &#34;loda_tokenizer.json&#34;)
+        with open(loda_tokenizer_path, &#39;w&#39;) as f:
+            json.dump({
+                &#39;vocab&#39;: self.loda_tokenizer.vocab,
+                &#39;reverse_vocab&#39;: {str(k): v for k, v in self.loda_tokenizer.reverse_vocab.items()}
+            }, f, indent=2)
+    
+    @classmethod
+    def load_model(cls, load_path: str):
+        &#34;&#34;&#34;
+        Load a saved model.
+        
+        Args:
+            load_path: Directory containing the saved model
+            
+        Returns:
+            Loaded LodaT5Model instance
+        &#34;&#34;&#34;
+        # Load T5 model and tokenizer
+        model = T5ForConditionalGeneration.from_pretrained(load_path)
+        text_tokenizer = T5Tokenizer.from_pretrained(load_path)
+        
+        # Create model instance
+        loda_model = cls()
+        loda_model.model = model
+        loda_model.text_tokenizer = text_tokenizer
+        
+        # Load LODA tokenizer if it exists
+        loda_tokenizer_path = os.path.join(load_path, &#34;loda_tokenizer.json&#34;)
+        if os.path.exists(loda_tokenizer_path):
+            with open(loda_tokenizer_path, &#39;r&#39;) as f:
+                tokenizer_data = json.load(f)
+            
+            loda_model.loda_tokenizer.vocab = tokenizer_data[&#39;vocab&#39;]
+            loda_model.loda_tokenizer.reverse_vocab = {
+                int(k): v for k, v in tokenizer_data[&#39;reverse_vocab&#39;].items()
+            }
+        
+        return loda_model</code></pre>
+</details>
+<div class="desc"><p>T5-based model for natural language to LODA code generation.</p>
+<p>Initialize the model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model_name</code></strong></dt>
+<dd>Base T5 model to use</dd>
+<dt><strong><code>loda_vocab_size</code></strong></dt>
+<dd>Size of LODA vocabulary (if extending tokenizer)</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.nn.modules.module.Module</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaT5Model.load_model"><code class="name flex">
+<span>def <span class="ident">load_model</span></span>(<span>load_path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load a saved model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>load_path</code></strong></dt>
+<dd>Directory containing the saved model</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Loaded LodaT5Model instance</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaT5Model.forward"><code class="name flex">
+<span>def <span class="ident">forward</span></span>(<span>self, input_ids, attention_mask, labels=None) ‑> Callable[..., Any]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def forward(self, input_ids, attention_mask, labels=None):
+    &#34;&#34;&#34;
+    Forward pass of the model.
+    
+    Args:
+        input_ids: Input token IDs
+        attention_mask: Attention mask
+        labels: Target labels (for training)
+        
+    Returns:
+        Model outputs
+    &#34;&#34;&#34;
+    return self.model(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        labels=labels
+    )</code></pre>
+</details>
+<div class="desc"><p>Forward pass of the model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_ids</code></strong></dt>
+<dd>Input token IDs</dd>
+<dt><strong><code>attention_mask</code></strong></dt>
+<dd>Attention mask</dd>
+<dt><strong><code>labels</code></strong></dt>
+<dd>Target labels (for training)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Model outputs</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) ‑> List[str]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate(self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) -&gt; List[str]:
+    &#34;&#34;&#34;
+    Generate LODA code from natural language descriptions.
+    
+    Args:
+        descriptions: List of natural language descriptions
+        max_length: Maximum length of generated sequences
+        num_beams: Number of beams for beam search
+        
+    Returns:
+        List of generated LODA codes
+    &#34;&#34;&#34;
+    # Prepare input
+    inputs = self.prepare_input(descriptions)
+    
+    # Generate with the model
+    with torch.no_grad():
+        generated_ids = self.model.generate(
+            input_ids=inputs[&#39;input_ids&#39;],
+            attention_mask=inputs[&#39;attention_mask&#39;],
+            max_length=max_length,
+            num_beams=num_beams,
+            early_stopping=True,
+            do_sample=False
+        )
+    
+    # Decode generated sequences
+    generated_texts = self.text_tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+    
+    # Convert from text format back to LODA
+    loda_codes = [self.text_format_to_loda(text) for text in generated_texts]
+    
+    return loda_codes</code></pre>
+</details>
+<div class="desc"><p>Generate LODA code from natural language descriptions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>descriptions</code></strong></dt>
+<dd>List of natural language descriptions</dd>
+<dt><strong><code>max_length</code></strong></dt>
+<dd>Maximum length of generated sequences</dd>
+<dt><strong><code>num_beams</code></strong></dt>
+<dd>Number of beams for beam search</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of generated LODA codes</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.loda_to_text_format"><code class="name flex">
+<span>def <span class="ident">loda_to_text_format</span></span>(<span>self, code: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loda_to_text_format(self, code: str) -&gt; str:
+    &#34;&#34;&#34;
+    Convert LODA code to a text format suitable for T5.
+    
+    This creates a more natural language representation of LODA code.
+    
+    Args:
+        code: LODA assembly code
+        
+    Returns:
+        Text representation of the code
+    &#34;&#34;&#34;
+    lines = code.strip().split(&#39;\n&#39;)
+    text_parts = []
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        
+        # Parse the line and convert to text
+        parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+        if len(parts) &gt;= 3:
+            op, target, source = parts[0], parts[1], parts[2]
+            text_parts.append(f&#34;{op} {target} {source}&#34;)
+        elif len(parts) &gt;= 2:
+            op, target = parts[0], parts[1]
+            text_parts.append(f&#34;{op} {target}&#34;)
+        else:
+            text_parts.append(line)
+    
+    return &#34; | &#34;.join(text_parts)</code></pre>
+</details>
+<div class="desc"><p>Convert LODA code to a text format suitable for T5.</p>
+<p>This creates a more natural language representation of LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Text representation of the code</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.prepare_input"><code class="name flex">
+<span>def <span class="ident">prepare_input</span></span>(<span>self, descriptions: List[str]) ‑> Dict[str, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare_input(self, descriptions: List[str]) -&gt; Dict[str, torch.Tensor]:
+    &#34;&#34;&#34;
+    Prepare natural language descriptions for input.
+    
+    Args:
+        descriptions: List of natural language descriptions
+        
+    Returns:
+        Dictionary with input tensors
+    &#34;&#34;&#34;
+    # Add task prefix for T5
+    prefixed_descriptions = [f&#34;translate to loda: {desc}&#34; for desc in descriptions]
+    
+    # Tokenize with T5 tokenizer
+    encoded = self.text_tokenizer(
+        prefixed_descriptions,
+        padding=True,
+        truncation=True,
+        max_length=512,
+        return_tensors=&#34;pt&#34;
+    )
+    
+    return encoded</code></pre>
+</details>
+<div class="desc"><p>Prepare natural language descriptions for input.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>descriptions</code></strong></dt>
+<dd>List of natural language descriptions</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with input tensors</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.prepare_target"><code class="name flex">
+<span>def <span class="ident">prepare_target</span></span>(<span>self, loda_codes: List[str]) ‑> Dict[str, torch.Tensor]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare_target(self, loda_codes: List[str]) -&gt; Dict[str, torch.Tensor]:
+    &#34;&#34;&#34;
+    Prepare LODA codes as targets.
+    
+    Args:
+        loda_codes: List of LODA assembly codes
+        
+    Returns:
+        Dictionary with target tensors
+    &#34;&#34;&#34;
+    # For T5, we need to encode targets using the text tokenizer as well
+    # We&#39;ll create a custom format that represents LODA code
+    
+    # Convert LODA to a text representation that T5 can understand
+    text_loda_codes = []
+    for code in loda_codes:
+        # Convert LODA code to a more text-like format
+        text_code = self.loda_to_text_format(code)
+        text_loda_codes.append(text_code)
+    
+    encoded = self.text_tokenizer(
+        text_loda_codes,
+        padding=True,
+        truncation=True,
+        max_length=256,
+        return_tensors=&#34;pt&#34;
+    )
+    
+    return encoded</code></pre>
+</details>
+<div class="desc"><p>Prepare LODA codes as targets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>loda_codes</code></strong></dt>
+<dd>List of LODA assembly codes</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Dictionary with target tensors</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.save_model"><code class="name flex">
+<span>def <span class="ident">save_model</span></span>(<span>self, save_path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_model(self, save_path: str):
+    &#34;&#34;&#34;
+    Save the model and tokenizers.
+    
+    Args:
+        save_path: Directory to save the model
+    &#34;&#34;&#34;
+    os.makedirs(save_path, exist_ok=True)
+    
+    # Save T5 model and tokenizer
+    self.model.save_pretrained(save_path)
+    self.text_tokenizer.save_pretrained(save_path)
+    
+    # Save LODA tokenizer
+    loda_tokenizer_path = os.path.join(save_path, &#34;loda_tokenizer.json&#34;)
+    with open(loda_tokenizer_path, &#39;w&#39;) as f:
+        json.dump({
+            &#39;vocab&#39;: self.loda_tokenizer.vocab,
+            &#39;reverse_vocab&#39;: {str(k): v for k, v in self.loda_tokenizer.reverse_vocab.items()}
+        }, f, indent=2)</code></pre>
+</details>
+<div class="desc"><p>Save the model and tokenizers.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>save_path</code></strong></dt>
+<dd>Directory to save the model</dd>
+</dl></div>
+</dd>
+<dt id="loda.ml.llm.LodaT5Model.text_format_to_loda"><code class="name flex">
+<span>def <span class="ident">text_format_to_loda</span></span>(<span>self, text_code: str) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def text_format_to_loda(self, text_code: str) -&gt; str:
+    &#34;&#34;&#34;
+    Convert text format back to LODA code.
+    
+    Args:
+        text_code: Text representation of LODA code
+        
+    Returns:
+        LODA assembly code
+    &#34;&#34;&#34;
+    parts = text_code.split(&#34; | &#34;)
+    loda_lines = []
+    
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        
+        tokens = part.split()
+        if len(tokens) &gt;= 3:
+            op, target, source = tokens[0], tokens[1], tokens[2]
+            loda_lines.append(f&#34;{op} {target},{source}&#34;)
+        elif len(tokens) &gt;= 2:
+            op, target = tokens[0], tokens[1]
+            loda_lines.append(f&#34;{op} {target}&#34;)
+        else:
+            loda_lines.append(part)
+    
+    return &#39;\n&#39;.join(loda_lines)</code></pre>
+</details>
+<div class="desc"><p>Convert text format back to LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text_code</code></strong></dt>
+<dd>Text representation of LODA code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>LODA assembly code</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.LodaTokenizer"><code class="flex name class">
+<span>class <span class="ident">LodaTokenizer</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaTokenizer:
+    &#34;&#34;&#34;Custom tokenizer for LODA assembly language.&#34;&#34;&#34;
+    
+    def __init__(self):
+        &#34;&#34;&#34;Initialize LODA tokenizer with vocabulary.&#34;&#34;&#34;
+        # LODA operations
+        self.operations = [
+            &#39;mov&#39;, &#39;add&#39;, &#39;sub&#39;, &#39;mul&#39;, &#39;div&#39;, &#39;dif&#39;, &#39;mod&#39;, &#39;pow&#39;, &#39;gcd&#39;, &#39;bin&#39;,
+            &#39;cmp&#39;, &#39;min&#39;, &#39;max&#39;, &#39;lpb&#39;, &#39;lpe&#39;, &#39;nop&#39;, &#39;cal&#39;, &#39;seq&#39;, &#39;trn&#39;, &#39;clr&#39;
+        ]
+        
+        # Common operand patterns
+        self.operand_patterns = [
+            # Direct memory references
+            &#39;$0&#39;, &#39;$1&#39;, &#39;$2&#39;, &#39;$3&#39;, &#39;$4&#39;, &#39;$5&#39;, &#39;$6&#39;, &#39;$7&#39;, &#39;$8&#39;, &#39;$9&#39;, &#39;$10&#39;,
+            # Indirect memory references  
+            &#39;$$1&#39;, &#39;$$2&#39;, &#39;$$3&#39;, &#39;$$4&#39;, &#39;$$5&#39;,
+            # Common constants
+            &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;, &#39;10&#39;, &#39;-1&#39;
+        ]
+        
+        # Special tokens
+        self.special_tokens = [&#39;&lt;pad&gt;&#39;, &#39;&lt;unk&gt;&#39;, &#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;mask&gt;&#39;]
+        
+        # Build vocabulary
+        self.vocab = {}
+        self.reverse_vocab = {}
+        
+        # Add special tokens first
+        for i, token in enumerate(self.special_tokens):
+            self.vocab[token] = i
+            self.reverse_vocab[i] = token
+        
+        # Add operations
+        for token in self.operations:
+            idx = len(self.vocab)
+            self.vocab[token] = idx
+            self.reverse_vocab[idx] = token
+        
+        # Add operand patterns
+        for token in self.operand_patterns:
+            idx = len(self.vocab)
+            self.vocab[token] = idx
+            self.reverse_vocab[idx] = token
+        
+        self.vocab_size = len(self.vocab)
+        self.pad_token_id = self.vocab[&#39;&lt;pad&gt;&#39;]
+        self.unk_token_id = self.vocab[&#39;&lt;unk&gt;&#39;]
+        self.bos_token_id = self.vocab[&#39;&lt;s&gt;&#39;]
+        self.eos_token_id = self.vocab[&#39;&lt;/s&gt;&#39;]
+    
+    def tokenize_loda_code(self, code: str) -&gt; List[str]:
+        &#34;&#34;&#34;
+        Tokenize LODA assembly code.
+        
+        Args:
+            code: LODA assembly code as string
+            
+        Returns:
+            List of tokens
+        &#34;&#34;&#34;
+        lines = code.strip().split(&#39;\n&#39;)
+        tokens = [&#39;&lt;s&gt;&#39;]  # Start token
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Split on whitespace and comma
+            parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+            
+            for part in parts:
+                part = part.strip()
+                if part in self.vocab:
+                    tokens.append(part)
+                else:
+                    # Try to handle unknown operands
+                    if part.startswith(&#39;$&#39;) and part[1:].isdigit():
+                        # Direct memory reference
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    elif part.startswith(&#39;$$&#39;) and part[2:].isdigit():
+                        # Indirect memory reference
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    elif part.lstrip(&#39;-&#39;).isdigit():
+                        # Numeric constant
+                        if part in self.vocab:
+                            tokens.append(part)
+                        else:
+                            tokens.append(&#39;&lt;unk&gt;&#39;)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+        
+        tokens.append(&#39;&lt;/s&gt;&#39;)  # End token
+        return tokens
+    
+    def encode_loda_code(self, code: str) -&gt; List[int]:
+        &#34;&#34;&#34;
+        Encode LODA code to token IDs.
+        
+        Args:
+            code: LODA assembly code
+            
+        Returns:
+            List of token IDs
+        &#34;&#34;&#34;
+        tokens = self.tokenize_loda_code(code)
+        return [self.vocab.get(token, self.unk_token_id) for token in tokens]
+    
+    def decode_loda_code(self, token_ids: List[int]) -&gt; str:
+        &#34;&#34;&#34;
+        Decode token IDs back to LODA code.
+        
+        Args:
+            token_ids: List of token IDs
+            
+        Returns:
+            LODA assembly code as string
+        &#34;&#34;&#34;
+        tokens = [self.reverse_vocab.get(id, &#39;&lt;unk&gt;&#39;) for id in token_ids]
+        
+        # Filter out special tokens
+        filtered_tokens = []
+        for token in tokens:
+            if token in [&#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;pad&gt;&#39;]:
+                continue
+            if token == &#39;&lt;unk&gt;&#39;:
+                continue
+            filtered_tokens.append(token)
+        
+        # Reconstruct LODA code
+        code_lines = []
+        i = 0
+        
+        while i &lt; len(filtered_tokens):
+            if i + 2 &lt; len(filtered_tokens):
+                # Try to form operation: op target source
+                op = filtered_tokens[i]
+                if op in self.operations and i + 2 &lt; len(filtered_tokens):
+                    target = filtered_tokens[i + 1]
+                    source = filtered_tokens[i + 2]
+                    code_lines.append(f&#34;{op} {target},{source}&#34;)
+                    i += 3
+                elif op in self.operations and i + 1 &lt; len(filtered_tokens):
+                    # Single operand operation
+                    target = filtered_tokens[i + 1]
+                    code_lines.append(f&#34;{op} {target}&#34;)
+                    i += 2
+                else:
+                    i += 1
+            else:
+                i += 1
+        
+        return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Custom tokenizer for LODA assembly language.</p>
+<p>Initialize LODA tokenizer with vocabulary.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaTokenizer.decode_loda_code"><code class="name flex">
+<span>def <span class="ident">decode_loda_code</span></span>(<span>self, token_ids: List[int]) ‑> str</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decode_loda_code(self, token_ids: List[int]) -&gt; str:
+    &#34;&#34;&#34;
+    Decode token IDs back to LODA code.
+    
+    Args:
+        token_ids: List of token IDs
+        
+    Returns:
+        LODA assembly code as string
+    &#34;&#34;&#34;
+    tokens = [self.reverse_vocab.get(id, &#39;&lt;unk&gt;&#39;) for id in token_ids]
+    
+    # Filter out special tokens
+    filtered_tokens = []
+    for token in tokens:
+        if token in [&#39;&lt;s&gt;&#39;, &#39;&lt;/s&gt;&#39;, &#39;&lt;pad&gt;&#39;]:
+            continue
+        if token == &#39;&lt;unk&gt;&#39;:
+            continue
+        filtered_tokens.append(token)
+    
+    # Reconstruct LODA code
+    code_lines = []
+    i = 0
+    
+    while i &lt; len(filtered_tokens):
+        if i + 2 &lt; len(filtered_tokens):
+            # Try to form operation: op target source
+            op = filtered_tokens[i]
+            if op in self.operations and i + 2 &lt; len(filtered_tokens):
+                target = filtered_tokens[i + 1]
+                source = filtered_tokens[i + 2]
+                code_lines.append(f&#34;{op} {target},{source}&#34;)
+                i += 3
+            elif op in self.operations and i + 1 &lt; len(filtered_tokens):
+                # Single operand operation
+                target = filtered_tokens[i + 1]
+                code_lines.append(f&#34;{op} {target}&#34;)
+                i += 2
+            else:
+                i += 1
+        else:
+            i += 1
+    
+    return &#39;\n&#39;.join(code_lines)</code></pre>
+</details>
+<div class="desc"><p>Decode token IDs back to LODA code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>token_ids</code></strong></dt>
+<dd>List of token IDs</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>LODA assembly code as string</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaTokenizer.encode_loda_code"><code class="name flex">
+<span>def <span class="ident">encode_loda_code</span></span>(<span>self, code: str) ‑> List[int]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def encode_loda_code(self, code: str) -&gt; List[int]:
+    &#34;&#34;&#34;
+    Encode LODA code to token IDs.
+    
+    Args:
+        code: LODA assembly code
+        
+    Returns:
+        List of token IDs
+    &#34;&#34;&#34;
+    tokens = self.tokenize_loda_code(code)
+    return [self.vocab.get(token, self.unk_token_id) for token in tokens]</code></pre>
+</details>
+<div class="desc"><p>Encode LODA code to token IDs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of token IDs</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaTokenizer.tokenize_loda_code"><code class="name flex">
+<span>def <span class="ident">tokenize_loda_code</span></span>(<span>self, code: str) ‑> List[str]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tokenize_loda_code(self, code: str) -&gt; List[str]:
+    &#34;&#34;&#34;
+    Tokenize LODA assembly code.
+    
+    Args:
+        code: LODA assembly code as string
+        
+    Returns:
+        List of tokens
+    &#34;&#34;&#34;
+    lines = code.strip().split(&#39;\n&#39;)
+    tokens = [&#39;&lt;s&gt;&#39;]  # Start token
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        
+        # Split on whitespace and comma
+        parts = line.replace(&#39;,&#39;, &#39; &#39;).split()
+        
+        for part in parts:
+            part = part.strip()
+            if part in self.vocab:
+                tokens.append(part)
+            else:
+                # Try to handle unknown operands
+                if part.startswith(&#39;$&#39;) and part[1:].isdigit():
+                    # Direct memory reference
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                elif part.startswith(&#39;$$&#39;) and part[2:].isdigit():
+                    # Indirect memory reference
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                elif part.lstrip(&#39;-&#39;).isdigit():
+                    # Numeric constant
+                    if part in self.vocab:
+                        tokens.append(part)
+                    else:
+                        tokens.append(&#39;&lt;unk&gt;&#39;)
+                else:
+                    tokens.append(&#39;&lt;unk&gt;&#39;)
+    
+    tokens.append(&#39;&lt;/s&gt;&#39;)  # End token
+    return tokens</code></pre>
+</details>
+<div class="desc"><p>Tokenize LODA assembly code.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>code</code></strong></dt>
+<dd>LODA assembly code as string</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of tokens</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.LodaTrainer"><code class="flex name class">
+<span>class <span class="ident">LodaTrainer</span></span>
+<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>train_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="trainer.html#loda.ml.llm.trainer.LodaDataset">LodaDataset</a>,<br>val_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="trainer.html#loda.ml.llm.trainer.LodaDataset">LodaDataset</a> | None = None,<br>learning_rate: float = 5e-05,<br>batch_size: int = 8,<br>num_epochs: int = 3,<br>warmup_steps: int = 500,<br>save_dir: str = 'loda_llm_model')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LodaTrainer:
+    &#34;&#34;&#34;Trainer class for LODA LLM.&#34;&#34;&#34;
+    
+    def __init__(self, 
+                 model: LodaT5Model,
+                 train_dataset: LodaDataset,
+                 val_dataset: Optional[LodaDataset] = None,
+                 learning_rate: float = 5e-5,
+                 batch_size: int = 8,
+                 num_epochs: int = 3,
+                 warmup_steps: int = 500,
+                 save_dir: str = &#34;loda_llm_model&#34;):
+        &#34;&#34;&#34;
+        Initialize the trainer.
+        
+        Args:
+            model: LodaT5Model to train
+            train_dataset: Training dataset
+            val_dataset: Validation dataset (optional)
+            learning_rate: Learning rate
+            batch_size: Batch size
+            num_epochs: Number of training epochs
+            warmup_steps: Number of warmup steps for learning rate schedule
+            save_dir: Directory to save the model
+        &#34;&#34;&#34;
+        self.model = model
+        self.train_dataset = train_dataset
+        self.val_dataset = val_dataset
+        self.learning_rate = learning_rate
+        self.batch_size = batch_size
+        self.num_epochs = num_epochs
+        self.warmup_steps = warmup_steps
+        self.save_dir = save_dir
+        
+        # Set up device
+        self.device = torch.device(&#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39;)
+        self.model.model.to(self.device)
+        
+        # Set up data loaders
+        self.train_loader = DataLoader(
+            train_dataset, 
+            batch_size=batch_size, 
+            shuffle=True,
+            collate_fn=self._collate_fn
+        )
+        
+        if val_dataset:
+            self.val_loader = DataLoader(
+                val_dataset, 
+                batch_size=batch_size, 
+                shuffle=False,
+                collate_fn=self._collate_fn
+            )
+        
+        # Set up optimizer
+        self.optimizer = AdamW(
+            self.model.model.parameters(),
+            lr=learning_rate,
+            weight_decay=0.01
+        )
+        
+        # Set up learning rate scheduler
+        total_steps = len(self.train_loader) * num_epochs
+        self.scheduler = get_linear_schedule_with_warmup(
+            self.optimizer,
+            num_warmup_steps=warmup_steps,
+            num_training_steps=total_steps
+        )
+    
+    def _collate_fn(self, batch):
+        &#34;&#34;&#34;Collate function for DataLoader.&#34;&#34;&#34;
+        # Pad sequences to the same length
+        input_ids = [item[&#39;input_ids&#39;] for item in batch]
+        attention_masks = [item[&#39;attention_mask&#39;] for item in batch]
+        labels = [item[&#39;labels&#39;] for item in batch]
+        decoder_attention_masks = [item[&#39;decoder_attention_mask&#39;] for item in batch]
+        
+        # Pad input sequences
+        max_input_len = max(len(seq) for seq in input_ids)
+        padded_input_ids = []
+        padded_attention_masks = []
+        
+        for i in range(len(input_ids)):
+            seq_len = len(input_ids[i])
+            pad_len = max_input_len - seq_len
+            
+            padded_input_ids.append(
+                torch.cat([input_ids[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+            padded_attention_masks.append(
+                torch.cat([attention_masks[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+        
+        # Pad target sequences
+        max_target_len = max(len(seq) for seq in labels)
+        padded_labels = []
+        padded_decoder_masks = []
+        
+        for i in range(len(labels)):
+            seq_len = len(labels[i])
+            pad_len = max_target_len - seq_len
+            
+            # For labels, use -100 for padding (ignored in loss calculation)
+            padded_labels.append(
+                torch.cat([labels[i], torch.full((pad_len,), -100, dtype=torch.long)])
+            )
+            padded_decoder_masks.append(
+                torch.cat([decoder_attention_masks[i], torch.zeros(pad_len, dtype=torch.long)])
+            )
+        
+        return {
+            &#39;input_ids&#39;: torch.stack(padded_input_ids),
+            &#39;attention_mask&#39;: torch.stack(padded_attention_masks),
+            &#39;labels&#39;: torch.stack(padded_labels),
+            &#39;decoder_attention_mask&#39;: torch.stack(padded_decoder_masks)
+        }
+    
+    def train_epoch(self):
+        &#34;&#34;&#34;Train for one epoch.&#34;&#34;&#34;
+        self.model.model.train()
+        total_loss = 0
+        
+        progress_bar = tqdm(self.train_loader, desc=&#34;Training&#34;)
+        
+        for batch in progress_bar:
+            # Move to device
+            batch = {k: v.to(self.device) for k, v in batch.items()}
+            
+            # Forward pass
+            outputs = self.model.forward(
+                input_ids=batch[&#39;input_ids&#39;],
+                attention_mask=batch[&#39;attention_mask&#39;],
+                labels=batch[&#39;labels&#39;]
+            )
+            
+            loss = outputs.loss
+            total_loss += loss.item()
+            
+            # Backward pass
+            loss.backward()
+            
+            # Clip gradients
+            torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 1.0)
+            
+            # Update parameters
+            self.optimizer.step()
+            self.scheduler.step()
+            self.optimizer.zero_grad()
+            
+            # Update progress bar
+            progress_bar.set_postfix({&#39;loss&#39;: loss.item()})
+        
+        return total_loss / len(self.train_loader)
+    
+    def validate(self):
+        &#34;&#34;&#34;Validate the model.&#34;&#34;&#34;
+        if not self.val_dataset:
+            return None
+        
+        self.model.model.eval()
+        total_loss = 0
+        
+        with torch.no_grad():
+            progress_bar = tqdm(self.val_loader, desc=&#34;Validation&#34;)
+            
+            for batch in progress_bar:
+                # Move to device
+                batch = {k: v.to(self.device) for k, v in batch.items()}
+                
+                # Forward pass
+                outputs = self.model.forward(
+                    input_ids=batch[&#39;input_ids&#39;],
+                    attention_mask=batch[&#39;attention_mask&#39;],
+                    labels=batch[&#39;labels&#39;]
+                )
+                
+                loss = outputs.loss
+                total_loss += loss.item()
+                
+                progress_bar.set_postfix({&#39;val_loss&#39;: loss.item()})
+        
+        return total_loss / len(self.val_loader)
+    
+    def train(self):
+        &#34;&#34;&#34;Train the model.&#34;&#34;&#34;
+        print(f&#34;Training on device: {self.device}&#34;)
+        print(f&#34;Training examples: {len(self.train_dataset)}&#34;)
+        if self.val_dataset:
+            print(f&#34;Validation examples: {len(self.val_dataset)}&#34;)
+        
+        best_val_loss = float(&#39;inf&#39;)
+        
+        for epoch in range(self.num_epochs):
+            print(f&#34;\nEpoch {epoch + 1}/{self.num_epochs}&#34;)
+            
+            # Train
+            train_loss = self.train_epoch()
+            print(f&#34;Training loss: {train_loss:.4f}&#34;)
+            
+            # Validate
+            val_loss = self.validate()
+            if val_loss is not None:
+                print(f&#34;Validation loss: {val_loss:.4f}&#34;)
+                
+                # Save best model
+                if val_loss &lt; best_val_loss:
+                    best_val_loss = val_loss
+                    self.save_model(f&#34;{self.save_dir}_best&#34;)
+                    print(&#34;Saved best model&#34;)
+            
+            # Save checkpoint
+            self.save_model(f&#34;{self.save_dir}_epoch_{epoch + 1}&#34;)
+        
+        print(&#34;\nTraining completed!&#34;)
+        return self.model
+    
+    def save_model(self, path: str):
+        &#34;&#34;&#34;Save the model.&#34;&#34;&#34;
+        self.model.save_model(path)</code></pre>
+</details>
+<div class="desc"><p>Trainer class for LODA LLM.</p>
+<p>Initialize the trainer.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>model</code></strong></dt>
+<dd>LodaT5Model to train</dd>
+<dt><strong><code>train_dataset</code></strong></dt>
+<dd>Training dataset</dd>
+<dt><strong><code>val_dataset</code></strong></dt>
+<dd>Validation dataset (optional)</dd>
+<dt><strong><code>learning_rate</code></strong></dt>
+<dd>Learning rate</dd>
+<dt><strong><code>batch_size</code></strong></dt>
+<dd>Batch size</dd>
+<dt><strong><code>num_epochs</code></strong></dt>
+<dd>Number of training epochs</dd>
+<dt><strong><code>warmup_steps</code></strong></dt>
+<dd>Number of warmup steps for learning rate schedule</dd>
+<dt><strong><code>save_dir</code></strong></dt>
+<dd>Directory to save the model</dd>
+</dl></div>
+<h3>Methods</h3>
+<dl>
+<dt id="loda.ml.llm.LodaTrainer.save_model"><code class="name flex">
+<span>def <span class="ident">save_model</span></span>(<span>self, path: str)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_model(self, path: str):
+    &#34;&#34;&#34;Save the model.&#34;&#34;&#34;
+    self.model.save_model(path)</code></pre>
+</details>
+<div class="desc"><p>Save the model.</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaTrainer.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(self):
+    &#34;&#34;&#34;Train the model.&#34;&#34;&#34;
+    print(f&#34;Training on device: {self.device}&#34;)
+    print(f&#34;Training examples: {len(self.train_dataset)}&#34;)
+    if self.val_dataset:
+        print(f&#34;Validation examples: {len(self.val_dataset)}&#34;)
+    
+    best_val_loss = float(&#39;inf&#39;)
+    
+    for epoch in range(self.num_epochs):
+        print(f&#34;\nEpoch {epoch + 1}/{self.num_epochs}&#34;)
+        
+        # Train
+        train_loss = self.train_epoch()
+        print(f&#34;Training loss: {train_loss:.4f}&#34;)
+        
+        # Validate
+        val_loss = self.validate()
+        if val_loss is not None:
+            print(f&#34;Validation loss: {val_loss:.4f}&#34;)
+            
+            # Save best model
+            if val_loss &lt; best_val_loss:
+                best_val_loss = val_loss
+                self.save_model(f&#34;{self.save_dir}_best&#34;)
+                print(&#34;Saved best model&#34;)
+        
+        # Save checkpoint
+        self.save_model(f&#34;{self.save_dir}_epoch_{epoch + 1}&#34;)
+    
+    print(&#34;\nTraining completed!&#34;)
+    return self.model</code></pre>
+</details>
+<div class="desc"><p>Train the model.</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaTrainer.train_epoch"><code class="name flex">
+<span>def <span class="ident">train_epoch</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train_epoch(self):
+    &#34;&#34;&#34;Train for one epoch.&#34;&#34;&#34;
+    self.model.model.train()
+    total_loss = 0
+    
+    progress_bar = tqdm(self.train_loader, desc=&#34;Training&#34;)
+    
+    for batch in progress_bar:
+        # Move to device
+        batch = {k: v.to(self.device) for k, v in batch.items()}
+        
+        # Forward pass
+        outputs = self.model.forward(
+            input_ids=batch[&#39;input_ids&#39;],
+            attention_mask=batch[&#39;attention_mask&#39;],
+            labels=batch[&#39;labels&#39;]
+        )
+        
+        loss = outputs.loss
+        total_loss += loss.item()
+        
+        # Backward pass
+        loss.backward()
+        
+        # Clip gradients
+        torch.nn.utils.clip_grad_norm_(self.model.model.parameters(), 1.0)
+        
+        # Update parameters
+        self.optimizer.step()
+        self.scheduler.step()
+        self.optimizer.zero_grad()
+        
+        # Update progress bar
+        progress_bar.set_postfix({&#39;loss&#39;: loss.item()})
+    
+    return total_loss / len(self.train_loader)</code></pre>
+</details>
+<div class="desc"><p>Train for one epoch.</p></div>
+</dd>
+<dt id="loda.ml.llm.LodaTrainer.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self):
+    &#34;&#34;&#34;Validate the model.&#34;&#34;&#34;
+    if not self.val_dataset:
+        return None
+    
+    self.model.model.eval()
+    total_loss = 0
+    
+    with torch.no_grad():
+        progress_bar = tqdm(self.val_loader, desc=&#34;Validation&#34;)
+        
+        for batch in progress_bar:
+            # Move to device
+            batch = {k: v.to(self.device) for k, v in batch.items()}
+            
+            # Forward pass
+            outputs = self.model.forward(
+                input_ids=batch[&#39;input_ids&#39;],
+                attention_mask=batch[&#39;attention_mask&#39;],
+                labels=batch[&#39;labels&#39;]
+            )
+            
+            loss = outputs.loss
+            total_loss += loss.item()
+            
+            progress_bar.set_postfix({&#39;val_loss&#39;: loss.item()})
+    
+    return total_loss / len(self.val_loader)</code></pre>
+</details>
+<div class="desc"><p>Validate the model.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="loda.ml.llm.TrainingExample"><code class="flex name class">
+<span>class <span class="ident">TrainingExample</span></span>
+<span>(</span><span>sequence_id: str,<br>description: str,<br>loda_code: str,<br>terms: List[int] | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class TrainingExample:
+    &#34;&#34;&#34;A single training example pairing natural language with LODA code.&#34;&#34;&#34;
+    sequence_id: str
+    description: str
+    loda_code: str
+    terms: Optional[List[int]] = None</code></pre>
+</details>
+<div class="desc"><p>A single training example pairing natural language with LODA code.</p></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="loda.ml.llm.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="loda.ml.llm.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="loda.ml" href="../index.html">loda.ml</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="loda.ml.llm.data_preprocessing" href="data_preprocessing.html">loda.ml.llm.data_preprocessing</a></code></li>
+<li><code><a title="loda.ml.llm.inference" href="inference.html">loda.ml.llm.inference</a></code></li>
+<li><code><a title="loda.ml.llm.model" href="model.html">loda.ml.llm.model</a></code></li>
+<li><code><a title="loda.ml.llm.trainer" href="trainer.html">loda.ml.llm.trainer</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="loda.ml.llm.create_dataset" href="#loda.ml.llm.create_dataset">create_dataset</a></code></li>
+<li><code><a title="loda.ml.llm.train_loda_llm" href="#loda.ml.llm.train_loda_llm">train_loda_llm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="loda.ml.llm.DataPreprocessor" href="#loda.ml.llm.DataPreprocessor">DataPreprocessor</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.DataPreprocessor.augment_descriptions" href="#loda.ml.llm.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.clean_loda_code" href="#loda.ml.llm.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.create_training_examples" href="#loda.ml.llm.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.extract_description_from_program" href="#loda.ml.llm.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.extract_terms_from_program" href="#loda.ml.llm.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.load_dataset" href="#loda.ml.llm.DataPreprocessor.load_dataset">load_dataset</a></code></li>
+<li><code><a title="loda.ml.llm.DataPreprocessor.save_dataset" href="#loda.ml.llm.DataPreprocessor.save_dataset">save_dataset</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.GenerationResult" href="#loda.ml.llm.GenerationResult">GenerationResult</a></code></h4>
+<ul class="two-column">
+<li><code><a title="loda.ml.llm.GenerationResult.description" href="#loda.ml.llm.GenerationResult.description">description</a></code></li>
+<li><code><a title="loda.ml.llm.GenerationResult.error_message" href="#loda.ml.llm.GenerationResult.error_message">error_message</a></code></li>
+<li><code><a title="loda.ml.llm.GenerationResult.generated_code" href="#loda.ml.llm.GenerationResult.generated_code">generated_code</a></code></li>
+<li><code><a title="loda.ml.llm.GenerationResult.generated_sequence" href="#loda.ml.llm.GenerationResult.generated_sequence">generated_sequence</a></code></li>
+<li><code><a title="loda.ml.llm.GenerationResult.generation_time" href="#loda.ml.llm.GenerationResult.generation_time">generation_time</a></code></li>
+<li><code><a title="loda.ml.llm.GenerationResult.is_valid" href="#loda.ml.llm.GenerationResult.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.LodaEvaluator" href="#loda.ml.llm.LodaEvaluator">LodaEvaluator</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.LodaEvaluator.evaluate_examples" href="#loda.ml.llm.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
+<li><code><a title="loda.ml.llm.LodaEvaluator.print_evaluation_report" href="#loda.ml.llm.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.LodaGenerator" href="#loda.ml.llm.LodaGenerator">LodaGenerator</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.LodaGenerator.generate" href="#loda.ml.llm.LodaGenerator.generate">generate</a></code></li>
+<li><code><a title="loda.ml.llm.LodaGenerator.generate_interactive" href="#loda.ml.llm.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.LodaT5Model" href="#loda.ml.llm.LodaT5Model">LodaT5Model</a></code></h4>
+<ul class="two-column">
+<li><code><a title="loda.ml.llm.LodaT5Model.forward" href="#loda.ml.llm.LodaT5Model.forward">forward</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.generate" href="#loda.ml.llm.LodaT5Model.generate">generate</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.load_model" href="#loda.ml.llm.LodaT5Model.load_model">load_model</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.loda_to_text_format" href="#loda.ml.llm.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.prepare_input" href="#loda.ml.llm.LodaT5Model.prepare_input">prepare_input</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.prepare_target" href="#loda.ml.llm.LodaT5Model.prepare_target">prepare_target</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.save_model" href="#loda.ml.llm.LodaT5Model.save_model">save_model</a></code></li>
+<li><code><a title="loda.ml.llm.LodaT5Model.text_format_to_loda" href="#loda.ml.llm.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.LodaTokenizer" href="#loda.ml.llm.LodaTokenizer">LodaTokenizer</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.LodaTokenizer.decode_loda_code" href="#loda.ml.llm.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.LodaTokenizer.encode_loda_code" href="#loda.ml.llm.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.LodaTokenizer.tokenize_loda_code" href="#loda.ml.llm.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.LodaTrainer" href="#loda.ml.llm.LodaTrainer">LodaTrainer</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.LodaTrainer.save_model" href="#loda.ml.llm.LodaTrainer.save_model">save_model</a></code></li>
+<li><code><a title="loda.ml.llm.LodaTrainer.train" href="#loda.ml.llm.LodaTrainer.train">train</a></code></li>
+<li><code><a title="loda.ml.llm.LodaTrainer.train_epoch" href="#loda.ml.llm.LodaTrainer.train_epoch">train_epoch</a></code></li>
+<li><code><a title="loda.ml.llm.LodaTrainer.validate" href="#loda.ml.llm.LodaTrainer.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="loda.ml.llm.TrainingExample" href="#loda.ml.llm.TrainingExample">TrainingExample</a></code></h4>
+<ul class="">
+<li><code><a title="loda.ml.llm.TrainingExample.description" href="#loda.ml.llm.TrainingExample.description">description</a></code></li>
+<li><code><a title="loda.ml.llm.TrainingExample.loda_code" href="#loda.ml.llm.TrainingExample.loda_code">loda_code</a></code></li>
+<li><code><a title="loda.ml.llm.TrainingExample.sequence_id" href="#loda.ml.llm.TrainingExample.sequence_id">sequence_id</a></code></li>
+<li><code><a title="loda.ml.llm.TrainingExample.terms" href="#loda.ml.llm.TrainingExample.terms">terms</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
