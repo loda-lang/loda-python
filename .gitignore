@@ -70,7 +70,7 @@ venv.bak/
 
 # Test models
 /sample_model/
-/test_model/
+/test_model*/
 
 # Training data
 /programs

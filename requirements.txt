@@ -9,3 +9,5 @@ transformers>=4.20.0
 datasets>=2.0.0
 tqdm>=4.62.0
 scikit-learn>=1.0.0
+sentencepiece>=0.1.95
+protobuf>=3.19.0

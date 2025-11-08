@@ -149,7 +149,7 @@ class DataPreprocessor:
                 
             try:
                 # Read the program file
-                program_path = self.program_cache._get_path(program_id)
+                program_path = self.program_cache.path(program_id)
                 if not os.path.exists(program_path):
                     continue
                     
@@ -171,12 +171,12 @@ class DataPreprocessor:
                 
                 # Validate that the code parses correctly
                 try:
-                    Program.parse(clean_code)
+                    Program(clean_code)
                 except Exception:
                     continue  # Skip programs that don't parse
                 
                 example = TrainingExample(
-                    sequence_id=program_id,
+                    sequence_id=str(program_id),
                     description=description,
                     loda_code=clean_code,
                     terms=terms
@@ -229,7 +229,7 @@ class DataPreprocessor:
             # Create new examples for each variation
             for variation in variations:
                 augmented_example = TrainingExample(
-                    sequence_id=example.sequence_id + "_aug",
+                    sequence_id=str(example.sequence_id) + "_aug",
                     description=variation,
                     loda_code=example.loda_code,
                     terms=example.terms

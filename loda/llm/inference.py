@@ -98,7 +98,7 @@ class LodaGenerator:
         
         try:
             # Try to parse the program
-            program = Program.parse(code)
+            program = Program(code)
             
             # Try to evaluate it for a few terms
             interpreter = Interpreter(max_memory=100, max_stack=10, max_steps=10000)
