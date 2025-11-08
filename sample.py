@@ -4,7 +4,6 @@ from loda.lang import Program
 from loda.oeis import ProgramCache, Sequence
 from loda.runtime import Evaluator, Interpreter
 from loda.mine import Miner
-from loda.ml.keras.program_generation_rnn import load_model, train_model, Generator
 
 
 class SampleLODA:
