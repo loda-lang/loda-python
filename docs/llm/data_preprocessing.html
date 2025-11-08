@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>loda.ml.llm.data_preprocessing API documentation</title>
+<title>loda.llm.data_preprocessing API documentation</title>
 <meta name="description" content="Data preprocessing utilities for LLM training on OEIS sequences and LODA programs …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.llm.data_preprocessing</code></h1>
+<h1 class="title">Module <code>loda.llm.data_preprocessing</code></h1>
 </header>
 <section id="section-intro">
 <p>Data preprocessing utilities for LLM training on OEIS sequences and LODA programs.</p>
@@ -50,7 +50,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.ml.llm.data_preprocessing.create_dataset"><code class="name flex">
+<dt id="loda.llm.data_preprocessing.create_dataset"><code class="name flex">
 <span>def <span class="ident">create_dataset</span></span>(<span>programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True)</span>
 </code></dt>
 <dd>
@@ -95,7 +95,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor"><code class="flex name class">
+<dt id="loda.llm.data_preprocessing.DataPreprocessor"><code class="flex name class">
 <span>class <span class="ident">DataPreprocessor</span></span>
 <span>(</span><span>programs_dir: str)</span>
 </code></dt>
@@ -364,8 +364,8 @@ el.replaceWith(d);
 <p>Initialize with path to OEIS programs directory.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions"><code class="name flex">
-<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.augment_descriptions"><code class="name flex">
+<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -430,7 +430,7 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>Augmented list with additional variations</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code"><code class="name flex">
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.clean_loda_code"><code class="name flex">
 <span>def <span class="ident">clean_loda_code</span></span>(<span>self, program_text: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -472,8 +472,8 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>Cleaned LODA code suitable for training</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples"><code class="name flex">
-<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.create_training_examples"><code class="name flex">
+<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -554,7 +554,7 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>List of TrainingExample objects</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program"><code class="name flex">
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.extract_description_from_program"><code class="name flex">
 <span>def <span class="ident">extract_description_from_program</span></span>(<span>self, program_text: str) ‑> str | None</span>
 </code></dt>
 <dd>
@@ -601,7 +601,7 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>The description string or None if no description found</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program"><code class="name flex">
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program"><code class="name flex">
 <span>def <span class="ident">extract_terms_from_program</span></span>(<span>self, program_text: str) ‑> List[int] | None</span>
 </code></dt>
 <dd>
@@ -648,8 +648,8 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>List of sequence terms or None if not found</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset"><code class="name flex">
-<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.load_dataset"><code class="name flex">
+<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -693,8 +693,8 @@ el.replaceWith(d);
 <h2 id="returns">Returns</h2>
 <p>List of TrainingExample objects</p></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset"><code class="name flex">
-<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
+<dt id="loda.llm.data_preprocessing.DataPreprocessor.save_dataset"><code class="name flex">
+<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -736,7 +736,7 @@ el.replaceWith(d);
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.TrainingExample"><code class="flex name class">
+<dt id="loda.llm.data_preprocessing.TrainingExample"><code class="flex name class">
 <span>class <span class="ident">TrainingExample</span></span>
 <span>(</span><span>sequence_id: str,<br>description: str,<br>loda_code: str,<br>terms: List[int] | None = None)</span>
 </code></dt>
@@ -756,19 +756,19 @@ class TrainingExample:
 <div class="desc"><p>A single training example pairing natural language with LODA code.</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="loda.ml.llm.data_preprocessing.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dt id="loda.llm.data_preprocessing.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
+<dt id="loda.llm.data_preprocessing.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
+<dt id="loda.llm.data_preprocessing.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.data_preprocessing.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
+<dt id="loda.llm.data_preprocessing.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -784,35 +784,35 @@ class TrainingExample:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+<li><code><a title="loda.llm" href="index.html">loda.llm</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="loda.ml.llm.data_preprocessing.create_dataset" href="#loda.ml.llm.data_preprocessing.create_dataset">create_dataset</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.create_dataset" href="#loda.llm.data_preprocessing.create_dataset">create_dataset</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor" href="#loda.ml.llm.data_preprocessing.DataPreprocessor">DataPreprocessor</a></code></h4>
+<h4><code><a title="loda.llm.data_preprocessing.DataPreprocessor" href="#loda.llm.data_preprocessing.DataPreprocessor">DataPreprocessor</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.load_dataset">load_dataset</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset" href="#loda.ml.llm.data_preprocessing.DataPreprocessor.save_dataset">save_dataset</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.augment_descriptions" href="#loda.llm.data_preprocessing.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.clean_loda_code" href="#loda.llm.data_preprocessing.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.create_training_examples" href="#loda.llm.data_preprocessing.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.extract_description_from_program" href="#loda.llm.data_preprocessing.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program" href="#loda.llm.data_preprocessing.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.load_dataset" href="#loda.llm.data_preprocessing.DataPreprocessor.load_dataset">load_dataset</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.DataPreprocessor.save_dataset" href="#loda.llm.data_preprocessing.DataPreprocessor.save_dataset">save_dataset</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.data_preprocessing.TrainingExample" href="#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a></code></h4>
+<h4><code><a title="loda.llm.data_preprocessing.TrainingExample" href="#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.description" href="#loda.ml.llm.data_preprocessing.TrainingExample.description">description</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.loda_code" href="#loda.ml.llm.data_preprocessing.TrainingExample.loda_code">loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.sequence_id" href="#loda.ml.llm.data_preprocessing.TrainingExample.sequence_id">sequence_id</a></code></li>
-<li><code><a title="loda.ml.llm.data_preprocessing.TrainingExample.terms" href="#loda.ml.llm.data_preprocessing.TrainingExample.terms">terms</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.TrainingExample.description" href="#loda.llm.data_preprocessing.TrainingExample.description">description</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.TrainingExample.loda_code" href="#loda.llm.data_preprocessing.TrainingExample.loda_code">loda_code</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.TrainingExample.sequence_id" href="#loda.llm.data_preprocessing.TrainingExample.sequence_id">sequence_id</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing.TrainingExample.terms" href="#loda.llm.data_preprocessing.TrainingExample.terms">terms</a></code></li>
 </ul>
 </li>
 </ul>

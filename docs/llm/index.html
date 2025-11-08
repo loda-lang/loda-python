@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>loda.ml.llm API documentation</title>
+<title>loda.llm API documentation</title>
 <meta name="description" content="Large Language Model (LLM) implementation for natural language to LODA code generation …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.llm</code></h1>
+<h1 class="title">Module <code>loda.llm</code></h1>
 </header>
 <section id="section-intro">
 <p>Large Language Model (LLM) implementation for natural language to LODA code generation.</p>
@@ -47,7 +47,7 @@ corresponding LODA assembly programs.</p>
 - Inference utilities for code generation
 - Evaluation metrics for generated programs</p>
 <p>Example usage:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; from loda.ml.llm import LodaT5Model, LodaGenerator, train_loda_llm
+<pre><code class="language-python-repl">&gt;&gt;&gt; from loda.llm import LodaT5Model, LodaGenerator, train_loda_llm
 &gt;&gt;&gt; 
 &gt;&gt;&gt; # Train a model
 &gt;&gt;&gt; model = train_loda_llm(&quot;programs/oeis&quot;, &quot;trained_model&quot;)
@@ -61,19 +61,19 @@ corresponding LODA assembly programs.</p>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="loda.ml.llm.data_preprocessing" href="data_preprocessing.html">loda.ml.llm.data_preprocessing</a></code></dt>
+<dt><code class="name"><a title="loda.llm.data_preprocessing" href="data_preprocessing.html">loda.llm.data_preprocessing</a></code></dt>
 <dd>
 <div class="desc"><p>Data preprocessing utilities for LLM training on OEIS sequences and LODA programs …</p></div>
 </dd>
-<dt><code class="name"><a title="loda.ml.llm.inference" href="inference.html">loda.ml.llm.inference</a></code></dt>
+<dt><code class="name"><a title="loda.llm.inference" href="inference.html">loda.llm.inference</a></code></dt>
 <dd>
 <div class="desc"><p>Inference and evaluation utilities for the LODA LLM …</p></div>
 </dd>
-<dt><code class="name"><a title="loda.ml.llm.model" href="model.html">loda.ml.llm.model</a></code></dt>
+<dt><code class="name"><a title="loda.llm.model" href="model.html">loda.llm.model</a></code></dt>
 <dd>
 <div class="desc"><p>Transformer-based model for natural language to LODA code generation …</p></div>
 </dd>
-<dt><code class="name"><a title="loda.ml.llm.trainer" href="trainer.html">loda.ml.llm.trainer</a></code></dt>
+<dt><code class="name"><a title="loda.llm.trainer" href="trainer.html">loda.llm.trainer</a></code></dt>
 <dd>
 <div class="desc"><p>Training script for the LODA LLM (Large Language Model) …</p></div>
 </dd>
@@ -84,7 +84,7 @@ corresponding LODA assembly programs.</p>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.ml.llm.create_dataset"><code class="name flex">
+<dt id="loda.llm.create_dataset"><code class="name flex">
 <span>def <span class="ident">create_dataset</span></span>(<span>programs_dir: str, output_file: str, max_examples: int = -1, augment: bool = True)</span>
 </code></dt>
 <dd>
@@ -124,7 +124,7 @@ corresponding LODA assembly programs.</p>
 <dd>Whether to augment with description variations</dd>
 </dl></div>
 </dd>
-<dt id="loda.ml.llm.train_loda_llm"><code class="name flex">
+<dt id="loda.llm.train_loda_llm"><code class="name flex">
 <span>def <span class="ident">train_loda_llm</span></span>(<span>programs_dir: str,<br>output_dir: str = 'loda_llm_model',<br>model_name: str = 't5-small',<br>max_examples: int = -1,<br>val_split: float = 0.1,<br>batch_size: int = 8,<br>learning_rate: float = 5e-05,<br>num_epochs: int = 3)</span>
 </code></dt>
 <dd>
@@ -234,7 +234,7 @@ corresponding LODA assembly programs.</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="loda.ml.llm.DataPreprocessor"><code class="flex name class">
+<dt id="loda.llm.DataPreprocessor"><code class="flex name class">
 <span>class <span class="ident">DataPreprocessor</span></span>
 <span>(</span><span>programs_dir: str)</span>
 </code></dt>
@@ -503,8 +503,8 @@ corresponding LODA assembly programs.</p>
 <p>Initialize with path to OEIS programs directory.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.DataPreprocessor.augment_descriptions"><code class="name flex">
-<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.DataPreprocessor.augment_descriptions"><code class="name flex">
+<span>def <span class="ident">augment_descriptions</span></span>(<span>self,<br>examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -569,7 +569,7 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>Augmented list with additional variations</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.clean_loda_code"><code class="name flex">
+<dt id="loda.llm.DataPreprocessor.clean_loda_code"><code class="name flex">
 <span>def <span class="ident">clean_loda_code</span></span>(<span>self, program_text: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -611,8 +611,8 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>Cleaned LODA code suitable for training</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.create_training_examples"><code class="name flex">
-<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.DataPreprocessor.create_training_examples"><code class="name flex">
+<span>def <span class="ident">create_training_examples</span></span>(<span>self, max_examples: int = -1) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -693,7 +693,7 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>List of TrainingExample objects</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.extract_description_from_program"><code class="name flex">
+<dt id="loda.llm.DataPreprocessor.extract_description_from_program"><code class="name flex">
 <span>def <span class="ident">extract_description_from_program</span></span>(<span>self, program_text: str) ‑> str | None</span>
 </code></dt>
 <dd>
@@ -740,7 +740,7 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>The description string or None if no description found</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.extract_terms_from_program"><code class="name flex">
+<dt id="loda.llm.DataPreprocessor.extract_terms_from_program"><code class="name flex">
 <span>def <span class="ident">extract_terms_from_program</span></span>(<span>self, program_text: str) ‑> List[int] | None</span>
 </code></dt>
 <dd>
@@ -787,8 +787,8 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>List of sequence terms or None if not found</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.load_dataset"><code class="name flex">
-<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
+<dt id="loda.llm.DataPreprocessor.load_dataset"><code class="name flex">
+<span>def <span class="ident">load_dataset</span></span>(<span>self, input_file: str) ‑> List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -832,8 +832,8 @@ corresponding LODA assembly programs.</p>
 <h2 id="returns">Returns</h2>
 <p>List of TrainingExample objects</p></div>
 </dd>
-<dt id="loda.ml.llm.DataPreprocessor.save_dataset"><code class="name flex">
-<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
+<dt id="loda.llm.DataPreprocessor.save_dataset"><code class="name flex">
+<span>def <span class="ident">save_dataset</span></span>(<span>self,<br>examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>],<br>output_file: str)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -875,7 +875,7 @@ corresponding LODA assembly programs.</p>
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.GenerationResult"><code class="flex name class">
+<dt id="loda.llm.GenerationResult"><code class="flex name class">
 <span>class <span class="ident">GenerationResult</span></span>
 <span>(</span><span>description: str,<br>generated_code: str,<br>is_valid: bool,<br>error_message: str | None = None,<br>generated_sequence: List[int] | None = None,<br>generation_time: float = 0.0)</span>
 </code></dt>
@@ -897,35 +897,35 @@ class GenerationResult:
 <div class="desc"><p>Result of code generation.</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="loda.ml.llm.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dt id="loda.llm.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
+<dt id="loda.llm.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
+<dt id="loda.llm.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
+<dt id="loda.llm.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
+<dt id="loda.llm.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
+<dt id="loda.llm.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.LodaEvaluator"><code class="flex name class">
+<dt id="loda.llm.LodaEvaluator"><code class="flex name class">
 <span>class <span class="ident">LodaEvaluator</span></span>
-<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>)</span>
+<span>(</span><span>model: <a title="loda.llm.model.LodaT5Model" href="model.html#loda.llm.model.LodaT5Model">LodaT5Model</a>)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -1060,8 +1060,8 @@ class GenerationResult:
 </dl></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaEvaluator.evaluate_examples"><code class="name flex">
-<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
+<dt id="loda.llm.LodaEvaluator.evaluate_examples"><code class="name flex">
+<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -1137,8 +1137,8 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Dictionary with evaluation metrics</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaEvaluator.print_evaluation_report"><code class="name flex">
-<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.ml.llm.inference.GenerationResult" href="inference.html#loda.ml.llm.inference.GenerationResult">GenerationResult</a>])</span>
+<dt id="loda.llm.LodaEvaluator.print_evaluation_report"><code class="name flex">
+<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.llm.inference.GenerationResult" href="inference.html#loda.llm.inference.GenerationResult">GenerationResult</a>])</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -1185,9 +1185,9 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.LodaGenerator"><code class="flex name class">
+<dt id="loda.llm.LodaGenerator"><code class="flex name class">
 <span>class <span class="ident">LodaGenerator</span></span>
-<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
+<span>(</span><span>model: <a title="loda.llm.model.LodaT5Model" href="model.html#loda.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -1340,8 +1340,8 @@ class GenerationResult:
 </dl></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaGenerator.generate"><code class="name flex">
-<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.ml.llm.inference.GenerationResult" href="inference.html#loda.ml.llm.inference.GenerationResult">GenerationResult</a>]</span>
+<dt id="loda.llm.LodaGenerator.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.llm.inference.GenerationResult" href="inference.html#loda.llm.inference.GenerationResult">GenerationResult</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -1390,7 +1390,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>List of GenerationResult objects</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaGenerator.generate_interactive"><code class="name flex">
+<dt id="loda.llm.LodaGenerator.generate_interactive"><code class="name flex">
 <span>def <span class="ident">generate_interactive</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -1444,7 +1444,7 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model"><code class="flex name class">
+<dt id="loda.llm.LodaT5Model"><code class="flex name class">
 <span>class <span class="ident">LodaT5Model</span></span>
 <span>(</span><span>model_name: str = 't5-small', loda_vocab_size: int | None = None)</span>
 </code></dt>
@@ -1718,7 +1718,7 @@ class GenerationResult:
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaT5Model.load_model"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.load_model"><code class="name flex">
 <span>def <span class="ident">load_model</span></span>(<span>load_path: str)</span>
 </code></dt>
 <dd>
@@ -1734,7 +1734,7 @@ class GenerationResult:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaT5Model.forward"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.forward"><code class="name flex">
 <span>def <span class="ident">forward</span></span>(<span>self, input_ids, attention_mask, labels=None) ‑> Callable[..., Any]</span>
 </code></dt>
 <dd>
@@ -1773,7 +1773,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Model outputs</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.generate"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.generate"><code class="name flex">
 <span>def <span class="ident">generate</span></span>(<span>self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) ‑> List[str]</span>
 </code></dt>
 <dd>
@@ -1828,7 +1828,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>List of generated LODA codes</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.loda_to_text_format"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.loda_to_text_format"><code class="name flex">
 <span>def <span class="ident">loda_to_text_format</span></span>(<span>self, code: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -1879,7 +1879,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Text representation of the code</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.prepare_input"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.prepare_input"><code class="name flex">
 <span>def <span class="ident">prepare_input</span></span>(<span>self, descriptions: List[str]) ‑> Dict[str, torch.Tensor]</span>
 </code></dt>
 <dd>
@@ -1920,7 +1920,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Dictionary with input tensors</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.prepare_target"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.prepare_target"><code class="name flex">
 <span>def <span class="ident">prepare_target</span></span>(<span>self, loda_codes: List[str]) ‑> Dict[str, torch.Tensor]</span>
 </code></dt>
 <dd>
@@ -1967,7 +1967,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Dictionary with target tensors</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.save_model"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.save_model"><code class="name flex">
 <span>def <span class="ident">save_model</span></span>(<span>self, save_path: str)</span>
 </code></dt>
 <dd>
@@ -2003,7 +2003,7 @@ class GenerationResult:
 <dd>Directory to save the model</dd>
 </dl></div>
 </dd>
-<dt id="loda.ml.llm.LodaT5Model.text_format_to_loda"><code class="name flex">
+<dt id="loda.llm.LodaT5Model.text_format_to_loda"><code class="name flex">
 <span>def <span class="ident">text_format_to_loda</span></span>(<span>self, text_code: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -2052,7 +2052,7 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.LodaTokenizer"><code class="flex name class">
+<dt id="loda.llm.LodaTokenizer"><code class="flex name class">
 <span>class <span class="ident">LodaTokenizer</span></span>
 </code></dt>
 <dd>
@@ -2225,7 +2225,7 @@ class GenerationResult:
 <p>Initialize LODA tokenizer with vocabulary.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaTokenizer.decode_loda_code"><code class="name flex">
+<dt id="loda.llm.LodaTokenizer.decode_loda_code"><code class="name flex">
 <span>def <span class="ident">decode_loda_code</span></span>(<span>self, token_ids: List[int]) ‑> str</span>
 </code></dt>
 <dd>
@@ -2288,7 +2288,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>LODA assembly code as string</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaTokenizer.encode_loda_code"><code class="name flex">
+<dt id="loda.llm.LodaTokenizer.encode_loda_code"><code class="name flex">
 <span>def <span class="ident">encode_loda_code</span></span>(<span>self, code: str) ‑> List[int]</span>
 </code></dt>
 <dd>
@@ -2318,7 +2318,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>List of token IDs</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaTokenizer.tokenize_loda_code"><code class="name flex">
+<dt id="loda.llm.LodaTokenizer.tokenize_loda_code"><code class="name flex">
 <span>def <span class="ident">tokenize_loda_code</span></span>(<span>self, code: str) ‑> List[str]</span>
 </code></dt>
 <dd>
@@ -2388,9 +2388,9 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.LodaTrainer"><code class="flex name class">
+<dt id="loda.llm.LodaTrainer"><code class="flex name class">
 <span>class <span class="ident">LodaTrainer</span></span>
-<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>train_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="trainer.html#loda.ml.llm.trainer.LodaDataset">LodaDataset</a>,<br>val_dataset: <a title="loda.ml.llm.trainer.LodaDataset" href="trainer.html#loda.ml.llm.trainer.LodaDataset">LodaDataset</a> | None = None,<br>learning_rate: float = 5e-05,<br>batch_size: int = 8,<br>num_epochs: int = 3,<br>warmup_steps: int = 500,<br>save_dir: str = 'loda_llm_model')</span>
+<span>(</span><span>model: <a title="loda.llm.model.LodaT5Model" href="model.html#loda.llm.model.LodaT5Model">LodaT5Model</a>,<br>train_dataset: <a title="loda.llm.trainer.LodaDataset" href="trainer.html#loda.llm.trainer.LodaDataset">LodaDataset</a>,<br>val_dataset: <a title="loda.llm.trainer.LodaDataset" href="trainer.html#loda.llm.trainer.LodaDataset">LodaDataset</a> | None = None,<br>learning_rate: float = 5e-05,<br>batch_size: int = 8,<br>num_epochs: int = 3,<br>warmup_steps: int = 500,<br>save_dir: str = 'loda_llm_model')</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -2640,7 +2640,7 @@ class GenerationResult:
 </dl></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.LodaTrainer.save_model"><code class="name flex">
+<dt id="loda.llm.LodaTrainer.save_model"><code class="name flex">
 <span>def <span class="ident">save_model</span></span>(<span>self, path: str)</span>
 </code></dt>
 <dd>
@@ -2654,7 +2654,7 @@ class GenerationResult:
 </details>
 <div class="desc"><p>Save the model.</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaTrainer.train"><code class="name flex">
+<dt id="loda.llm.LodaTrainer.train"><code class="name flex">
 <span>def <span class="ident">train</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2697,7 +2697,7 @@ class GenerationResult:
 </details>
 <div class="desc"><p>Train the model.</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaTrainer.train_epoch"><code class="name flex">
+<dt id="loda.llm.LodaTrainer.train_epoch"><code class="name flex">
 <span>def <span class="ident">train_epoch</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2744,7 +2744,7 @@ class GenerationResult:
 </details>
 <div class="desc"><p>Train for one epoch.</p></div>
 </dd>
-<dt id="loda.ml.llm.LodaTrainer.validate"><code class="name flex">
+<dt id="loda.llm.LodaTrainer.validate"><code class="name flex">
 <span>def <span class="ident">validate</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2785,7 +2785,7 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.TrainingExample"><code class="flex name class">
+<dt id="loda.llm.TrainingExample"><code class="flex name class">
 <span>class <span class="ident">TrainingExample</span></span>
 <span>(</span><span>sequence_id: str,<br>description: str,<br>loda_code: str,<br>terms: List[int] | None = None)</span>
 </code></dt>
@@ -2805,19 +2805,19 @@ class TrainingExample:
 <div class="desc"><p>A single training example pairing natural language with LODA code.</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="loda.ml.llm.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dt id="loda.llm.TrainingExample.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
+<dt id="loda.llm.TrainingExample.loda_code"><code class="name">var <span class="ident">loda_code</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
+<dt id="loda.llm.TrainingExample.sequence_id"><code class="name">var <span class="ident">sequence_id</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
+<dt id="loda.llm.TrainingExample.terms"><code class="name">var <span class="ident">terms</span> : List[int] | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2833,99 +2833,99 @@ class TrainingExample:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="loda.ml" href="../index.html">loda.ml</a></code></li>
+<li><code><a title="loda" href="../index.html">loda</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="loda.ml.llm.data_preprocessing" href="data_preprocessing.html">loda.ml.llm.data_preprocessing</a></code></li>
-<li><code><a title="loda.ml.llm.inference" href="inference.html">loda.ml.llm.inference</a></code></li>
-<li><code><a title="loda.ml.llm.model" href="model.html">loda.ml.llm.model</a></code></li>
-<li><code><a title="loda.ml.llm.trainer" href="trainer.html">loda.ml.llm.trainer</a></code></li>
+<li><code><a title="loda.llm.data_preprocessing" href="data_preprocessing.html">loda.llm.data_preprocessing</a></code></li>
+<li><code><a title="loda.llm.inference" href="inference.html">loda.llm.inference</a></code></li>
+<li><code><a title="loda.llm.model" href="model.html">loda.llm.model</a></code></li>
+<li><code><a title="loda.llm.trainer" href="trainer.html">loda.llm.trainer</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="loda.ml.llm.create_dataset" href="#loda.ml.llm.create_dataset">create_dataset</a></code></li>
-<li><code><a title="loda.ml.llm.train_loda_llm" href="#loda.ml.llm.train_loda_llm">train_loda_llm</a></code></li>
+<li><code><a title="loda.llm.create_dataset" href="#loda.llm.create_dataset">create_dataset</a></code></li>
+<li><code><a title="loda.llm.train_loda_llm" href="#loda.llm.train_loda_llm">train_loda_llm</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="loda.ml.llm.DataPreprocessor" href="#loda.ml.llm.DataPreprocessor">DataPreprocessor</a></code></h4>
+<h4><code><a title="loda.llm.DataPreprocessor" href="#loda.llm.DataPreprocessor">DataPreprocessor</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.DataPreprocessor.augment_descriptions" href="#loda.ml.llm.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.clean_loda_code" href="#loda.ml.llm.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.create_training_examples" href="#loda.ml.llm.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.extract_description_from_program" href="#loda.ml.llm.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.extract_terms_from_program" href="#loda.ml.llm.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.load_dataset" href="#loda.ml.llm.DataPreprocessor.load_dataset">load_dataset</a></code></li>
-<li><code><a title="loda.ml.llm.DataPreprocessor.save_dataset" href="#loda.ml.llm.DataPreprocessor.save_dataset">save_dataset</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.augment_descriptions" href="#loda.llm.DataPreprocessor.augment_descriptions">augment_descriptions</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.clean_loda_code" href="#loda.llm.DataPreprocessor.clean_loda_code">clean_loda_code</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.create_training_examples" href="#loda.llm.DataPreprocessor.create_training_examples">create_training_examples</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.extract_description_from_program" href="#loda.llm.DataPreprocessor.extract_description_from_program">extract_description_from_program</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.extract_terms_from_program" href="#loda.llm.DataPreprocessor.extract_terms_from_program">extract_terms_from_program</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.load_dataset" href="#loda.llm.DataPreprocessor.load_dataset">load_dataset</a></code></li>
+<li><code><a title="loda.llm.DataPreprocessor.save_dataset" href="#loda.llm.DataPreprocessor.save_dataset">save_dataset</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.GenerationResult" href="#loda.ml.llm.GenerationResult">GenerationResult</a></code></h4>
+<h4><code><a title="loda.llm.GenerationResult" href="#loda.llm.GenerationResult">GenerationResult</a></code></h4>
 <ul class="two-column">
-<li><code><a title="loda.ml.llm.GenerationResult.description" href="#loda.ml.llm.GenerationResult.description">description</a></code></li>
-<li><code><a title="loda.ml.llm.GenerationResult.error_message" href="#loda.ml.llm.GenerationResult.error_message">error_message</a></code></li>
-<li><code><a title="loda.ml.llm.GenerationResult.generated_code" href="#loda.ml.llm.GenerationResult.generated_code">generated_code</a></code></li>
-<li><code><a title="loda.ml.llm.GenerationResult.generated_sequence" href="#loda.ml.llm.GenerationResult.generated_sequence">generated_sequence</a></code></li>
-<li><code><a title="loda.ml.llm.GenerationResult.generation_time" href="#loda.ml.llm.GenerationResult.generation_time">generation_time</a></code></li>
-<li><code><a title="loda.ml.llm.GenerationResult.is_valid" href="#loda.ml.llm.GenerationResult.is_valid">is_valid</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.description" href="#loda.llm.GenerationResult.description">description</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.error_message" href="#loda.llm.GenerationResult.error_message">error_message</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.generated_code" href="#loda.llm.GenerationResult.generated_code">generated_code</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.generated_sequence" href="#loda.llm.GenerationResult.generated_sequence">generated_sequence</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.generation_time" href="#loda.llm.GenerationResult.generation_time">generation_time</a></code></li>
+<li><code><a title="loda.llm.GenerationResult.is_valid" href="#loda.llm.GenerationResult.is_valid">is_valid</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.LodaEvaluator" href="#loda.ml.llm.LodaEvaluator">LodaEvaluator</a></code></h4>
+<h4><code><a title="loda.llm.LodaEvaluator" href="#loda.llm.LodaEvaluator">LodaEvaluator</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.LodaEvaluator.evaluate_examples" href="#loda.ml.llm.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
-<li><code><a title="loda.ml.llm.LodaEvaluator.print_evaluation_report" href="#loda.ml.llm.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
+<li><code><a title="loda.llm.LodaEvaluator.evaluate_examples" href="#loda.llm.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
+<li><code><a title="loda.llm.LodaEvaluator.print_evaluation_report" href="#loda.llm.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.LodaGenerator" href="#loda.ml.llm.LodaGenerator">LodaGenerator</a></code></h4>
+<h4><code><a title="loda.llm.LodaGenerator" href="#loda.llm.LodaGenerator">LodaGenerator</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.LodaGenerator.generate" href="#loda.ml.llm.LodaGenerator.generate">generate</a></code></li>
-<li><code><a title="loda.ml.llm.LodaGenerator.generate_interactive" href="#loda.ml.llm.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
+<li><code><a title="loda.llm.LodaGenerator.generate" href="#loda.llm.LodaGenerator.generate">generate</a></code></li>
+<li><code><a title="loda.llm.LodaGenerator.generate_interactive" href="#loda.llm.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.LodaT5Model" href="#loda.ml.llm.LodaT5Model">LodaT5Model</a></code></h4>
+<h4><code><a title="loda.llm.LodaT5Model" href="#loda.llm.LodaT5Model">LodaT5Model</a></code></h4>
 <ul class="two-column">
-<li><code><a title="loda.ml.llm.LodaT5Model.forward" href="#loda.ml.llm.LodaT5Model.forward">forward</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.generate" href="#loda.ml.llm.LodaT5Model.generate">generate</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.load_model" href="#loda.ml.llm.LodaT5Model.load_model">load_model</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.loda_to_text_format" href="#loda.ml.llm.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.prepare_input" href="#loda.ml.llm.LodaT5Model.prepare_input">prepare_input</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.prepare_target" href="#loda.ml.llm.LodaT5Model.prepare_target">prepare_target</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.save_model" href="#loda.ml.llm.LodaT5Model.save_model">save_model</a></code></li>
-<li><code><a title="loda.ml.llm.LodaT5Model.text_format_to_loda" href="#loda.ml.llm.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.forward" href="#loda.llm.LodaT5Model.forward">forward</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.generate" href="#loda.llm.LodaT5Model.generate">generate</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.load_model" href="#loda.llm.LodaT5Model.load_model">load_model</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.loda_to_text_format" href="#loda.llm.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.prepare_input" href="#loda.llm.LodaT5Model.prepare_input">prepare_input</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.prepare_target" href="#loda.llm.LodaT5Model.prepare_target">prepare_target</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.save_model" href="#loda.llm.LodaT5Model.save_model">save_model</a></code></li>
+<li><code><a title="loda.llm.LodaT5Model.text_format_to_loda" href="#loda.llm.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.LodaTokenizer" href="#loda.ml.llm.LodaTokenizer">LodaTokenizer</a></code></h4>
+<h4><code><a title="loda.llm.LodaTokenizer" href="#loda.llm.LodaTokenizer">LodaTokenizer</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.LodaTokenizer.decode_loda_code" href="#loda.ml.llm.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.LodaTokenizer.encode_loda_code" href="#loda.ml.llm.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.LodaTokenizer.tokenize_loda_code" href="#loda.ml.llm.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
+<li><code><a title="loda.llm.LodaTokenizer.decode_loda_code" href="#loda.llm.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
+<li><code><a title="loda.llm.LodaTokenizer.encode_loda_code" href="#loda.llm.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
+<li><code><a title="loda.llm.LodaTokenizer.tokenize_loda_code" href="#loda.llm.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.LodaTrainer" href="#loda.ml.llm.LodaTrainer">LodaTrainer</a></code></h4>
+<h4><code><a title="loda.llm.LodaTrainer" href="#loda.llm.LodaTrainer">LodaTrainer</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.LodaTrainer.save_model" href="#loda.ml.llm.LodaTrainer.save_model">save_model</a></code></li>
-<li><code><a title="loda.ml.llm.LodaTrainer.train" href="#loda.ml.llm.LodaTrainer.train">train</a></code></li>
-<li><code><a title="loda.ml.llm.LodaTrainer.train_epoch" href="#loda.ml.llm.LodaTrainer.train_epoch">train_epoch</a></code></li>
-<li><code><a title="loda.ml.llm.LodaTrainer.validate" href="#loda.ml.llm.LodaTrainer.validate">validate</a></code></li>
+<li><code><a title="loda.llm.LodaTrainer.save_model" href="#loda.llm.LodaTrainer.save_model">save_model</a></code></li>
+<li><code><a title="loda.llm.LodaTrainer.train" href="#loda.llm.LodaTrainer.train">train</a></code></li>
+<li><code><a title="loda.llm.LodaTrainer.train_epoch" href="#loda.llm.LodaTrainer.train_epoch">train_epoch</a></code></li>
+<li><code><a title="loda.llm.LodaTrainer.validate" href="#loda.llm.LodaTrainer.validate">validate</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.TrainingExample" href="#loda.ml.llm.TrainingExample">TrainingExample</a></code></h4>
+<h4><code><a title="loda.llm.TrainingExample" href="#loda.llm.TrainingExample">TrainingExample</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.TrainingExample.description" href="#loda.ml.llm.TrainingExample.description">description</a></code></li>
-<li><code><a title="loda.ml.llm.TrainingExample.loda_code" href="#loda.ml.llm.TrainingExample.loda_code">loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.TrainingExample.sequence_id" href="#loda.ml.llm.TrainingExample.sequence_id">sequence_id</a></code></li>
-<li><code><a title="loda.ml.llm.TrainingExample.terms" href="#loda.ml.llm.TrainingExample.terms">terms</a></code></li>
+<li><code><a title="loda.llm.TrainingExample.description" href="#loda.llm.TrainingExample.description">description</a></code></li>
+<li><code><a title="loda.llm.TrainingExample.loda_code" href="#loda.llm.TrainingExample.loda_code">loda_code</a></code></li>
+<li><code><a title="loda.llm.TrainingExample.sequence_id" href="#loda.llm.TrainingExample.sequence_id">sequence_id</a></code></li>
+<li><code><a title="loda.llm.TrainingExample.terms" href="#loda.llm.TrainingExample.terms">terms</a></code></li>
 </ul>
 </li>
 </ul>

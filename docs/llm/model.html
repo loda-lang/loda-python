@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>loda.ml.llm.model API documentation</title>
+<title>loda.llm.model API documentation</title>
 <meta name="description" content="Transformer-based model for natural language to LODA code generation …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.llm.model</code></h1>
+<h1 class="title">Module <code>loda.llm.model</code></h1>
 </header>
 <section id="section-intro">
 <p>Transformer-based model for natural language to LODA code generation.</p>
@@ -48,8 +48,8 @@ natural language descriptions to LODA assembly code.</p>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.ml.llm.model.create_model"><code class="name flex">
-<span>def <span class="ident">create_model</span></span>(<span>model_name: str = 't5-small') ‑> <a title="loda.ml.llm.model.LodaT5Model" href="#loda.ml.llm.model.LodaT5Model">LodaT5Model</a></span>
+<dt id="loda.llm.model.create_model"><code class="name flex">
+<span>def <span class="ident">create_model</span></span>(<span>model_name: str = 't5-small') ‑> <a title="loda.llm.model.LodaT5Model" href="#loda.llm.model.LodaT5Model">LodaT5Model</a></span>
 </code></dt>
 <dd>
 <details class="source">
@@ -82,7 +82,7 @@ natural language descriptions to LODA assembly code.</p>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="loda.ml.llm.model.LodaT5Model"><code class="flex name class">
+<dt id="loda.llm.model.LodaT5Model"><code class="flex name class">
 <span>class <span class="ident">LodaT5Model</span></span>
 <span>(</span><span>model_name: str = 't5-small', loda_vocab_size: int | None = None)</span>
 </code></dt>
@@ -356,7 +356,7 @@ natural language descriptions to LODA assembly code.</p>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="loda.ml.llm.model.LodaT5Model.load_model"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.load_model"><code class="name flex">
 <span>def <span class="ident">load_model</span></span>(<span>load_path: str)</span>
 </code></dt>
 <dd>
@@ -372,7 +372,7 @@ natural language descriptions to LODA assembly code.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.model.LodaT5Model.forward"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.forward"><code class="name flex">
 <span>def <span class="ident">forward</span></span>(<span>self, input_ids, attention_mask, labels=None) ‑> Callable[..., Any]</span>
 </code></dt>
 <dd>
@@ -411,7 +411,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>Model outputs</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.generate"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.generate"><code class="name flex">
 <span>def <span class="ident">generate</span></span>(<span>self, descriptions: List[str], max_length: int = 256, num_beams: int = 4) ‑> List[str]</span>
 </code></dt>
 <dd>
@@ -466,7 +466,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>List of generated LODA codes</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.loda_to_text_format"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.loda_to_text_format"><code class="name flex">
 <span>def <span class="ident">loda_to_text_format</span></span>(<span>self, code: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -517,7 +517,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>Text representation of the code</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.prepare_input"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.prepare_input"><code class="name flex">
 <span>def <span class="ident">prepare_input</span></span>(<span>self, descriptions: List[str]) ‑> Dict[str, torch.Tensor]</span>
 </code></dt>
 <dd>
@@ -558,7 +558,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>Dictionary with input tensors</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.prepare_target"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.prepare_target"><code class="name flex">
 <span>def <span class="ident">prepare_target</span></span>(<span>self, loda_codes: List[str]) ‑> Dict[str, torch.Tensor]</span>
 </code></dt>
 <dd>
@@ -605,7 +605,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>Dictionary with target tensors</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.save_model"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.save_model"><code class="name flex">
 <span>def <span class="ident">save_model</span></span>(<span>self, save_path: str)</span>
 </code></dt>
 <dd>
@@ -641,7 +641,7 @@ natural language descriptions to LODA assembly code.</p>
 <dd>Directory to save the model</dd>
 </dl></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaT5Model.text_format_to_loda"><code class="name flex">
+<dt id="loda.llm.model.LodaT5Model.text_format_to_loda"><code class="name flex">
 <span>def <span class="ident">text_format_to_loda</span></span>(<span>self, text_code: str) ‑> str</span>
 </code></dt>
 <dd>
@@ -690,7 +690,7 @@ natural language descriptions to LODA assembly code.</p>
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.model.LodaTokenizer"><code class="flex name class">
+<dt id="loda.llm.model.LodaTokenizer"><code class="flex name class">
 <span>class <span class="ident">LodaTokenizer</span></span>
 </code></dt>
 <dd>
@@ -863,7 +863,7 @@ natural language descriptions to LODA assembly code.</p>
 <p>Initialize LODA tokenizer with vocabulary.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.model.LodaTokenizer.decode_loda_code"><code class="name flex">
+<dt id="loda.llm.model.LodaTokenizer.decode_loda_code"><code class="name flex">
 <span>def <span class="ident">decode_loda_code</span></span>(<span>self, token_ids: List[int]) ‑> str</span>
 </code></dt>
 <dd>
@@ -926,7 +926,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>LODA assembly code as string</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaTokenizer.encode_loda_code"><code class="name flex">
+<dt id="loda.llm.model.LodaTokenizer.encode_loda_code"><code class="name flex">
 <span>def <span class="ident">encode_loda_code</span></span>(<span>self, code: str) ‑> List[int]</span>
 </code></dt>
 <dd>
@@ -956,7 +956,7 @@ natural language descriptions to LODA assembly code.</p>
 <h2 id="returns">Returns</h2>
 <p>List of token IDs</p></div>
 </dd>
-<dt id="loda.ml.llm.model.LodaTokenizer.tokenize_loda_code"><code class="name flex">
+<dt id="loda.llm.model.LodaTokenizer.tokenize_loda_code"><code class="name flex">
 <span>def <span class="ident">tokenize_loda_code</span></span>(<span>self, code: str) ‑> List[str]</span>
 </code></dt>
 <dd>
@@ -1026,7 +1026,7 @@ natural language descriptions to LODA assembly code.</p>
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder"><code class="flex name class">
+<dt id="loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder"><code class="flex name class">
 <span>class <span class="ident">T5Tokenizer</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
@@ -1034,7 +1034,7 @@ natural language descriptions to LODA assembly code.</p>
 <div class="desc"></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call"><code class="name flex">
+<dt id="loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call"><code class="name flex">
 <span>def <span class="ident">call</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
@@ -1059,41 +1059,41 @@ natural language descriptions to LODA assembly code.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+<li><code><a title="loda.llm" href="index.html">loda.llm</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="loda.ml.llm.model.create_model" href="#loda.ml.llm.model.create_model">create_model</a></code></li>
+<li><code><a title="loda.llm.model.create_model" href="#loda.llm.model.create_model">create_model</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="loda.ml.llm.model.LodaT5Model" href="#loda.ml.llm.model.LodaT5Model">LodaT5Model</a></code></h4>
+<h4><code><a title="loda.llm.model.LodaT5Model" href="#loda.llm.model.LodaT5Model">LodaT5Model</a></code></h4>
 <ul class="two-column">
-<li><code><a title="loda.ml.llm.model.LodaT5Model.forward" href="#loda.ml.llm.model.LodaT5Model.forward">forward</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.generate" href="#loda.ml.llm.model.LodaT5Model.generate">generate</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.load_model" href="#loda.ml.llm.model.LodaT5Model.load_model">load_model</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.loda_to_text_format" href="#loda.ml.llm.model.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.prepare_input" href="#loda.ml.llm.model.LodaT5Model.prepare_input">prepare_input</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.prepare_target" href="#loda.ml.llm.model.LodaT5Model.prepare_target">prepare_target</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.save_model" href="#loda.ml.llm.model.LodaT5Model.save_model">save_model</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaT5Model.text_format_to_loda" href="#loda.ml.llm.model.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.forward" href="#loda.llm.model.LodaT5Model.forward">forward</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.generate" href="#loda.llm.model.LodaT5Model.generate">generate</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.load_model" href="#loda.llm.model.LodaT5Model.load_model">load_model</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.loda_to_text_format" href="#loda.llm.model.LodaT5Model.loda_to_text_format">loda_to_text_format</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.prepare_input" href="#loda.llm.model.LodaT5Model.prepare_input">prepare_input</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.prepare_target" href="#loda.llm.model.LodaT5Model.prepare_target">prepare_target</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.save_model" href="#loda.llm.model.LodaT5Model.save_model">save_model</a></code></li>
+<li><code><a title="loda.llm.model.LodaT5Model.text_format_to_loda" href="#loda.llm.model.LodaT5Model.text_format_to_loda">text_format_to_loda</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.model.LodaTokenizer" href="#loda.ml.llm.model.LodaTokenizer">LodaTokenizer</a></code></h4>
+<h4><code><a title="loda.llm.model.LodaTokenizer" href="#loda.llm.model.LodaTokenizer">LodaTokenizer</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.model.LodaTokenizer.decode_loda_code" href="#loda.ml.llm.model.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaTokenizer.encode_loda_code" href="#loda.ml.llm.model.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
-<li><code><a title="loda.ml.llm.model.LodaTokenizer.tokenize_loda_code" href="#loda.ml.llm.model.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
+<li><code><a title="loda.llm.model.LodaTokenizer.decode_loda_code" href="#loda.llm.model.LodaTokenizer.decode_loda_code">decode_loda_code</a></code></li>
+<li><code><a title="loda.llm.model.LodaTokenizer.encode_loda_code" href="#loda.llm.model.LodaTokenizer.encode_loda_code">encode_loda_code</a></code></li>
+<li><code><a title="loda.llm.model.LodaTokenizer.tokenize_loda_code" href="#loda.llm.model.LodaTokenizer.tokenize_loda_code">tokenize_loda_code</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder" href="#loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder">_LazyModule.__getattr__.<locals>.Placeholder</a></code></h4>
+<h4><code><a title="loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder" href="#loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder">_LazyModule.__getattr__.<locals>.Placeholder</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call" href="#loda.ml.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call">call</a></code></li>
+<li><code><a title="loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call" href="#loda.llm.model._LazyModule.__getattr__.<locals>.Placeholder.call">call</a></code></li>
 </ul>
 </li>
 </ul>

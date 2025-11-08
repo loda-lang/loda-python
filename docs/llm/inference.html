@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>loda.ml.llm.inference API documentation</title>
+<title>loda.llm.inference API documentation</title>
 <meta name="description" content="Inference and evaluation utilities for the LODA LLM …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>loda.ml.llm.inference</code></h1>
+<h1 class="title">Module <code>loda.llm.inference</code></h1>
 </header>
 <section id="section-intro">
 <p>Inference and evaluation utilities for the LODA LLM.</p>
@@ -50,7 +50,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="loda.ml.llm.inference.evaluate_model"><code class="name flex">
+<dt id="loda.llm.inference.evaluate_model"><code class="name flex">
 <span>def <span class="ident">evaluate_model</span></span>(<span>model_path: str, test_data_path: str)</span>
 </code></dt>
 <dd>
@@ -101,8 +101,8 @@ el.replaceWith(d);
 <dd>Path to test data JSON file</dd>
 </dl></div>
 </dd>
-<dt id="loda.ml.llm.inference.load_model_for_inference"><code class="name flex">
-<span>def <span class="ident">load_model_for_inference</span></span>(<span>model_path: str) ‑> <a title="loda.ml.llm.inference.LodaGenerator" href="#loda.ml.llm.inference.LodaGenerator">LodaGenerator</a></span>
+<dt id="loda.llm.inference.load_model_for_inference"><code class="name flex">
+<span>def <span class="ident">load_model_for_inference</span></span>(<span>model_path: str) ‑> <a title="loda.llm.inference.LodaGenerator" href="#loda.llm.inference.LodaGenerator">LodaGenerator</a></span>
 </code></dt>
 <dd>
 <details class="source">
@@ -136,7 +136,7 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="loda.ml.llm.inference.GenerationResult"><code class="flex name class">
+<dt id="loda.llm.inference.GenerationResult"><code class="flex name class">
 <span>class <span class="ident">GenerationResult</span></span>
 <span>(</span><span>description: str,<br>generated_code: str,<br>is_valid: bool,<br>error_message: str | None = None,<br>generated_sequence: List[int] | None = None,<br>generation_time: float = 0.0)</span>
 </code></dt>
@@ -158,35 +158,35 @@ class GenerationResult:
 <div class="desc"><p>Result of code generation.</p></div>
 <h3>Instance variables</h3>
 <dl>
-<dt id="loda.ml.llm.inference.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dt id="loda.llm.inference.GenerationResult.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.inference.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
+<dt id="loda.llm.inference.GenerationResult.error_message"><code class="name">var <span class="ident">error_message</span> : str | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.inference.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
+<dt id="loda.llm.inference.GenerationResult.generated_code"><code class="name">var <span class="ident">generated_code</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.inference.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
+<dt id="loda.llm.inference.GenerationResult.generated_sequence"><code class="name">var <span class="ident">generated_sequence</span> : List[int] | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.inference.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
+<dt id="loda.llm.inference.GenerationResult.generation_time"><code class="name">var <span class="ident">generation_time</span> : float</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="loda.ml.llm.inference.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
+<dt id="loda.llm.inference.GenerationResult.is_valid"><code class="name">var <span class="ident">is_valid</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.inference.LodaEvaluator"><code class="flex name class">
+<dt id="loda.llm.inference.LodaEvaluator"><code class="flex name class">
 <span>class <span class="ident">LodaEvaluator</span></span>
-<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>)</span>
+<span>(</span><span>model: <a title="loda.llm.model.LodaT5Model" href="model.html#loda.llm.model.LodaT5Model">LodaT5Model</a>)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -321,8 +321,8 @@ class GenerationResult:
 </dl></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.inference.LodaEvaluator.evaluate_examples"><code class="name flex">
-<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.ml.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.ml.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
+<dt id="loda.llm.inference.LodaEvaluator.evaluate_examples"><code class="name flex">
+<span>def <span class="ident">evaluate_examples</span></span>(<span>self,<br>test_examples: List[<a title="loda.llm.data_preprocessing.TrainingExample" href="data_preprocessing.html#loda.llm.data_preprocessing.TrainingExample">TrainingExample</a>]) ‑> Dict[str, float]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -398,8 +398,8 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>Dictionary with evaluation metrics</p></div>
 </dd>
-<dt id="loda.ml.llm.inference.LodaEvaluator.print_evaluation_report"><code class="name flex">
-<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a>])</span>
+<dt id="loda.llm.inference.LodaEvaluator.print_evaluation_report"><code class="name flex">
+<span>def <span class="ident">print_evaluation_report</span></span>(<span>self,<br>metrics: Dict[str, float],<br>results: List[<a title="loda.llm.inference.GenerationResult" href="#loda.llm.inference.GenerationResult">GenerationResult</a>])</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -446,9 +446,9 @@ class GenerationResult:
 </dd>
 </dl>
 </dd>
-<dt id="loda.ml.llm.inference.LodaGenerator"><code class="flex name class">
+<dt id="loda.llm.inference.LodaGenerator"><code class="flex name class">
 <span>class <span class="ident">LodaGenerator</span></span>
-<span>(</span><span>model: <a title="loda.ml.llm.model.LodaT5Model" href="model.html#loda.ml.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
+<span>(</span><span>model: <a title="loda.llm.model.LodaT5Model" href="model.html#loda.llm.model.LodaT5Model">LodaT5Model</a>,<br>max_length: int = 256,<br>num_beams: int = 4)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -601,8 +601,8 @@ class GenerationResult:
 </dl></div>
 <h3>Methods</h3>
 <dl>
-<dt id="loda.ml.llm.inference.LodaGenerator.generate"><code class="name flex">
-<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a>]</span>
+<dt id="loda.llm.inference.LodaGenerator.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>self, description: str, num_samples: int = 1) ‑> List[<a title="loda.llm.inference.GenerationResult" href="#loda.llm.inference.GenerationResult">GenerationResult</a>]</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -651,7 +651,7 @@ class GenerationResult:
 <h2 id="returns">Returns</h2>
 <p>List of GenerationResult objects</p></div>
 </dd>
-<dt id="loda.ml.llm.inference.LodaGenerator.generate_interactive"><code class="name flex">
+<dt id="loda.llm.inference.LodaGenerator.generate_interactive"><code class="name flex">
 <span>def <span class="ident">generate_interactive</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -715,40 +715,40 @@ class GenerationResult:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="loda.ml.llm" href="index.html">loda.ml.llm</a></code></li>
+<li><code><a title="loda.llm" href="index.html">loda.llm</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="loda.ml.llm.inference.evaluate_model" href="#loda.ml.llm.inference.evaluate_model">evaluate_model</a></code></li>
-<li><code><a title="loda.ml.llm.inference.load_model_for_inference" href="#loda.ml.llm.inference.load_model_for_inference">load_model_for_inference</a></code></li>
+<li><code><a title="loda.llm.inference.evaluate_model" href="#loda.llm.inference.evaluate_model">evaluate_model</a></code></li>
+<li><code><a title="loda.llm.inference.load_model_for_inference" href="#loda.llm.inference.load_model_for_inference">load_model_for_inference</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="loda.ml.llm.inference.GenerationResult" href="#loda.ml.llm.inference.GenerationResult">GenerationResult</a></code></h4>
+<h4><code><a title="loda.llm.inference.GenerationResult" href="#loda.llm.inference.GenerationResult">GenerationResult</a></code></h4>
 <ul class="two-column">
-<li><code><a title="loda.ml.llm.inference.GenerationResult.description" href="#loda.ml.llm.inference.GenerationResult.description">description</a></code></li>
-<li><code><a title="loda.ml.llm.inference.GenerationResult.error_message" href="#loda.ml.llm.inference.GenerationResult.error_message">error_message</a></code></li>
-<li><code><a title="loda.ml.llm.inference.GenerationResult.generated_code" href="#loda.ml.llm.inference.GenerationResult.generated_code">generated_code</a></code></li>
-<li><code><a title="loda.ml.llm.inference.GenerationResult.generated_sequence" href="#loda.ml.llm.inference.GenerationResult.generated_sequence">generated_sequence</a></code></li>
-<li><code><a title="loda.ml.llm.inference.GenerationResult.generation_time" href="#loda.ml.llm.inference.GenerationResult.generation_time">generation_time</a></code></li>
-<li><code><a title="loda.ml.llm.inference.GenerationResult.is_valid" href="#loda.ml.llm.inference.GenerationResult.is_valid">is_valid</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.description" href="#loda.llm.inference.GenerationResult.description">description</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.error_message" href="#loda.llm.inference.GenerationResult.error_message">error_message</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.generated_code" href="#loda.llm.inference.GenerationResult.generated_code">generated_code</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.generated_sequence" href="#loda.llm.inference.GenerationResult.generated_sequence">generated_sequence</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.generation_time" href="#loda.llm.inference.GenerationResult.generation_time">generation_time</a></code></li>
+<li><code><a title="loda.llm.inference.GenerationResult.is_valid" href="#loda.llm.inference.GenerationResult.is_valid">is_valid</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.inference.LodaEvaluator" href="#loda.ml.llm.inference.LodaEvaluator">LodaEvaluator</a></code></h4>
+<h4><code><a title="loda.llm.inference.LodaEvaluator" href="#loda.llm.inference.LodaEvaluator">LodaEvaluator</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.inference.LodaEvaluator.evaluate_examples" href="#loda.ml.llm.inference.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
-<li><code><a title="loda.ml.llm.inference.LodaEvaluator.print_evaluation_report" href="#loda.ml.llm.inference.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
+<li><code><a title="loda.llm.inference.LodaEvaluator.evaluate_examples" href="#loda.llm.inference.LodaEvaluator.evaluate_examples">evaluate_examples</a></code></li>
+<li><code><a title="loda.llm.inference.LodaEvaluator.print_evaluation_report" href="#loda.llm.inference.LodaEvaluator.print_evaluation_report">print_evaluation_report</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="loda.ml.llm.inference.LodaGenerator" href="#loda.ml.llm.inference.LodaGenerator">LodaGenerator</a></code></h4>
+<h4><code><a title="loda.llm.inference.LodaGenerator" href="#loda.llm.inference.LodaGenerator">LodaGenerator</a></code></h4>
 <ul class="">
-<li><code><a title="loda.ml.llm.inference.LodaGenerator.generate" href="#loda.ml.llm.inference.LodaGenerator.generate">generate</a></code></li>
-<li><code><a title="loda.ml.llm.inference.LodaGenerator.generate_interactive" href="#loda.ml.llm.inference.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
+<li><code><a title="loda.llm.inference.LodaGenerator.generate" href="#loda.llm.inference.LodaGenerator.generate">generate</a></code></li>
+<li><code><a title="loda.llm.inference.LodaGenerator.generate_interactive" href="#loda.llm.inference.LodaGenerator.generate_interactive">generate_interactive</a></code></li>
 </ul>
 </li>
 </ul>
