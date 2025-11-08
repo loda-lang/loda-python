@@ -96,15 +96,6 @@ program_cache = ProgramCache("path/to/programs")
 program = program_cache.get_program(sequence_id)
 ```
 
-### Token Conversion Pattern:
-```python
-# Token conversion utilities
-from loda.ml.util import program_to_tokens, tokens_to_program
-
-tokens, vocab = program_to_tokens(program)
-reconstructed = tokens_to_program(tokens)
-```
-
 ## Testing Conventions
 
 - Use CSV files in `tests/operations/` for operation test cases

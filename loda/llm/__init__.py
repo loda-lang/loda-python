@@ -13,7 +13,7 @@ Key components:
 - Evaluation metrics for generated programs
 
 Example usage:
->>> from loda.ml.llm import LodaT5Model, LodaGenerator, train_loda_llm
+>>> from loda.llm import LodaT5Model, LodaGenerator, train_loda_llm
 >>> 
 >>> # Train a model
 >>> model = train_loda_llm("programs/oeis", "trained_model")

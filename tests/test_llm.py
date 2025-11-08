@@ -7,7 +7,7 @@ This test validates the data preprocessing and basic structure without training.
 import unittest
 import tempfile
 import os
-from loda.ml.llm.data_preprocessing import DataPreprocessor, TrainingExample
+from loda.llm.data_preprocessing import DataPreprocessor, TrainingExample
 
 
 class TestLodaLLM(unittest.TestCase):

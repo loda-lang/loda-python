@@ -67,7 +67,7 @@ pip install -r requirements.txt
 ### 1. Prepare Training Data
 
 ```python
-from loda.ml.llm.data_preprocessing import create_dataset
+from loda.llm.data_preprocessing import create_dataset
 
 # Create training dataset from OEIS programs
 dataset = create_dataset(
@@ -81,7 +81,7 @@ dataset = create_dataset(
 ### 2. Train the Model
 
 ```python
-from loda.ml.llm.trainer import train_loda_llm
+from loda.llm.trainer import train_loda_llm
 
 # Train the model
 model = train_loda_llm(
@@ -96,7 +96,7 @@ model = train_loda_llm(
 
 Command line training:
 ```bash
-python -m loda.ml.llm.trainer \
+python -m loda.llm.trainer \
     --programs_dir programs/oeis \
     --output_dir trained_model \
     --max_examples 10000 \
@@ -106,7 +106,7 @@ python -m loda.ml.llm.trainer \
 ### 3. Generate Code
 
 ```python
-from loda.ml.llm.inference import load_model_for_inference
+from loda.llm.inference import load_model_for_inference
 
 # Load trained model
 generator = load_model_for_inference("trained_model")
@@ -122,13 +122,13 @@ for result in results:
 
 Interactive mode:
 ```bash
-python -m loda.ml.llm.inference --mode interactive --model_path trained_model
+python -m loda.llm.inference --mode interactive --model_path trained_model
 ```
 
 ### 4. Evaluate Performance
 
 ```python
-from loda.ml.llm.inference import evaluate_model
+from loda.llm.inference import evaluate_model
 
 # Evaluate on test set
 metrics, results = evaluate_model("trained_model", "test_data.json")
@@ -276,7 +276,7 @@ Choose model size based on your requirements:
 Add new training examples:
 
 ```python
-from loda.ml.llm.data_preprocessing import TrainingExample
+from loda.llm.data_preprocessing import TrainingExample
 
 custom_example = TrainingExample(
     sequence_id="custom_001",

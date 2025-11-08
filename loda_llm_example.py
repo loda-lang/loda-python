@@ -14,7 +14,7 @@ Run with: python loda_llm_example.py
 import os
 import sys
 import tempfile
-from loda.ml.llm import (
+from loda.llm import (
     create_dataset, 
     train_loda_llm, 
     LodaGenerator,
@@ -123,7 +123,7 @@ def main():
             evaluator = LodaEvaluator(model)
             
             # Use a subset of the training data as test data for demo
-            from loda.ml.llm.data_preprocessing import DataPreprocessor
+            from loda.llm.data_preprocessing import DataPreprocessor
             preprocessor = DataPreprocessor(programs_dir)
             test_examples = preprocessor.create_training_examples(max_examples=10)
             
@@ -142,10 +142,13 @@ def main():
     
     print("\n" + "=" * 50)
     print("Example completed!")
-    print("\nTo use the LLM in your own code:")
+    print("To use the LLM in your own code:")
     print("1. Train a model: train_loda_llm('programs/oeis', 'my_model')")
     print("2. Load for inference: generator = LodaGenerator.load_model('my_model')")
     print("3. Generate code: results = generator.generate('your description')")
+    print("\nCommand line usage:")
+    print("- Train: python -m loda.llm.trainer --programs_dir programs/oeis")
+    print("- Interactive: python -m loda.llm.inference --mode interactive --model_path my_model")
     
     return 0
 
