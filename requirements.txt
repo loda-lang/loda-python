@@ -2,12 +2,3 @@ argparse
 nose2
 parameterized
 requests
-tensorflow; sys_platform != 'darwin'
-tensorflow-macos; sys_platform == 'darwin'
-
-# LLM Dependencies
-torch>=1.9.0
-transformers>=4.20.0
-datasets>=2.0.0
-tqdm>=4.62.0
-scikit-learn>=1.0.0

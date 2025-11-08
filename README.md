@@ -4,18 +4,16 @@ This Python package contains an implementation of the [LODA Language](https://lo
 an assembly language and computational model for finding integer sequence programs.
 
 This Python package allows you to read and write LODA programs, to evaluate
-them to integer sequences, to search for matches in the
-[OEIS](https://www.oeis.org/) database,
-and to use machine learning tools from [Tensorflow](https://www.tensorflow.org/)
-to find new integer sequence programs.
+them to integer sequences, and to search for matches in the
+[OEIS](https://www.oeis.org/) database.
 
 ## Getting Started
 
 You need Python 3.7 or higher. To install the dependencies for LODA, run these commands:
 
 ```bash
-python3 -m venv env
-source env/bin/activate
+python3 -m venv ./venv
+source ./venv/bin/activate
 pip install -r requirements.txt
 ```
 

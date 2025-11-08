@@ -1,8 +1,6 @@
 This Python package allows you to read and write LODA programs, to evaluate
-them to integer sequences, to search for matches in the
-[OEIS](https://www.oeis.org/) database,
-and to use machine learning from [Tensorflow](https://www.tensorflow.org/)
-to generate new integer sequence programs.
+them to integer sequences, and to search for matches in the
+[OEIS](https://www.oeis.org/) database.
 
 ## Installation
 
